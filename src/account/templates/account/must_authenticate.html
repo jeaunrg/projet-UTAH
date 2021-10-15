@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+	<div class="d-flex flex-column">
+		<p class="m-auto">Vous devez vous connecter pour voir cette page. </p>
+		<p class="m-auto">
+			<a href="{% url 'login' %}">Se connecter</a>.
+		</p>
+	</div>
+</div>
+
+{% endblock content %}
