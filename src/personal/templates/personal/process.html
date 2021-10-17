@@ -3,22 +3,26 @@
 
 {% block content %}
 
-<!-- Reset Form -->
-<a href="{% url 'process' %}" role="button" class="btn btn-primary btn-lg btn-block" style="border-radius: 0px;"><b>Réinitialiser</b></a>
-
 <!-- Download Form -->
 <div class="container text-center" style="padding-top: 20px;">
 	<form action="{% url 'process' %}" method="post" style="display: inline;">
 		{% csrf_token %}
+
 		<button class="btn btn-primary" type="submit" style="width:120px;">
 			<strong>Commencer le processus</strong>
 		</button>
 	</form>
+
+  <div class="d-flex flex-column">
+    <a class="m-auto" href="{% url 'process' %}">Réinitialiser</a>
+  </div>
 </div>
 
 <!-- Download Status -->
 <div id="progress-bar-message" class="text-center" style="font-size: 14px"></div>
-<div id='progress-bar' class='progress-bar progress-bar-striped' role='progressbar' style="height:30px; width: 0%; border-radius: 5px">&nbsp;</div>
+<div class="container" style="padding-left: 50px; padding-right: 50px;">
+  <div id='progress-bar' class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' style="height:20px; width: 0%; border-radius: 5px">&nbsp;</div>
+</div>
 
 <!-- Celery Progress -->
 <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
