@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% load bootstrap %}
+<h1> Information patients </h1>
+<form method="post"> {% csrf_token %}
+    {{form|bootstrap }}
+    <input type="submit" value="Inclure">
+    {% if success_message %}
+      <p style="color:green; text-align: center;">{{success_message}}</p>
+    {% endif  %}
+
+</form>
+
+<!--
+    <div class="form-floating">
+      <input type="text" name="nipp" id="inputNipp" class="form-control" placeholder="n°IPP" required autofocus>
+      <label for="inputNipp">n°IPP</label>
+    </div> -->
+
+
+{% endblock content %}

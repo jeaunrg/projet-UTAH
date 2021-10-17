@@ -38,11 +38,13 @@
 </style>
 
 <div class="container text-center" style="padding-top: 20px;">
-	<a class="btn btn-primary" href="{% url 'process' %}">
+	<a class="btn btn-primary" href="{% url 'personal:process' %}">
 		<strong>Accéder aux processus</strong>
 	</a>
+	<a class="btn btn-primary" href="{% url 'personal:create' %}">
+		<strong>Inclure un patient</strong>
+	</a>
 
-	<!-- <a class="btn btn-outline-primary" href="{% url 'process' %}">Accéder aux processus</a> -->
 </div>
 
 

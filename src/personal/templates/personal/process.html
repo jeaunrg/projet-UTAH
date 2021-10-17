@@ -5,7 +5,7 @@
 
 <!-- Download Form -->
 <div class="container text-center" style="padding-top: 20px;">
-	<form action="{% url 'process' %}" method="post" style="display: inline;">
+	<form action="{% url 'personal:process' %}" method="post" style="display: inline;">
 		{% csrf_token %}
 
 		<button class="btn btn-primary" type="submit">
@@ -14,7 +14,7 @@
 	</form>
 
   <div class="d-flex flex-column">
-    <a class="m-auto" href="{% url 'process' %}">Réinitialiser</a>
+    <a class="m-auto" href="{% url 'personal:process' %}">Réinitialiser</a>
   </div>
 </div>
 

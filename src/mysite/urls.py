@@ -19,11 +19,7 @@ from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf import settings
 
-from personal.views import (
-	home_screen_view,
-    process_view,
-)
-
+from personal.views import home_screen_view
 from account.views import (
     logout_view,
     login_view,
@@ -33,12 +29,13 @@ from account.views import (
 
 urlpatterns = [
     path('', home_screen_view, name="home"),
-	path('process/', process_view, name='process'),
+    path('personal/', include('personal.urls', 'personal')),
     path('account/', account_view, name="account"),
     path('admin/', admin.site.urls),
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
 	path('must_authenticate/', must_authenticate_view, name="must_authenticate"),
+
     path('celery-progress/', include('celery_progress.urls')),
 
     # Password reset links (ref: https://github.com/django/django/blob/master/django/contrib/auth/views.py)
