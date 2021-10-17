@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Reset Form -->
+<a href="{% url 'process' %}" role="button" class="btn btn-primary btn-lg btn-block" style="border-radius: 0px;"><b>Réinitialiser</b></a>
+
+<!-- Download Form -->
+<div class="container text-center" style="padding-top: 20px;">
+	<form action="{% url 'process' %}" method="post" style="display: inline;">
+		{% csrf_token %}
+		<button class="btn btn-primary" type="submit" style="width:120px;">
+			<strong>Commencer le processus</strong>
+		</button>
+	</form>
+</div>
+
+<!-- Download Status -->
+<div id="progress-bar-message" class="text-center" style="font-size: 14px"></div>
+<div id='progress-bar' class='progress-bar progress-bar-striped' role='progressbar' style="height:30px; width: 0%; border-radius: 5px">&nbsp;</div>
+
+<!-- Celery Progress -->
+<script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+{% if task_id %}
+  <script type="text/javascript">
+  	$(function () {
+  		var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+  		CeleryProgressBar.initProgressBar(progressUrl, {})
+  	});
+  </script>
+{% endif %}
+
+{% endblock content %}

@@ -23,7 +23,7 @@
   	<a class="p-2 text-dark" href="{% url 'home' %}">Accueil</a>
     <a class="p-2 text-dark" href="{% url 'account' %}">Mon compte</a>
 		{% if request.user.is_admin %}
-		<a class="p-2 text-dark" href="admin/">Administration</a>
+			<a class="p-2 text-dark" href="/admin/">Administration</a>
 		{% endif %}
 		<a class="btn btn-outline-primary" href="{% url 'logout' %}">Se déconnecter</a>
 

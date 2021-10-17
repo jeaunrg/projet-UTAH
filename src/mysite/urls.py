@@ -21,6 +21,7 @@ from django.conf import settings
 
 from personal.views import (
 	home_screen_view,
+    process_view,
 )
 
 from account.views import (
@@ -32,11 +33,13 @@ from account.views import (
 
 urlpatterns = [
     path('', home_screen_view, name="home"),
+	path('process/', process_view, name='process'),
     path('account/', account_view, name="account"),
     path('admin/', admin.site.urls),
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
 	path('must_authenticate/', must_authenticate_view, name="must_authenticate"),
+    path('celery-progress/', include('celery_progress.urls')),
 
     # Password reset links (ref: https://github.com/django/django/blob/master/django/contrib/auth/views.py)
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'), name='password_change_done'),
