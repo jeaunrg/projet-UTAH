@@ -1,6 +1,80 @@
+{% load static %}
 
 
-<!-- Header -->
+<style type="text/css">
+	.b-example-divider {
+	  height: 3rem;
+	  background-color: rgba(0, 0, 0, .1);
+	  border: solid rgba(0, 0, 0, .15);
+	  border-width: 1px 0;
+	  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+	}
+
+	.form-control-dark {
+	  color: #fff;
+	  background-color: var(--bs-dark);
+	  border-color: var(--bs-gray);
+	}
+	.form-control-dark:focus {
+	  color: #fff;
+	  background-color: var(--bs-dark);
+	  border-color: #fff;
+	  box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
+	}
+
+	.bi {
+	  vertical-align: -.125em;
+	  fill: currentColor;
+	}
+
+	.text-small {
+	  font-size: 85%;
+	}
+
+	.dropdown-toggle {
+	  outline: 0;
+	}
+
+</style>
+<header class="p-3 bg-dark text-white">
+	<div class="container">
+		<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+			<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+				<svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+			</a>
+
+			<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+				<li><a class="nav-link px-2 text-secondary" href="{% url 'home' %}">Accueil</a></li>
+				<li><a class="nav-link px-2 text-white" href="/admin/">Administration</a></li>
+				<li><a class="nav-link px-2 text-white" href="#">A propos</a></li>
+				<li><a class="nav-link px-2 text-white" href="#">Aide</a></li>
+			</ul>
+
+			<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+				<input type="search" class="form-control form-control-dark" placeholder="Rechercher un patient..." aria-label="Search">
+			</form>
+
+			<div class="dropdown text-end">
+				<a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+					<!-- <img src="{{account.photo.url}}" alt="mdo" width="32" height="32" class="rounded-circle"> -->
+					<img src="{% static 'default_profile_pic.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+
+
+				</a>
+				<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+					<li><a class="dropdown-item" href="{% url 'personal:include' %}">Inclure un patient...</a></li>
+					<li><a class="dropdown-item" href="{% url 'personal:process' %}">Lancer un process...</a></li>
+					<li><a class="dropdown-item" href="{% url 'account' %}">Mon compte</a></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="{% url 'logout' %}">Se déconnecter</a></li>
+				</ul>
+			</div>
+<!-
+		</div>
+	</div>
+</header>
+
+<!--
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
   <h5 class="my-0 mr-md-auto font-weight-normal">
 		<p class="m-auto">Bonjour, {{request.user.username}} !</p>
@@ -15,7 +89,7 @@
 
 
   </nav>
-</div>
+</div> -->
 
 <!-- End Header -->
 

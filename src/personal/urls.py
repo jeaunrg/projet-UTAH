@@ -9,6 +9,6 @@ app_name = 'personal'
 
 urlpatterns = [
 	path('process/', process_view, name='process'),
-    path('create/', create_patient_file_view, name="create"),
+    path('include/', create_patient_file_view, name="include"),
 
  ]
