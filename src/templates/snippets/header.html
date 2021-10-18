@@ -56,10 +56,7 @@
 
 			<div class="dropdown text-end">
 				<a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-					<!-- <img src="{{account.photo.url}}" alt="mdo" width="32" height="32" class="rounded-circle"> -->
-					<img src="{% static 'default_profile_pic.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
-
-
+					<img src="{% static 'default_avatar.jpg' %}" alt="mdo" width="32" height="32" class="rounded-circle">
 				</a>
 				<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
 					<li><a class="dropdown-item" href="{% url 'personal:include' %}">Inclure un patient...</a></li>

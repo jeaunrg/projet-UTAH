@@ -44,12 +44,13 @@ def account_view(request):
 
 	context = {}
 	if request.POST:
-		form = AccountUpdateForm(request.POST, instance=request.user)
+		form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
 			form.initial = {
 					"username": request.POST['username'],
 					"email": request.POST['email'],
 			}
+			print(request.POST)
 			form.save()
 			context['success_message'] = "Updated"
 	else:
@@ -57,7 +58,7 @@ def account_view(request):
 
 			initial={
 					"username": request.user.username,
-					"email": request.user.email,					
+					"email": request.user.email,
 				}
 			)
 
