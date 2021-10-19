@@ -25,19 +25,19 @@ git clone https://github.com/jeaunrg/projet-UTAH.git
 cd root\path\to\projet-UTAH\
 ```
 
-Créez l'environement virtuel:
+- Créez l'environement virtuel:
 
 ```bash
 python3 -m venv venv
 ```
 
-Activez l'environement:
+- Activez l'environement:
 
 ```bash
 ./venv/Scripts/activate
 ```
 
-Installez les librairies python
+- Installez les librairies python
 
 ```bash
 pip install -r ./src/requirements.txt
@@ -53,9 +53,28 @@ python ./src/manage.py runserver
 
 Et ouvrez http://127.0.0.1:8000/ dans une page web
 
-Pour se connecter:
-username: admin
-password: admin
+Pour se connecter en tant qu'administrateur:
+- username: admin
+- password: admin
+
+
+4. Gérer les processus longs en arrière plan
+
+Si vous voulez lancer des processus en arrière plan, il est nécessaire d'installer
+`celery` pour gérer ces tâches: https://docs.celeryproject.org/en/stable/getting-started/first-steps-with-celery.html
+
+Une fois installé, ouvrez un nouveau terminal et déplacez vous dans le dossier source,
+
+```bash
+cd root\path\to\projet-UTAH\src\
+```
+
+Puis lancez la commande suivante:
+
+```bash
+celery -A mysite worker -l info -P gevent
+```
+
 
 
 

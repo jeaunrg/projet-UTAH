@@ -151,7 +151,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 AUTH_USER_MODEL = 'account.Account'
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.100', '127.0.0.1']
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # During development only

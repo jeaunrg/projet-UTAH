@@ -51,6 +51,7 @@ def account_view(request):
 		form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
 			form.save()
+			print("SAVE")
 
 			form.initial = {
 					"username": request.POST['username'],
