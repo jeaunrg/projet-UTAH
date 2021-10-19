@@ -9,7 +9,7 @@ Python 3.10 avec Django == 3.2.8.
 
 ## Installation (Windows)
 
-1. __Clonez le projet en local via git:__
+### Clonez le projet en local via git:
 
 
 ```bash
@@ -19,7 +19,7 @@ git clone https://github.com/jeaunrg/projet-UTAH.git
   Vous pouvez aussi télécharger directement le projet https://github.com/jeaunrg/projet-UTAH/archive/refs/heads/main.zip
 
 
-2. __Installez les librairies python dans un environement virtuel:__
+### Installez les librairies python dans un environement virtuel:
 
 ```bash
 cd root\path\to\projet-UTAH\
@@ -43,7 +43,7 @@ python3 -m venv venv
 pip install -r ./src/requirements.txt
 ```
 
-3. __Lancer l'application web__
+### Lancer l'application web
 
 Démarrez le serveur django:
 
@@ -58,7 +58,7 @@ Pour se connecter en tant qu'administrateur:
 - password: admin
 
 
-4. __Gérer les processus longs en arrière plan__
+### Gérer les processus longs en arrière plan
 
 Si vous voulez lancer des processus en arrière plan, il est nécessaire d'installer
 `celery` pour gérer ces tâches: https://docs.celeryproject.org/en/stable/getting-started/first-steps-with-celery.html
@@ -74,6 +74,9 @@ Puis lancez la commande suivante:
 ```bash
 celery -A mysite worker -l info -P gevent
 ```
+
+
+
 
 
 
