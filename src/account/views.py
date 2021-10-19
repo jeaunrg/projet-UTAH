@@ -1,16 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from mysite.settings import MEDIA_ROOT
 from account.forms import AccountAuthenticationForm, AccountUpdateForm
-import glob
-import os
 from django.contrib.auth.decorators import login_required
 
-
-def empty_avatars():
-	files = glob.glob(os.path.join(MEDIA_ROOT, 'images', 'avatars', '*'))
-	for f in files:
-		os.remove(f)
 
 def logout_view(request):
 	logout(request)
@@ -58,8 +50,6 @@ def account_view(request):
 
 		form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
-			if request.user.profile_picture:
-				empty_avatars()
 			form.save()
 
 			form.initial = {

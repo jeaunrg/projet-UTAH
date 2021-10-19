@@ -55,7 +55,7 @@
 
 			<div class="dropdown text-end">
 				<a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-					{% if user.profile_picture %}
+					{% if user.profile_picture_is_valid %}
 					<img src="{{user.profile_picture.url}}" alt="mdo" width="32" height="32" class="rounded-circle">
 					{% else %}
 					<img src="{% static 'images/default_profile_picture.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
