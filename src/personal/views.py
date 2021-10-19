@@ -4,25 +4,21 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .tasks import first_algo
 from .forms import CreatePatientFileForm
 from account.models import Account
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='login')
 def home_screen_view(request, *args, **kwargs):
-
-	if not request.user.is_authenticated:
-		return redirect("login")
-
 	context = {}
-
 	return render(request, "personal/home.html", context)
 
 
+@login_required(login_url='login')
 def create_patient_file_view(request):
 
 	context = {}
 
 	user = request.user
-	if not user.is_authenticated:
-		return redirect('must_authenticate')
 
 	form = CreatePatientFileForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
@@ -37,19 +33,8 @@ def create_patient_file_view(request):
 
 	return render(request, "personal/create_patient_file.html", context)
 
-# def include_view(request):
-# 	context = {}
-# 	if request.method == 'POST':
-# 		form = PatientFileForm(request.POST)
-# 		if form.is_valid():
-# 			context['success_message'] = "Patient inclus !"
-# 	else:
-# 		form = PatientFileForm()
-#
-# 	context['form'] = form
-# 	return render(request, 'personal/include.html', context)
 
-
+@login_required(login_url='login')
 def process_view(request):
 	context = {}
 	if request.method == 'POST':

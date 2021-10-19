@@ -1,8 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-
+from mysite.settings import MEDIA_ROOT
 from account.forms import AccountAuthenticationForm, AccountUpdateForm
+import glob
+import os
+from django.contrib.auth.decorators import login_required
 
+
+def empty_avatars():
+	files = glob.glob(os.path.join(MEDIA_ROOT, 'images', 'avatars', '*'))
+	for f in files:
+		os.remove(f)
 
 def logout_view(request):
 	logout(request)
@@ -37,16 +45,23 @@ def login_view(request):
 	return render(request, "account/login.html", context)
 
 
+@login_required(login_url='login')
 def account_view(request):
-
-	if not request.user.is_authenticated:
-		return redirect("login")
 
 	context = {}
 	if request.POST:
+		last_picture = request.user.profile_picture
+		if last_picture:
+			last_picture_url = last_picture.url
+		else:
+			last_picture_url = None
+
 		form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
+			if request.user.profile_picture:
+				empty_avatars()
 			form.save()
+
 			form.initial = {
 					"username": request.POST['username'],
 					"email": request.POST['email'],
@@ -63,7 +78,3 @@ def account_view(request):
 	context['account_form'] = form
 
 	return render(request, "account/account.html", context)
-
-
-def must_authenticate_view(request):
-	return render(request, 'account/must_authenticate.html', {})

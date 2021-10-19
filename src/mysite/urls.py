@@ -24,7 +24,6 @@ from account.views import (
     logout_view,
     login_view,
     account_view,
-	must_authenticate_view,
 )
 
 urlpatterns = [
@@ -34,7 +33,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
-	path('must_authenticate/', must_authenticate_view, name="must_authenticate"),
 
     path('celery-progress/', include('celery_progress.urls')),
 
