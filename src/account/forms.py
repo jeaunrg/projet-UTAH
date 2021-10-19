@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
-
+from django.core.files.images import get_image_dimensions
 from account.models import Account
 
 
@@ -25,7 +25,7 @@ class AccountUpdateForm(forms.ModelForm):
 
 	class Meta:
 		model = Account
-		fields = ('username', 'email', )
+		fields = ('username', 'email', 'profile_picture')
 
 	def clean_username(self):
 		username = self.cleaned_data['username']

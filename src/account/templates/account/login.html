@@ -34,12 +34,13 @@
   .h3  {
     text-align: center;
   }
+
 </style>
 
 
 <form class="form-signin" method="post">{% csrf_token %}
   <div class="d-flex flex-column pb-3">
-    <img class="img-fluid mx-auto d-block rounded-circle" src="{% static 'default_avatar.jpg' %}" alt="default avatar image" width="72" height="72">
+    <img class="img-fluid mx-auto d-block rounded-circle" src="{% static 'images/login.png' %}" alt="default avatar image" width="150">
   </div>
 
   <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
@@ -67,7 +68,7 @@
 </form>
 
 <div class="d-flex flex-column">
-  <a class="m-auto" href="{% url 'password_reset' %}">Réinitialiser le mot de passe</a>
+  <a class="m-auto" href="{% url 'password_reset' %}">Mot de passe oublié ?</a>
 </div>
 
 

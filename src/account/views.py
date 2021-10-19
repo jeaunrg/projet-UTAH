@@ -40,22 +40,20 @@ def login_view(request):
 def account_view(request):
 
 	if not request.user.is_authenticated:
-			return redirect("login")
+		return redirect("login")
 
 	context = {}
 	if request.POST:
 		form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
+			form.save()
 			form.initial = {
 					"username": request.POST['username'],
 					"email": request.POST['email'],
 			}
-			print(request.POST)
-			form.save()
 			context['success_message'] = "Updated"
 	else:
 		form = AccountUpdateForm(
-
 			initial={
 					"username": request.user.username,
 					"email": request.user.email,

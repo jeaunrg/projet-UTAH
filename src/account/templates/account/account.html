@@ -11,7 +11,6 @@
 
   body {
     align-items: center;
-    padding-top: 40px;
     padding-bottom: 40px;
     background-color: #f5f5f5;
   }
@@ -82,21 +81,27 @@
   .h1  {
     text-align: center;
   }
+
 </style>
 
 
-<form class="form-signin" method="post">{% csrf_token %}
+<form class="form-signin" method="post" enctype="multipart/form-data">{% csrf_token %}
 
   <h1 class="h1 mb-3 font-weight-normal">Mon compte</h1>
 
   <!-- Image -->
   <div class="form-group image-group" id="id_image_group">
-    <img class="img-fluid mx-auto d-block image rounded-circle" src="{% static 'default_avatar.jpg' %}" id="id_image_display" width=150 height=150>
+    {% if user.profile_picture %}
+    <img class="img mx-auto d-block image rounded-circle" src="{{user.profile_picture.url}}" id="id_image_display" width=150 height=150>
+    {% else %}
+    <img class="img mx-auto d-block image rounded-circle" src="{% static 'images/default_profile_picture.png' %}" id="id_image_display" width=150 height=150>
+    {% endif %}
+
       <div class="middle">
         <div class="text">Changer l'image</div>
       </div>
   </div>
-  <input hidden type="file" name="avatar" id="id_image_file" accept="image/*" onchange="readURL(this)">
+  <input hidden type="file" name="profile_picture" id="id_image_file" accept="image/*" onchange="readURL(this)">
   <br>
 
   <div class="form-floating">
