@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<style type="text/css">
+	.card{
+		max-width: 700px;
+	}
+	.card-body{
+		padding: 20px;
+	}
+</style>
+
+<div class="container">
+	<div class="row">
+
+		<div class="card m-auto">
+			<img class="card-img-top" src="{{patient_file.image.url}}">
+			<div class="card-body mt-2 mb-2">
+			  <h2 class="card-title">{{patient_file.title}}</h2>
+			  <p class="card-text">{{patient_file.body|safe}}</p>
+			  {% if patient_file.author == request.user %}
+			  	<a href="{% url 'inclusion:edit' patient_file.slug %}" class="btn btn-primary">Modifier</a>
+			  {% endif %}
+			</div>
+			<div class="card-footer text-muted">
+			  Modifié le {{patient_file.date_updated}} par {{patient_file.author}}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock content %}

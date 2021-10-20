@@ -35,17 +35,19 @@
 	.lead{
 		font-size: 17px;
 	}
+
 </style>
 
 <div class="container text-center" style="padding-top: 20px;">
 	<a class="btn btn-primary" href="{% url 'personal:process' %}">
 		<strong>Accéder aux processus</strong>
 	</a>
-	<a class="btn btn-primary" href="{% url 'personal:include' %}">
+	<a class="btn btn-primary" href="{% url 'inclusion:create' %}">
 		<strong>Inclure un patient</strong>
 	</a>
 
 </div>
 
+{% include  'inclusion/inclusions.html' %}
 
 {% endblock content %}

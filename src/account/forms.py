@@ -42,3 +42,15 @@ class AccountUpdateForm(forms.ModelForm):
 		except Account.DoesNotExist:
 			return email
 		raise forms.ValidationError('Email "%s" is already in use.' % account)
+
+	def save(self, commit=True):
+		account = self.instance
+		account.username = self.cleaned_data['username']
+		account.email = self.cleaned_data['email']
+
+		if self.cleaned_data['profile_picture']:
+			account.profile_picture = self.cleaned_data['profile_picture']
+
+		if commit:
+			account.save()
+		return account

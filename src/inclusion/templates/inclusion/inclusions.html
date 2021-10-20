@@ -1,0 +1,25 @@
+<style type="text/css">
+	.patient-files{
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+  }
+</style>
+
+
+<div class="container mt-4 p-4">
+  <div class="row">
+    <div class="patient-files">
+      <h3 class="mb-3 font-weight-normal">Patients:</h3>
+      {% if patient_files %}
+        <ul class="list-group">
+        {% for file in patient_files %}
+          <a href="{% url 'inclusion:detail' file.slug %}" style="text-decoration: none;"><li class="list-group-item">{{file}}</li></a>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p>Vous n'avez pas de fichirs patients. Inclure un patient <a href="{% url 'inclusion:create' %}">içi</a>.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>

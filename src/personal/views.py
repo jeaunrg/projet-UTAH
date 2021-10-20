@@ -2,36 +2,19 @@ from django.shortcuts import render, redirect
 from operator import attrgetter
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .tasks import first_algo
-from .forms import CreatePatientFileForm
 from account.models import Account
 from django.contrib.auth.decorators import login_required
+from inclusion.models import PatientFile
 
 
 @login_required(login_url='login')
 def home_screen_view(request, *args, **kwargs):
 	context = {}
+
+	patient_files = PatientFile.objects.filter()
+	context['patient_files'] = patient_files
+
 	return render(request, "personal/home.html", context)
-
-
-@login_required(login_url='login')
-def create_patient_file_view(request):
-
-	context = {}
-
-	user = request.user
-
-	form = CreatePatientFileForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		obj = form.save(commit=False)
-		author = Account.objects.filter(username=user.username).first()
-		obj.author = author
-		obj.save()
-		form = CreatePatientFileForm()
-		context['success_message'] = "Patient inclus !"
-
-	context['form'] = form
-
-	return render(request, "personal/create_patient_file.html", context)
 
 
 @login_required(login_url='login')

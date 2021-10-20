@@ -33,10 +33,12 @@ INSTALLED_APPS = [
     # My apps
     'personal',
     'account',
+    'inclusion',
 
     'bootstrapform',
 	'celery',
 	'celery_progress',
+    'widget_tweaks',
 
     # django apps
     'django.contrib.admin',

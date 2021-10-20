@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from account.forms import AccountAuthenticationForm, AccountUpdateForm
 from django.contrib.auth.decorators import login_required
-
+from inclusion.models import PatientFile
 
 def logout_view(request):
 	logout(request)
@@ -50,7 +50,8 @@ def account_view(request):
 
 		form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
-			form.save()
+			account = form.save(commit=False)
+			account.save()
 			print("SAVE")
 
 			form.initial = {
@@ -67,5 +68,8 @@ def account_view(request):
 			)
 
 	context['account_form'] = form
+
+	patient_files = PatientFile.objects.filter(author=request.user)
+	context['patient_files'] = patient_files
 
 	return render(request, "account/account.html", context)

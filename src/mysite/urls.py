@@ -30,6 +30,8 @@ urlpatterns = [
     path('', home_screen_view, name="home"),
     path('personal/', include('personal.urls', 'personal')),
     path('account/', account_view, name="account"),
+    path('inclusion/', include('inclusion.urls', 'inclusion')),
+
     path('admin/', admin.site.urls),
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
