@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from inclusion.models import PatientFile
+from inclusion.models import Patient
 
 
-admin.site.register(PatientFile)
+admin.site.register(Patient)

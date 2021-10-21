@@ -1,25 +1,46 @@
 <style type="text/css">
-	.patient-files{
-    max-width: 500px;
-    width: 100%;
-    margin: auto;
+  td {
+    vertical-align:middle;
   }
 </style>
 
-
-<div class="container mt-4 p-4">
+<br>
+<div class="container">
   <div class="row">
-    <div class="patient-files">
-      <h3 class="mb-3 font-weight-normal">Patients:</h3>
-      {% if patient_files %}
-        <ul class="list-group">
+
+
+  <div class="col-md-12">
+  <h4>{{n_patients}} patients trouvés</h4>
+
+  {% if n_patients %}
+  <hr>
+    <div class="table-responsive">
+      <table id="mytable" class="table table-bordred table-striped">
+        <thead>
+          <th></th>
+          <th>n°IPP</th>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Auteur</th>
+          <th>Date d'inclusion</th>
+          <th>Date de modification</th>
+        </thead>
+
+      <tbody>
         {% for file in patient_files %}
-          <a href="{% url 'inclusion:detail' file.slug %}" style="text-decoration: none;"><li class="list-group-item">{{file}}</li></a>
+        <tr>
+          <th><a class="btn btn-primary" href="{% url 'inclusion:detail' file.slug %}">{{file.id}}</a> </th>
+          <td>{{file.nipp}}</td>
+          <td>{{file.first_name}}</td>
+          <td>{{file.last_name}}</td>
+          <td>{{file.author}}</td>
+          <td>{{file.date_published}}</td>
+          <td>{{file.date_updated}}</td>
+        </tr>
+
         {% endfor %}
-        </ul>
-      {% else %}
-        <p>Vous n'avez pas de fichirs patients. Inclure un patient <a href="{% url 'inclusion:create' %}">içi</a>.</p>
-      {% endif %}
-    </div>
+      </tbody>
+
+  </table>
   </div>
-</div>
+{% endif %}

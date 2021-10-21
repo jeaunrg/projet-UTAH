@@ -4,31 +4,34 @@ from django.utils.text import slugify
 from django.conf import settings
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
-
-def upload_location(instance, filename):
-	file_path = 'inclusion/{author_id}/{title}-{filename}'.format(
-				author_id=str(instance.author.id),title=str(instance.title), filename=filename)
-	return file_path
+from django.forms import ModelForm
 
 
-class PatientFile(models.Model):
-	title 					= models.CharField(max_length=50, null=False, blank=False)
-	body 					= models.TextField(max_length=5000, null=False, blank=False)
-	image		 			= models.ImageField(upload_to=upload_location, null=True, blank=True)
-	date_published 			= models.DateTimeField(auto_now_add=True, verbose_name="date published")
-	date_updated 			= models.DateTimeField(auto_now=True, verbose_name="date updated")
-	author 					= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	slug 					= models.SlugField(blank=True, unique=True)
 
-	def __str__(self):
-		return self.title
+class Patient(models.Model):
+    nipp = models.CharField('n°IPP', max_length=20, null=False, blank=False)
+    first_name = models.CharField('prénom', max_length=200, null=False, blank=False)
+    last_name = models.CharField('nom', max_length=200, null=False, blank=False)
+    age = models.IntegerField('age', null=True, blank=True)
+    gender = models.CharField('genre', max_length=5, choices=(('Homme', 'Homme'),('Femme', 'Femme')), default='Homme', null=False, blank=False)
+    weight = models.FloatField('poids', null=True, blank=True)
+    height = models.FloatField('taille', null=True, blank=True)
 
-@receiver(post_delete, sender=PatientFile)
+    date_published = models.DateTimeField(auto_now_add=True, verbose_name="date published")
+    date_updated = models.DateTimeField(auto_now=True, verbose_name="date updated")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    slug = models.SlugField(blank=True, unique=True)
+
+    def __str__(self):
+        return self.nipp
+
+    def save(self, *args, **kwargs):
+        super(Patient, self).save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify('patient') + "-" + str(self.id)
+            self.save()
+
+
+@receiver(post_delete, sender=Patient)
 def submission_delete(sender, instance, **kwargs):
     instance.image.delete(False)
-
-def pre_save_patient_file_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = slugify(instance.author.username + "-" + instance.title)
-
-pre_save.connect(pre_save_patient_file_receiver, sender=PatientFile)

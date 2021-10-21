@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'bootstrapform',
 	'celery',
 	'celery_progress',
-    'widget_tweaks',
+    "django_tables2",
 
     # django apps
     'django.contrib.admin',

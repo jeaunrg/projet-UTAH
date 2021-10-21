@@ -4,15 +4,16 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .tasks import first_algo
 from account.models import Account
 from django.contrib.auth.decorators import login_required
-from inclusion.models import PatientFile
+from inclusion.models import Patient
 
 
 @login_required(login_url='login')
 def home_screen_view(request, *args, **kwargs):
 	context = {}
 
-	patient_files = PatientFile.objects.filter()
+	patient_files = Patient.objects.filter()
 	context['patient_files'] = patient_files
+	context['n_patients'] = len(patient_files)
 
 	return render(request, "personal/home.html", context)
 
