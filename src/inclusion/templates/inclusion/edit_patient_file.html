@@ -19,7 +19,7 @@
       margin-top: 150px;
     }
 </style>
-<a href="{% url 'inclusion:detail' slug %}" class="btn">< Retour</a>
+<a href="{% url 'inclusion:detail' slug %}" class="btn btn-outline-dark ">< Retour</a>
 
 <form method="post" class="create-form">
   {% csrf_token %}
@@ -28,8 +28,8 @@
     {{patient_form}}
     </table>
 
-  <button type="submit" class="btn btn-primary"> Enregistrer les modifications</button>
-  <a type="button" href="{% url 'inclusion:detail' slug %}" class="btn btn-primary">Annuler</a>
+  <button type="submit" class="btn btn-success"> Enregistrer</button>
+  <a type="button" href="{% url 'inclusion:detail' slug %}" class="btn btn-secondary">Annuler</a>
 
 
 </form>

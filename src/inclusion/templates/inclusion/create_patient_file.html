@@ -20,6 +20,8 @@
     }
 </style>
 
+<a href="{% url 'home' %}" class="btn btn-outline-dark">< Retour</a>
+
 <form method="post" class="create-form">
   {% csrf_token %}
 
@@ -28,12 +30,6 @@
   <hr>
   <table class="table table-striped table-sm">
   {{patient_form}}
-  </table>
-
-  <h3> Données clinique </h3>
-  <hr>
-  <table class="table table-striped table-sm">
-  {{clinical_form}}
   </table>
 
 

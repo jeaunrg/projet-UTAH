@@ -1,20 +1,23 @@
 from django.shortcuts import render, redirect
-from operator import attrgetter
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .tasks import first_algo
 from account.models import Account
 from django.contrib.auth.decorators import login_required
 from inclusion.models import Patient
 
 
+
+
 @login_required(login_url='login')
 def home_screen_view(request, *args, **kwargs):
 	context = {}
+	return redirect("inclusion:patients", 'all')
 
-	patient_files = Patient.objects.filter()
-	context['patient_files'] = patient_files
-	context['n_patients'] = len(patient_files)
-
+	# query, patients = get_query_patients(request, 10)
+	# context['patients'] = patients
+	# context['n_patients'] = len(patients)
+	# if query:
+	# 	context['query'] = query
+	#
 	return render(request, "personal/home.html", context)
 
 

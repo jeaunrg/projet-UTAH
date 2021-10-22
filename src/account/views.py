@@ -52,24 +52,12 @@ def account_view(request):
 		if form.is_valid():
 			account = form.save(commit=False)
 			account.save()
-			print("SAVE")
-
-			form.initial = {
-					"username": request.POST['username'],
-					"email": request.POST['email'],
-			}
+			form.initial = {"username": request.POST['username'],"email": request.POST['email']}
 			context['success_message'] = "Updated"
 	else:
-		form = AccountUpdateForm(
-			initial={
-					"username": request.user.username,
-					"email": request.user.email,
-				}
-			)
+		form = AccountUpdateForm(initial={"username": request.user.username, "email": request.user.email})
 
 	context['account_form'] = form
 
-	patient_files = Patient.objects.filter(author=request.user)
-	context['patient_files'] = patient_files
-	context['n_patients'] = len(patient_files)
+
 	return render(request, "account/account.html", context)

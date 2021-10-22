@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
 from django.http import HttpResponse
-
 from inclusion.models import Patient
 from inclusion.forms import CreatePatientFileForm, UpdatePatientFileForm
 from account.models import Account
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
+from inclusion.utils import get_patients_page
 
 
 @login_required(login_url='login')
@@ -25,7 +24,6 @@ def create_patient_file_view(request):
         obj.author = author
         obj.save()
         return redirect("inclusion:detail", obj.slug)
-        patient_form = CreatePatientFileForm()
 
     context['patient_form'] = patient_form
 
@@ -39,9 +37,6 @@ def detail_patient_file_view(request, slug):
     user = request.user
 
     patient_file = get_object_or_404(Patient, slug=slug)
-
-    if patient_file.author != user:
-        return HttpResponse('You are not the author of that post.')
 
     if request.POST:
         form = UpdatePatientFileForm(request.POST or None, request.FILES or None, instance=patient_file)
@@ -70,9 +65,6 @@ def edit_patient_file_view(request, slug):
 
     patient_file = get_object_or_404(Patient, slug=slug)
 
-    if patient_file.author != user:
-        return HttpResponse('You are not the author of that post.')
-
     if request.POST:
         form = UpdatePatientFileForm(request.POST or None, instance=patient_file)
         if form.is_valid():
@@ -86,16 +78,14 @@ def edit_patient_file_view(request, slug):
     context['patient_form'] = form
     return render(request, 'inclusion/edit_patient_file.html', context)
 
-def get_patients_queryset(query=None):
-	queryset = []
-	queries = query.split(" ") # python install 2019 = [python, install, 2019]
-	for q in queries:
-		posts = Patient.objects.filter(
-				Q(title__icontains=q) |
-				Q(body__icontains=q)
-			).distinct()
 
-		for post in posts:
-			queryset.append(post)
+@login_required(login_url='login')
+def patients_view(request, filter):
+    context = {}
+    query, patients = get_patients_page(request, 3, filter)
+    context['patients'] = patients
+    context['n_patients'] = len(patients)
+    if query:
+        context['query'] = query
 
-	return list(set(queryset))
+    return render(request, 'inclusion/patients.html', context)
