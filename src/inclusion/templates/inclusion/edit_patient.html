@@ -23,9 +23,9 @@
 
 <form method="post" class="create-form">
   {% csrf_token %}
-    <h3> Patient n°{{id}}</h3><hr>
+    <h3> Patient n°{{incl_num}}</h3><hr>
     <table class="table table-striped table-sm" disabled>
-    {{patient_form}}
+    {{form}}
     </table>
 
   <button type="submit" class="btn btn-success"> Enregistrer</button>

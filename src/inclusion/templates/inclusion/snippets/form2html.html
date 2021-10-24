@@ -1,0 +1,18 @@
+{% for field in form %}
+  {% if field.input_type == 'select' %}
+    <div class="form-floating">
+      <select class="form-select" id={{field.name}} name={{field.name}}>
+        {% for value, label in field.field.choices %}
+            <option value="{{value}}"{% if field.value == value %} selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <label for={{field.name}}>{{field.label}}</label>
+    </div>
+
+  {% else %}
+    <div class="form-floating">
+      <input type="{{field.input_type}}" name={{field.name}} id={{field.name}} class="form-control" placeholder={{field.label}} required>
+      <label for={{field.name}}>{{field.label}}</label>
+    </div>
+  {% endif %}
+{% endfor %}

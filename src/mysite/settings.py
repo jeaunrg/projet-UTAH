@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 	'celery',
 	'celery_progress',
     "django_tables2",
-
+    
     # django apps
     'django.contrib.admin',
     'django.contrib.auth',

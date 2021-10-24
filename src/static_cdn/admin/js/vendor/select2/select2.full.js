@@ -4994,7 +4994,7 @@ S2.define('select2/defaults',[
     options.language = this._resolveLanguage(options.language);
 
     // Always fall back to English since it will always be complete
-    options.language.push('en');
+    options.language.push('fr');
 
     var uniqueLanguages = [];
 

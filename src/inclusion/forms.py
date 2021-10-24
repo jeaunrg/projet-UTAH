@@ -4,24 +4,41 @@ from inclusion.models import Patient
 
 
 class CreatePatientFileForm(forms.ModelForm):
-
 	class Meta:
 		model = Patient
-		fields = ["nipp", "first_name", "last_name", "age", "gender", "weight", "height"]
+		fields = ["height", "weight", "ddn", "ddi", "intervention", "chirurgie", "pathologie", "traitement1", "traitement2"]
 
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.initInputTypes()
+
+	def initInputTypes(self):
+		for field in self:
+			if isinstance(field.field, forms.fields.DateTimeField):
+				field.input_type = 'date'
+			else:
+				field.input_type = field.field.widget.input_type
 
 class UpdatePatientFileForm(forms.ModelForm):
 
 	class Meta:
 		model = Patient
-		fields = ["nipp", "first_name", "last_name", "age", "gender", "weight", "height"]
+		fields = ["height", "weight", "ddn", "ddi", "intervention", "chirurgie", "pathologie", "traitement1", "traitement2"]
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.initInputTypes()
+
+	def initInputTypes(self):
+		for field in self:
+			if isinstance(field.field, forms.fields.DateTimeField):
+				field.input_type = 'date'
+			else:
+				field.input_type = field.field.widget.input_type
 
 	def save(self, commit=True):
-		patient_file = self.instance
-		patient_file.nipp = self.cleaned_data['nipp']
-		patient_file.first_name = self.cleaned_data['first_name']
-		patient_file.last_name = self.cleaned_data['last_name']
+		patient = self.instance
 
 		if commit:
-			patient_file.save()
-		return patient_file
+			patient.save()
+		return patient
