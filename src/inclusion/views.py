@@ -27,7 +27,7 @@ def create_patient_view(request):
         return redirect("inclusion:detail", obj.slug)
 
     context['form'] = form
-
+    context['is_editable'] = True
     return render(request, "inclusion/create_patient.html", context)
 
 
@@ -54,6 +54,7 @@ def detail_patient_view(request, slug):
     context['slug'] = patient.slug
 
     context['form'] = form
+    context['is_editable'] = False
     return render(request, 'inclusion/detail_patient.html', context)
 
 
@@ -77,6 +78,7 @@ def edit_patient_view(request, slug):
     context['incl_num'] = patient.incl_num
     context['slug'] = patient.slug
     context['form'] = form
+    context['is_editable'] = True    
     return render(request, 'inclusion/edit_patient.html', context)
 
 

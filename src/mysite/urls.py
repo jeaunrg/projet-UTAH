@@ -26,6 +26,7 @@ from account.views import (
     account_view,
 )
 
+
 urlpatterns = [
     path('', home_screen_view, name="home"),
     path('personal/', include('personal.urls', 'personal')),

@@ -24,9 +24,7 @@
 <form method="post" class="create-form">
   {% csrf_token %}
     <h3> Patient n°{{incl_num}}</h3><hr>
-    <table class="table table-striped table-sm" disabled>
-    {{form}}
-    </table>
+    {% include 'inclusion/snippets/form2html.html' %}
 
   <button type="submit" class="btn btn-success"> Enregistrer</button>
   <a type="button" href="{% url 'inclusion:detail' slug %}" class="btn btn-secondary">Annuler</a>

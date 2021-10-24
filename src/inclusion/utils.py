@@ -4,8 +4,6 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from inclusion.models import Patient
 from django.db.models import Q
 
-
-
 def get_patients_queryset(query=None, **kwargs):
     queryset = []
     queries = query.split(" ")
@@ -16,7 +14,7 @@ def get_patients_queryset(query=None, **kwargs):
         patients = Patient.objects.filter(
 				Q(incl_num__icontains=q) |
 				Q(intervention__icontains=q) |
-				Q(chirurgie__icontains=q) |                
+				Q(chirurgie__icontains=q) |
 				Q(pathologie__icontains=q) |
 				Q(traitement1__icontains=q) |
 				Q(traitement2__icontains=q)
