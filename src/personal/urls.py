@@ -4,9 +4,11 @@ from personal.views import (
     generate_pdf_view,
 )
 
+
 app_name = 'personal'
 
 urlpatterns = [
 	path('process/', process_view, name='process'),
-	path('pdf/<download>/', generate_pdf_view, name='generate_pdf'),
+    path('pdf/<slug>/<download>/', generate_pdf_view, name='pdf'),
+
  ]

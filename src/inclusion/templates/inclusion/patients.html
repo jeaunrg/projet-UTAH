@@ -6,51 +6,53 @@
 <style type="text/css">
   td {
     vertical-align:middle;
+    text-align:center;
   }
   th {
     vertical-align:middle;
+    text-align:center;
   }
-  .form-signin .form-floating:focus-within {
-    z-index: 2;
-  }
+
   .patients {
 	    padding: 15px;
   	}
-  p {
-    padding-left: 15px;
-  }
-  input {
-    font-size: 30px;
-  }
 
 </style>
 
-<div class="search-bar sm-2 mr-2">
-  <form method="get">
-    <div class="form-floating">
-      <input class="form-control"  name="q" type="text" id="id_q" placeholder="recherche">
-      <label for="id_q">Rechercher des patients...</label>
-    </div>
-  </form>
-</div>
-{% if n_patients == 0 %}
-<p>Aucun patients trouvés</p>
-{% elif n_patients == 1 %}
-<p>1 patient trouvé</p>
-{% else %}
-<p>{{n_patients}} patients trouvés</p>
-{% endif %}
-
 
 <div class="patients">
-<br>
-<div class="text-left">
-<a href="{% url 'inclusion:create' %}" class="btn btn-outline-success">Cliquez içi pour savoir quel traitement arréter et comment !</a>
-</div>
+  <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 2fr 1fr;">
+    <div class="d-flex align-items-left">
+      <form class="w-100 me-3" method="get">
+        <div class="form-floating">
+          <input class="form-control"  name="q" type="search" id="id_q" placeholder="recherche">
+          <label for="id_q">Rechercher...</label>
+          {% if n_patients == 0 %}
+          <p>Aucun patients trouvés</p>
+          {% elif n_patients == 1 %}
+          <p>1 patient trouvé</p>
+          {% else %}
+          <p>{{n_patients}} patients trouvés</p>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+
+    <div>
+      <br>
+      <div class="btn-group-vertical" style="float: right;">
+        <a type="button" href="{% url 'inclusion:create' %}" class="btn btn-outline-success">Quel traitement arréter et comment ?</a>
+        <a type="button" href='#' class="btn btn-outline-success">Quand reprendre le traitement ?</a>
+      </div>
+    </div>
+  </div>
 
 {% if n_patients %}
+<br>
+
 <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 
+<div class="table-responsive">
 <table id="mytable" class="table table-bordred table-striped sortable">
   <thead>
     <th>N°Inclusion</th>
@@ -78,6 +80,7 @@
 </tbody>
 
 </table>
+</div>
 {% include 'inclusion/snippets/patient_pagination.html' with patients=patients %}
 
 {% endif %}

@@ -4,6 +4,8 @@ from account.models import Account
 from django.contrib.auth.decorators import login_required
 from inclusion.models import Patient
 from personal.utils import generate_pdf
+from mysite.settings import STATIC_ROOT
+import os
 
 
 @login_required(login_url='login')
@@ -24,8 +26,8 @@ def process_view(request):
 
 
 @login_required(login_url='login')
-def generate_pdf_view(request, download='True'):
+def generate_pdf_view(request, slug, download='False'):
 	filename = 'output.pdf'
-	context = {'button_name': 'Cliquez ici'}
-
+	context = {'text': 'Ecrire du texte içi...'}
+	context['SERVER_URL'] = request.build_absolute_uri('/')
 	return generate_pdf("personal/mytemplate.html", context, filename, download=='True')

@@ -6,9 +6,8 @@
 
 <style type="text/css">
   .create-form {
-	    width: 50%;
+	    width: 80%;
 	    max-width: 100%;
-	    padding: 15px;
 	    margin: auto;
   	}
 
@@ -24,7 +23,7 @@
 
 <form method="post" class="create-form">
   {% csrf_token %}
-
+  <br>
   <h3> Saisie des données pré-opératoires </h3>
   <hr>
   {% include 'inclusion/snippets/form2html.html' %}
