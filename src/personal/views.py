@@ -3,22 +3,13 @@ from .tasks import first_algo
 from account.models import Account
 from django.contrib.auth.decorators import login_required
 from inclusion.models import Patient
-
-
+from personal.utils import generate_pdf
 
 
 @login_required(login_url='login')
 def home_screen_view(request, *args, **kwargs):
 	context = {}
 	return redirect("inclusion:patients", 'all')
-
-	# query, patients = get_query_patients(request, 10)
-	# context['patients'] = patients
-	# context['n_patients'] = len(patients)
-	# if query:
-	# 	context['query'] = query
-	#
-	return render(request, "personal/home.html", context)
 
 
 @login_required(login_url='login')
@@ -30,3 +21,11 @@ def process_view(request):
 		context['task_id'] = task_id
 
 	return render(request, 'personal/process.html', context)
+
+
+@login_required(login_url='login')
+def generate_pdf_view(request, download='True'):
+	filename = 'output.pdf'
+	context = {'button_name': 'Cliquez ici'}
+
+	return generate_pdf("personal/mytemplate.html", context, filename, download=='True')

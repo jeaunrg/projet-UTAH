@@ -33,28 +33,14 @@ def create_patient_view(request):
 
 @login_required(login_url='login')
 def detail_patient_view(request, slug):
-    context = {}
-
-    user = request.user
-
     patient = get_object_or_404(Patient, slug=slug)
 
-    if request.POST:
-        form = UpdatePatientFileForm(request.POST or None, request.FILES or None, instance=patient)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.save()
-            patient = obj
-
-
-    form = UpdatePatientFileForm(initial=patient.__dict__)
-    context['incl_num'] = patient.incl_num
+    context = patient.__dict__
+    hm = int(context['height'] / 100)
+    context['height'] = "{0}m{1}".format(hm, int(context['height'] - hm*100))
+    context['weight'] = int(context['weight'])
+    context['age'] = ((context['ddi'] - context['ddn']) / 365).days
     context['author'] = patient.author
-    context['date_updated'] = patient.date_updated
-    context['slug'] = patient.slug
-
-    context['form'] = form
-    context['is_editable'] = False
     return render(request, 'inclusion/detail_patient.html', context)
 
 
@@ -78,7 +64,7 @@ def edit_patient_view(request, slug):
     context['incl_num'] = patient.incl_num
     context['slug'] = patient.slug
     context['form'] = form
-    context['is_editable'] = True    
+    context['is_editable'] = True
     return render(request, 'inclusion/edit_patient.html', context)
 
 

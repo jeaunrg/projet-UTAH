@@ -5,12 +5,6 @@
 {% block content %}
 
 <style type="text/css">
-  .details {
-	    width: 50%;
-	    max-width: 100%;
-	    padding: 15px;
-	    margin: auto;
-  	}
 
   	.submit-button{
   		max-width: 200px;
@@ -21,27 +15,36 @@
     input {
       border-style: hidden;
     }
+    .header {
+      display: flex;
+      justify-content: space-between;
+
+    }
+
 
 </style>
 
 <a href="{% url 'home' %}" class="btn btn-outline-dark">< Retour</a>
+<br><br>
 
-<div class="details">
-  <!-- <fieldset disabled="disabled"> -->
+<div class="container px-4">
+  <div class="header">
+    <h4 class="h4"> Patient n°{{incl_num}}</h4>
+    <a href="{% url 'inclusion:edit' slug %}" class="btn btn-success">Modifier</a>
+  </div>
+  <hr>
 
-    <h3> Patient n°{{incl_num}}</h3><hr>
-    {% include 'inclusion/snippets/form2html.html' %}
+  <h2 align="center"> Proposition de prise en charge </h2>
 
-  <!-- </fieldset> -->
+  <hr>
+  {% include 'inclusion/snippets/resume.html' %}
+  <br>
   <div class="card-footer text-muted">
     Modifié le {{date_updated |date:'d/m/Y'}} par @{{author}}
   </div>
-  <a href="{% url 'inclusion:edit' slug %}" class="btn btn-success">Modifier</a>
-
 </div>
 
-<div class="details">
 
-</div>
+
 
 {% endblock content %}

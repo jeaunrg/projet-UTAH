@@ -14,16 +14,10 @@ class CreatePatientFileForm(forms.ModelForm):
 
 	def initInputTypes(self):
 		for field in self:
-			print(field.value)
-			print(dir(field))
 			if isinstance(field.field, forms.fields.DateTimeField):
 				field.input_type = 'date'
 			else:
 				field.input_type = field.field.widget.input_type
-
-	def get_displayed_value(self):
-		value = 'Aspirine'
-		return eval("self.get_{}_display()".format(value))
 
 class UpdatePatientFileForm(forms.ModelForm):
 
