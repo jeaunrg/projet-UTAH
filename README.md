@@ -48,14 +48,20 @@ pip install -r ./src/requirements.txt
 Démarrez le serveur django:
 
 ```bash
-python ./src/manage.py runserver
+python ./src/manage.py runserver 0.0.0.0:8000
 ```
-
-Et ouvrez http://127.0.0.1:8000/ dans une page web
 
 Pour se connecter en tant qu'administrateur:
 - username: admin
 - password: admin
+
+#### Hébergement et connection sur le même PC
+Ouvrir http://127.0.0.1:8000/ dans une page web
+
+#### Connection à partir d'un autre appareil
+- Se connecter au même réseau que le PC hébergeur
+- Ouvrir http://[adresse-IP-du-PC]:8000/ dans une page web
+  Example: http://192.168.1.100:8000/
 
 
 ### Gérer les processus longs en arrière plan
@@ -75,6 +81,27 @@ Puis lancez la commande suivante:
 celery -A mysite worker -l info -P gevent
 ```
 
+!! Si vous modifiez le code d'une tâche dans un fichier 'tasks.py', il faut relancer la commande précédente pour appliquer les changements.
+
+
+### Réinitialiser l'applications
+
+#### Réinitialiser les modèles:
+
+- Supprimer les fichiers python (sauf '__init__.py) dans tous les sous-dossiers 'migrations'
+- Relancer les migrations
+```bash
+python ./src/manage.py makemigrations
+python ./src/manage.py migrate
+```
+
+#### Réinitialiser la base de données:
+
+- supprimer la base de données db.sqlite3 à la racine
+- recréer un super utilisateur (username=admin, email=youremail@adress.com, password=admin)
+```bash
+python ./src/manage.py createsuperuser
+```
 
 
 
