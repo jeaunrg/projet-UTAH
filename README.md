@@ -61,7 +61,7 @@ Ouvrir http://127.0.0.1:8000/ dans une page web
 #### Connection à partir d'un autre appareil
 - Se connecter au même réseau que le PC hébergeur
 - Ouvrir http://[adresse-IP-du-PC]:8000/ dans une page web
-  Example: http://192.168.1.100:8000/
+  (example: http://192.168.1.100:8000/)
 
 
 ### Gérer les processus longs en arrière plan
@@ -88,7 +88,7 @@ celery -A mysite worker -l info -P gevent
 
 #### Réinitialiser les modèles:
 
-- Supprimer les fichiers python (sauf '__init__.py) dans tous les sous-dossiers 'migrations'
+- Supprimer les fichiers python (sauf `__init__.py`) dans tous les sous-dossiers 'migrations'
 - Relancer les migrations
 ```bash
 python ./src/manage.py makemigrations
