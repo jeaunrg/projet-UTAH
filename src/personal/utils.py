@@ -7,12 +7,13 @@ import os
 
 import pdfkit
 def generate_pdf(template, context={}, save_filename="outut.pdf", download=False):
+    margin = '0'
     options = {
 	    'page-size': 'A4',
-	    'margin-top': '0.75in',
-	    'margin-right': '0.75in',
-	    'margin-bottom': '0.75in',
-	    'margin-left': '0.75in',
+	    'margin-top': margin+'in',
+	    'margin-right': margin+'in',
+	    'margin-bottom': margin+'in',
+	    'margin-left': margin+'in',
 	}
 
     template = get_template(template)

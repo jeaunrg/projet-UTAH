@@ -1,0 +1,8 @@
+{% load static %}
+<form action="{{request.path}}" method="post"> {% csrf_token %}
+  <button id="start-button" class="btn btn-success" type="submit"> Start </button>
+  <a id="stop-button" class="btn btn-danger" style="visibility: hidden;" href="{{request.path}}">Stop</a>
+  <div hidden id="progress-bar-message"></div>
+</form>
+
+{% include 'inclusion/snippets/progress_calculation.html' %}

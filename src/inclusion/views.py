@@ -6,6 +6,7 @@ from account.models import Account
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from inclusion.utils import get_patients_page
+from .tasks import calculation_task
 
 N_PATIENTS_PER_PAGE = 10
 
@@ -34,13 +35,18 @@ def create_patient_view(request):
 @login_required(login_url='login')
 def detail_patient_view(request, slug):
     patient = get_object_or_404(Patient, slug=slug)
+    context = patient.getInfos()
+    print(context)
+    if request.method == 'POST':
+        task = calculation_task.delay(1)
+        task_id = task.task_id
+        context['task_id'] = task_id
 
-    context = patient.__dict__
     hm = int(context['height'] / 100)
     context['height'] = "{0}m{1}".format(hm, int(context['height'] - hm*100))
-    context['weight'] = int(context['weight'])
     context['age'] = ((context['ddi'] - context['ddn']) / 365).days
     context['author'] = patient.author
+    context['result'] = "Génial!"
     return render(request, 'inclusion/detail_patient.html', context)
 
 

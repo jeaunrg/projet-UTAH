@@ -66,8 +66,8 @@ def list2choices(list):
 
 class Patient(models.Model):
     incl_num = models.AutoField(primary_key=True)
-    height = models.FloatField('taille')
-    weight = models.FloatField('poids')
+    height = models.IntegerField('taille')
+    weight = models.IntegerField('poids')
     ddn = models.DateTimeField('Date de naissance')
     ddi = models.DateTimeField("Date de l'intervention")
     intervention = models.CharField('intervention', max_length=200, default="")
@@ -89,3 +89,6 @@ class Patient(models.Model):
         if not self.slug:
             self.slug = slugify('patient') + "-" + str(self.incl_num)
             self.save()
+
+    def getInfos(self):
+        return {k: v for k, v in self.__dict__.items() if k != '_state'}

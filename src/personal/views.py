@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .tasks import first_algo
 from account.models import Account
 from django.contrib.auth.decorators import login_required
@@ -28,6 +28,7 @@ def process_view(request):
 @login_required(login_url='login')
 def generate_pdf_view(request, slug, download='False'):
 	filename = 'output.pdf'
-	context = {'text': 'Ecrire du texte içi...'}
+	patient = get_object_or_404(Patient, slug=slug)
+	context = patient.__dict__
 	context['SERVER_URL'] = request.build_absolute_uri('/')
 	return generate_pdf("personal/mytemplate.html", context, filename, download=='True')
