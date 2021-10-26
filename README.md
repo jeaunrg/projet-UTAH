@@ -81,7 +81,7 @@ Puis lancez la commande suivante:
 celery -A mysite worker -l info -P gevent
 ```
 
- > :warning: ** Si vous modifiez le code d'une tâche dans un fichier 'tasks.py' **: il faut relancer la commande précédente pour appliquer les changements.
+ > :warning: Si vous modifiez le code d'une tâche dans un fichier 'tasks.py', il faut relancer la commande précédente pour appliquer les changements.
 
 
 ### Réinitialiser l'applications
