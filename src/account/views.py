@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from account.forms import AccountAuthenticationForm, AccountUpdateForm
 from django.contrib.auth.decorators import login_required
-from inclusion.models import Patient
+from patient.models import Patient
 
 def logout_view(request):
 	logout(request)

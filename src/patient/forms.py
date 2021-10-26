@@ -1,6 +1,6 @@
 from django import forms
 
-from inclusion.models import Patient
+from patient.models import Patient
 
 
 class CreatePatientFileForm(forms.ModelForm):

@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     # My apps
     'personal',
     'account',
-    'inclusion',
+    'patient',
 
     'bootstrapform',
 	'celery',

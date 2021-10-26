@@ -31,7 +31,7 @@ urlpatterns = [
     path('', home_screen_view, name="home"),
     path('personal/', include('personal.urls', 'personal')),
     path('account/', account_view, name="account"),
-    path('inclusion/', include('inclusion.urls', 'inclusion')),
+    path('patient/', include('patient.urls', 'patient')),
 
     path('admin/', admin.site.urls),
     path('login/', login_view, name="login"),

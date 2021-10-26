@@ -7,7 +7,7 @@ from celery import Celery
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 
-app = Celery('mysite', broker='redis://localhost', include=['personal.tasks'])
+app = Celery('mysite', broker='redis://localhost', include=['patient.tasks'])
 
 # namespace='CELERY' means all celery-related configuration keys
 # should have a `CELERY_` prefix.

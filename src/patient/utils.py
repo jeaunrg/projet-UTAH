@@ -1,7 +1,7 @@
 
 from operator import attrgetter
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from inclusion.models import Patient
+from patient.models import Patient
 from django.db.models import Q
 
 def get_patients_queryset(query=None, **kwargs):

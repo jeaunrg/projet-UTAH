@@ -41,7 +41,7 @@
     <div>
       <br>
       <div class="btn-group-vertical" style="float: right;">
-        <a type="button" href="{% url 'inclusion:create' %}" class="btn btn-outline-success">Quel traitement arréter et comment ?</a>
+        <a type="button" href="{% url 'patient:create' %}" class="btn btn-outline-success">Quel traitement arréter et comment ?</a>
         <a type="button" href='#' class="btn btn-outline-success">Quand reprendre le traitement ?</a>
       </div>
     </div>
@@ -66,7 +66,7 @@
 <tbody>
   {% for file in patients %}
   <tr>
-    <th><a class="btn btn-success" href="{% url 'inclusion:detail' file.slug %}">{{file.incl_num}}</a> </th>
+    <th><a class="btn btn-success" href="{% url 'patient:detail' file.slug %}">{{file.incl_num}}</a> </th>
     <td>{{file.intervention}}</td>
     <td>{{file.chirurgie}}</td>
     <td>{{file.pathologie}}</td>
@@ -80,7 +80,7 @@
 
 </table>
 </div>
-{% include 'inclusion/snippets/patient_pagination.html' with patients=patients %}
+{% include 'patient/snippets/patient_pagination.html' with patients=patients %}
 
 {% endif %}
 

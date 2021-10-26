@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from inclusion.models import Patient
-from inclusion.forms import CreatePatientFileForm, UpdatePatientFileForm
+from patient.models import Patient
+from patient.forms import CreatePatientFileForm, UpdatePatientFileForm
 from account.models import Account
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
-from inclusion.utils import get_patients_page
+from patient.utils import get_patients_page
 from .tasks import calculation_task, shared_task
 
 N_PATIENTS_PER_PAGE = 10
+
+
 
 @login_required(login_url='login')
 def create_patient_view(request):
@@ -25,20 +27,20 @@ def create_patient_view(request):
         author = Account.objects.filter(username=user.username).first()
         obj.author = author
         obj.save()
-        return redirect("inclusion:detail", obj.slug)
+        return redirect("patient:detail", obj.slug)
 
     context['form'] = form
     context['is_editable'] = True
-    return render(request, "inclusion/create_patient.html", context)
+    return render(request, "patient/create_patient.html", context)
 
 
 @login_required(login_url='login')
 def detail_patient_view(request, slug):
     patient = get_object_or_404(Patient, slug=slug)
     context = patient.getInfos()
-    print(context)
+
     if request.method == 'POST':
-        task = calculation_task.delay(1)
+        task = calculation_task.delay(context)
         task_id = task.task_id
         context['task_id'] = task_id
 
@@ -47,7 +49,7 @@ def detail_patient_view(request, slug):
     context['age'] = ((context['ddi'] - context['ddn']) / 365).days
     context['author'] = patient.author
     context['result'] = "Génial!"
-    return render(request, 'inclusion/detail_patient.html', context)
+    return render(request, 'patient/detail_patient.html', context)
 
 
 @login_required(login_url='login')
@@ -64,14 +66,14 @@ def edit_patient_view(request, slug):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
-            return redirect("inclusion:detail", slug)
+            return redirect("patient:detail", slug)
 
-    form = UpdatePatientFileForm(initial=patient.__dict__)
+    form = UpdatePatientFileForm(initial=patient.getInfos())
     context['incl_num'] = patient.incl_num
     context['slug'] = patient.slug
     context['form'] = form
     context['is_editable'] = True
-    return render(request, 'inclusion/edit_patient.html', context)
+    return render(request, 'patient/edit_patient.html', context)
 
 
 @login_required(login_url='login')
@@ -83,4 +85,4 @@ def patients_view(request, filter):
     if query:
         context['query'] = query
 
-    return render(request, 'inclusion/patients.html', context)
+    return render(request, 'patient/patients.html', context)

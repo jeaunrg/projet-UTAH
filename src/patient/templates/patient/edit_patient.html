@@ -18,16 +18,16 @@
       margin-top: 150px;
     }
 </style>
-<a href="{% url 'inclusion:detail' slug %}" class="btn btn-outline-dark ">< Retour</a>
+<a href="{% url 'patient:detail' slug %}" class="btn btn-outline-dark ">< Retour</a>
 
 <form method="post" class="create-form">
   {% csrf_token %}
     <br>
     <h3> Patient n°{{incl_num}}</h3><hr>
-    {% include 'inclusion/snippets/form2html.html' %}
+    {% include 'patient/snippets/form2html.html' %}
 
   <button type="submit" class="btn btn-success"> Enregistrer</button>
-  <a type="button" href="{% url 'inclusion:detail' slug %}" class="btn btn-secondary">Annuler</a>
+  <a type="button" href="{% url 'patient:detail' slug %}" class="btn btn-secondary">Annuler</a>
 
 
 </form>

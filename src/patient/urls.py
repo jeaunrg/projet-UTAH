@@ -1,12 +1,12 @@
 from django.urls import path
-from inclusion.views import (
+from patient.views import (
 	create_patient_view,
 	detail_patient_view,
 	edit_patient_view,
     patients_view,
 )
 
-app_name = 'inclusion'
+app_name = 'patient'
 
 urlpatterns = [
     path('patients/<filter>/', patients_view, name="patients"),
