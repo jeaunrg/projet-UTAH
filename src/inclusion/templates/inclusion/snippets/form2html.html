@@ -27,24 +27,19 @@
 
 <!-- Not editable form as table -->
 {% else %}
-<table class="table table-striped">
-
-  {% for field in form %}
-
-      <tr>
-        <th> {{field.label}}</th>
-
-        {% if field.input_type == 'select' %}
-        <td> {{field.value}} </td>
-        {% elif field.input_type == 'date' %}
-        <td> {{field.value|date:'d-m-Y'}} </td>
-        {% else %}
-        <td> {{field.value}} </td>
-        {% endif %}
-      </tr>
-  {% endfor %}
-
-
-</table>
+  <table class="table table-striped">
+    {% for field in form %}
+        <tr>
+          <th> {{field.label}}</th>
+          {% if field.input_type == 'select' %}
+          <td> {{field.value}} </td>
+          {% elif field.input_type == 'date' %}
+          <td> {{field.value|date:'d-m-Y'}} </td>
+          {% else %}
+          <td> {{field.value}} </td>
+          {% endif %}
+        </tr>
+    {% endfor %}
+  </table>
 
 {% endif %}

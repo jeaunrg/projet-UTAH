@@ -4,7 +4,6 @@ from celery_progress.backend import ProgressRecorder
 
 @shared_task(bind=True)
 def calculation_task(self, duration):
-
     progress_recorder = ProgressRecorder(self)
     for i in range(5):
         sleep(duration)

@@ -6,7 +6,7 @@ from account.models import Account
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from inclusion.utils import get_patients_page
-from .tasks import calculation_task
+from .tasks import calculation_task, shared_task
 
 N_PATIENTS_PER_PAGE = 10
 

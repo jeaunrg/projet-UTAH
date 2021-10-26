@@ -1,27 +1,26 @@
 {% load static %}
 
-
+<div hidden id="progress-bar-message"></div>
 <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
 {% if task_id %}
   <script type="text/javascript">
 
   	$(function () {
   		var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+      var options = {'progressBarId': "{{pbar}}"};
 
-      const bar = new CeleryProgressBar(progressUrl, {});
+      const bar = new CeleryProgressBar(progressUrl, options);
       bar.onProgress = function onProgress(progressBarElement, progressBarMessageElement, progress) {
         bar.onProgressDefault(progressBarElement, progressBarMessageElement, progress);
         if (progress.current == 0) {
           progressBarElement.style.width = "2%";
-          document.getElementById('start-button').disabled = true;
-          document.getElementById('stop-button').style.visibility = 'visible';
-          document.getElementById('progress-spinner').style.visibility = 'visible';
+          document.getElementById("{{pstart}}").disabled = true;
+          document.getElementById("{{pstop}}").style.visibility = 'visible';
           }
       }
       bar.onResult = function onResult(resultElement, result) {
-        document.getElementById('start-button').disabled = false;
-        document.getElementById('stop-button').style.visibility = 'hidden';
-        document.getElementById('progress-spinner').style.visibility = 'hidden';
+        document.getElementById("{{pstart}}").disabled = false;
+        document.getElementById("{{pstop}}").style.visibility = 'hidden';
       }
 
       bar.connect();

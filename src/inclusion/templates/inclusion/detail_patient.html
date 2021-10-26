@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap %}
+{% load static %}
 
 
 {% block content %}
@@ -18,10 +19,7 @@
     .header {
       display: flex;
       justify-content: space-between;
-
     }
-
-
 </style>
 
 <a href="{% url 'home' %}" class="btn btn-outline-dark">< Retour</a>
@@ -30,8 +28,10 @@
 <div class="container px-4">
   <div class="header">
     <h4 class="h4"> Patient n°{{incl_num}}</h4>
-    {% include 'inclusion/snippets/progress_handle.html' %}
 
+    <form id='progresss-handle' action="{% url 'inclusion:detail' slug %}" method="post"> {% csrf_token %}
+      <button id="start-button" class="btn btn-success" type="submit"> Start </button>
+    </form>
 
     <a href="{% url 'inclusion:edit' slug %}" class="btn btn-outline-success">Modifier</a>
   </div>
@@ -51,7 +51,11 @@
 
     <br>
     <h4> Traitements proposés</h4>
-      <p>{% include 'inclusion/snippets/progress_widget.html' with mode='spinner' %}</p>
+
+
+      <div id="progress-bar" class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' style="height:20px; width: 0%; border-radius: 5px">
+        <a id="stop-button" class="btn btn-danger" style="visibility: hidden;" href="{% url 'inclusion:detail' slug %}">Stop</a>
+      </div>
       <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'False' %}"> Afficher le PDF </a>
       <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'True' %}"> Télécharger le PDF </a>
   </div>
@@ -62,7 +66,7 @@
   </div>
 </div>
 
-
+{% include 'inclusion/snippets/progress_calculation.html' with pbar='progress-bar' pstart='start-button' pstop='stop-button'%}
 
 
 
