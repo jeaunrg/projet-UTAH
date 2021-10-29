@@ -21,7 +21,7 @@
       <div id="{{key}}" name="cond" style="display: none;" class="btn-group-vertical">
         <h4> {{values.question}} </h4><hr>
         {% for ans in values.answers %}
-          <button value="{{ans}}" onclick="answer(this.value)" class="btn btn-outline-success">{{ans}}</button>
+          <button value="{{ans}}" onclick="answer(this.value)" class="btn btn-outline-secondary">{{ans}}</button>
         {% endfor %}
       </div>
   {% endfor %}
@@ -44,17 +44,19 @@
     return {{questions.traitement1.answers | safe}}[traitement]
   }
 
+  function show_response(response){
+    var resp_mode = response[0];
+    var resp_text = response[1];
+    if (resp_mode == 'final') {
+      document.getElementById('final_response').style.display = 'inline';
+      document.getElementById('final_response').textContent = resp_text;
+    }
+  }
+
   function activate_next(question_id) {
     document.getElementById(current_question_id).style.display = 'none';
-
     if (Array.isArray(question_id)) {
-      var resp_mode = question_id[0];
-      var response = question_id[1];
-      if (resp_mode == 'final') {
-        document.getElementById('final_response').textContent = response;
-        document.getElementById('final_response').style.display = 'inline';
-      }
-
+      show_response(question_id)
     }
     else {
       document.getElementById(question_id).style.display = 'inline';
@@ -65,10 +67,6 @@
   function answer(response) {
     rp[current_question_id] = response;
     var next_id = get_next_question_id();
-    if (next_id == null) {
-      window.alert('ERROR')
-    }
-
     activate_next(next_id);
 
   }
@@ -79,13 +77,13 @@
         return 'bleeding_risk_1';
       }
       else if (rp.bleeding_risk_1 == 'faible'){
-        return ('final', results[0]);
+        return ['final', results[0]];
       }
       else if (rp.bleeding_risk_1 == 'intermédiaire'){
-        return ('final', results[1]);
+        return ['final', results[1]];
       }
       else if (rp.bleeding_risk_1 == 'élevé'){
-        return ('final', results[2]);
+        return ['final', results[2]];
       }
     }
     else if (results.length == 2) {
@@ -93,12 +91,13 @@
         return 'bleeding_risk_2';
       }
       else if (rp.bleeding_risk_2 == 'faible'){
-        return ('final', results[0]);
+        return ['final', results[0]];
       }
       else if (rp.bleeding_risk_2 == 'élevé'){
-        return ('final', results[1]);
+        return ['final', results[1]];
       }
     }
+    return ['final', "Aucune proposition"]
   }
 
 
@@ -137,7 +136,7 @@
             return 'traitement2';
           }
           else if (rp.traitement2 == 'Aucun') {
-            return get_result(['Continuez.', "Arrétez. bridge par l'aspirine.", 'Arrétez.']); //ligne 3 (tableau 1)
+            return get_result(['Continuez.', "Arrétez. Bridge par l'aspirine.", 'Arrétez.']); //ligne 3 (tableau 1)
           }
         }
       }

@@ -43,11 +43,11 @@ def algo_view(request, slug):
 
         'bleeding_risk_1': {
             'question': "Choisissez le risque d'hémorragie pendant de l'opération",
-            'answers': ['faibe', 'intermédiaire', 'élevé']
+            'answers': ['faible', 'intermédiaire', 'élevé']
         },
         'bleeding_risk_2': {
             'question': "Choisissez le risque d'hémorragie pendant de l'opération",
-            'answers': ['faibe', 'élevé']
+            'answers': ['faible', 'élevé']
         }
 
     }
