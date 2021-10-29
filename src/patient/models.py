@@ -24,8 +24,8 @@ CHIR_CHOICES = [
 ]
 
 PATH_CHOICES = (
-    "Prevention primaire",
-    "Prevention secondaire",
+    "Prévention primaire",
+    "Prévention secondaire",
     "Fibrilation Atriale",
     "Valvulopathie",
     "Pontages Cardiaques",
@@ -40,29 +40,32 @@ PATH_CHOICES = (
     "Thrombose Mesenterique"
 )
 
-TRAIT_CHOICES = [
-    "Aspirine, Asaflow, Cardioaspirine",
-    "Clopidogrel, PLAVIX",
-    "Prasugrel, EFFIENT",
-    "Ticlopidine, TICLID",
-    "Dipyridamole",
-    "Ticagrelor, BRILIQUE",
-    "Acénocoumarol, SINTROM",
-    "Phenprocoumone, MARCOUMAR",
-    "Warfarine, MAREVAN",
-    "Apixaban, ELIQUIS",
-    "Dabigatran, PRADAXA",
-    "Edoxaban, LIXIANA",
-    "Rivaroxaban, XARELTO",
-    "Enoxaparine, CLEXANE",
-    "Nadroparine, FRAXIPARINE, FRAXODI",
-    "Tinzaparine, INNOHEP",
-    "Fondaparinux, ARIXTRA",
-    "HNF, Héparine Sodique"
-]
+TRAIT_CHOICES = {
+    "Aspirine, Asaflow, Cardioaspirine"   : "Antiagregant plaquettaire",
+    "Clopidogrel, PLAVIX"                 : "Antiagregant plaquettaire",
+    "Prasugrel, EFFIENT"                  : "Antiagregant plaquettaire",
+    "Ticlopidine, TICLID"                 : "Antiagregant plaquettaire",
+    "Dipyridamole"                        : "Antiagregant plaquettaire",
+    "Ticagrelor, BRILIQUE"                : "Antiagregant plaquettaire",
+    "Acénocoumarol, SINTROM"              : "Anticoagulant-ACOD-AVK",
+    "Phenprocoumone, MARCOUMAR"           : "Anticoagulant-ACOD-AVK",
+    "Warfarine, MAREVAN"                  : "Anticoagulant-ACOD-AVK",
+    "Apixaban, ELIQUIS"                   : "Anticoagulant-ACOD-AOD",
+    "Dabigatran, PRADAXA"                 : "Anticoagulant-ACOD-AOD",
+    "Edoxaban, LIXIANA"                   : "Anticoagulant-ACOD-AOD",
+    "Rivaroxaban, XARELTO"                : "Anticoagulant-ACOD-AOD",
+    "Fondaparinux, ARIXTRA"               : "Anticoagulant-ACOD-AOD",
+    "Enoxaparine, CLEXANE"                : "Anticoagulant-Injectable",
+    "Nadroparine, FRAXIPARINE, FRAXODI"   : "Anticoagulant-Injectable",
+    "Tinzaparine, INNOHEP"                : "Anticoagulant-Injectable",
+    "HNF, Héparine Sodique"               : "Anticoagulant-Injectable"
+}
 
-def list2choices(list):
-    return [(i, i) for i in list]
+def to_choice(data):
+    if isinstance(data, dict):
+        return [(i, i) for i in data.keys()]
+    else:
+        return [(i, i) for i in data]
 
 class Patient(models.Model):
     incl_num = models.AutoField(primary_key=True)
@@ -71,10 +74,10 @@ class Patient(models.Model):
     ddn = models.DateTimeField('Date de naissance')
     ddi = models.DateTimeField("Date de l'intervention")
     intervention = models.CharField('intervention', max_length=200, default="")
-    chirurgie = models.CharField("Discipline de l'intervention", max_length=40, choices=list2choices(CHIR_CHOICES), default='Chirurgie Cardiaque')
-    pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=list2choices(PATH_CHOICES), default='Prevention primaire')
-    traitement1 = models.CharField("Premier traitement", max_length=40, choices=list2choices(TRAIT_CHOICES), default='Aspirine, Asaflow, Cardioaspirine')
-    traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=list2choices(['Aucun']+TRAIT_CHOICES), default='Aucun')
+    chirurgie = models.CharField("Discipline de l'intervention", max_length=40, choices=to_choice(CHIR_CHOICES), default='Chirurgie Cardiaque')
+    pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=to_choice(PATH_CHOICES), default='Prévention primaire')
+    traitement1 = models.CharField("Premier traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), default='Aspirine, Asaflow, Cardioaspirine')
+    traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=[('Aucun', 'Aucun')] + to_choice(TRAIT_CHOICES), default='Aucun')
 
     date_published = models.DateTimeField(auto_now_add=True, verbose_name="date published")
     date_updated = models.DateTimeField(auto_now=True, verbose_name="date updated")

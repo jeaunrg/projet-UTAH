@@ -22,18 +22,21 @@
     }
 </style>
 
-<a href="{% url 'home' %}" class="btn btn-outline-dark">< Retour</a>
+
+<!-- <div class="btn-group-vertical" style="float: right;">
+  <a type="button" href="{% url 'patient:create' %}" class="btn btn-outline-success">Quel traitement arréter et comment ?</a>
+  <a type="button" href='#' class="btn btn-outline-success">Quand reprendre le traitement ?</a>
+</div> -->
+<a href="{% url 'patient:patients' 'all' %}" style="border-radius: 0;" class="btn btn-dark"><</a>
 <br><br>
 
+
 <div class="container px-4">
+
+  <a class='btn btn-primary' href="{% url 'algorithm:algo' slug %}"> Lancer l'algorithme </a>
+
   <div class="header">
     <h4 class="h4"> Patient n°{{incl_num}}</h4>
-
-    <form id='progresss-handle' action="{% url 'patient:detail' slug %}" method="post"> {% csrf_token %}
-      <button id="start-button" class="btn btn-success" type="submit"> Start </button>
-    </form>
-
-    <a href="{% url 'patient:edit' slug %}" class="btn btn-outline-success">Modifier</a>
   </div>
   <hr>
 
@@ -41,6 +44,7 @@
 
   <hr>
   <div class="info container">
+    <a href="{% url 'patient:edit' slug %}" style="float: right;" class="btn btn-outline-success">Modifier</a>
     <h4> Rappel des informations saisies </h4>
     <p><strong>Numéro de registre UTAH: {{incl_num}} </strong></p>
     <p>Intervention prévue le {{ddi|date:'d-m-Y'}} </p>
@@ -50,6 +54,9 @@
     <p>Intitulé de l'intervention : {{intervention}}</p>
 
     <br>
+    <form id='progresss-handle' action="{% url 'patient:detail' slug %}" method="post"> {% csrf_token %}
+      <button id="start-button" style="float: right;" class="btn btn-outline-success" type="submit"> Mettre à jour </button>
+    </form>
     <h4> Traitements proposés</h4>
 
 

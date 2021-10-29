@@ -10,7 +10,10 @@ import os
 @login_required(login_url='login')
 def home_screen_view(request, *args, **kwargs):
 	context = {}
-	return redirect("patient:patients", 'all')
+	return render(request, 'personal/home.html', context)
+
+
+	# return redirect("patient:patients", 'all')
 
 @login_required(login_url='login')
 def generate_pdf_view(request, slug, download='False'):

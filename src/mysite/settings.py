@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'personal',
     'account',
     'patient',
+    'algorithm',
 
     'bootstrapform',
 	'celery',

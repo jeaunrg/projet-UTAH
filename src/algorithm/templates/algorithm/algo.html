@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+
+{% block content %}
+
+<style type="text/css">
+  #question_container {
+    padding-top: 15px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    max-width: 300px;
+    }
+</style>
+
+<div id="question_container">
+  <button id="start-button" onclick="answer(null)" class="btn btn-success">Commencer</button>
+
+  {% for key, values in questions.items %}
+      <div id="{{key}}" name="cond" style="display: none;" class="btn-group-vertical">
+        <h4> {{values.question}} </h4><hr>
+        {% for ans in values.answers %}
+          <button value="{{ans}}" onclick="answer(this.value)" class="btn btn-outline-success">{{ans}}</button>
+        {% endfor %}
+      </div>
+  {% endfor %}
+
+  <div id="intermediary_response" style="display: none;">
+    <h4> La réponse intermédiaire est affichée içi</h4>
+    <button onclick="answer()" class="btn btn-outline-success">continuer</button>
+  </div>
+
+  <h4 id="final_response" style="display: none;"> La réponse final est affichée içi</h4>
+</div>
+
+
+
+<script type="text/javascript">
+  var current_question_id = "start-button";
+  var rp = {}//{{initial_responses | safe}};
+
+  function get_categorie(traitement) {
+    return {{questions.traitement1.answers | safe}}[traitement]
+  }
+
+  function activate_next(question_id) {
+    document.getElementById(current_question_id).style.display = 'none';
+
+    if (Array.isArray(question_id)) {
+      var resp_mode = question_id[0];
+      var response = question_id[1];
+      if (resp_mode == 'final') {
+        document.getElementById('final_response').textContent = response;
+        document.getElementById('final_response').style.display = 'inline';
+      }
+
+    }
+    else {
+      document.getElementById(question_id).style.display = 'inline';
+      current_question_id = question_id;
+    }
+  }
+
+  function answer(response) {
+    rp[current_question_id] = response;
+    var next_id = get_next_question_id();
+    if (next_id == null) {
+      window.alert('ERROR')
+    }
+
+    activate_next(next_id);
+
+  }
+
+  function get_result(results) {
+    if (results.length == 3) {
+      if (rp.bleeding_risk_1 == null) {
+        return 'bleeding_risk_1';
+      }
+      else if (rp.bleeding_risk_1 == 'faible'){
+        return ('final', results[0]);
+      }
+      else if (rp.bleeding_risk_1 == 'intermédiaire'){
+        return ('final', results[1]);
+      }
+      else if (rp.bleeding_risk_1 == 'élevé'){
+        return ('final', results[2]);
+      }
+    }
+    else if (results.length == 2) {
+      if (rp.bleeding_risk_2 == null) {
+        return 'bleeding_risk_2';
+      }
+      else if (rp.bleeding_risk_2 == 'faible'){
+        return ('final', results[0]);
+      }
+      else if (rp.bleeding_risk_2 == 'élevé'){
+        return ('final', results[1]);
+      }
+    }
+  }
+
+
+  function get_next_question_id(){
+    var intermediate_result = [];
+
+    if (rp.traitement1 == null) {
+      return 'traitement1';
+    }
+    var cat_traitement1 = get_categorie(rp.traitement1)
+
+    if (cat_traitement1 == 'Antiagregant plaquettaire') {
+
+      if (rp.traitement1 == "Aspirine, Asaflow, Cardioaspirine") {
+        if (rp.pathologie == null) {
+          return 'pathologie';
+        }
+        else if (rp.pathologie == 'Prévention primaire') {
+          return get_result(['Arrétez ou continuez.', 'Arrétez.', 'Arrétez.']); // ligne 1 (tableau 1)
+        }
+        else if (rp.pathologie == "Prévention secondaire") {
+          if (rp.traitement2 == null) {
+            return 'traitement2';
+          }
+          else if (rp.traitement2 == 'Aucun') {
+            return get_result(['Continuez.', 'Continuez.', 'Arrétez.']); //ligne 2 (tableau 1)
+          }
+        }
+      }
+      else if (rp.traitement1 == "Clopidogrel, PLAVIX") {
+        if (rp.pathologie == null) {
+          return 'pathologie';
+        }
+        else if (rp.pathologie == "Prévention secondaire") {
+          if (rp.traitement2 == null) {
+            return 'traitement2';
+          }
+          else if (rp.traitement2 == 'Aucun') {
+            return get_result(['Continuez.', "Arrétez. bridge par l'aspirine.", 'Arrétez.']); //ligne 3 (tableau 1)
+          }
+        }
+      }
+      else if (rp.traitement1 == "Stents Cardiaques") {
+        if (rp.traitement2 == null) {
+          return 'traitement2';
+        }
+        else if (rp.traitement2 != "Aucun") {
+          if (rp.stent_condition == null) {
+            return 'stent_condition';
+          }
+          else if (rp.stent_condition != 'Autres') {
+            return get_result(['Postpone the procedure. If impossible, continue the bitherapy.',
+                               'Postpone the procedure. If impossible, stop the anti-P2Y12, continue the aspirin.',
+                               'Postpone the procedure. If impossible, stop the bitherapy.']); //ligne 4 (tableau 1)
+          }
+          else {
+            return get_result(['Continue the bitherapy.',
+                               'Stop the anti-P2Y12. Continue the aspirin.',
+                               'Stop the bitherapy.']); //ligne 5 (tableau 1)
+          }
+        }
+      }
+    }
+    else if (cat_traitement1.startsWith('Anticoagulant-ACOD')) {
+      if (cat_traitement1 == 'Anticoagulant-ACOD-AVK') {
+        if (rp.thromboembolism_risk == 'null') {
+          return 'thromboembolism_risk';
+        }
+        else if (rp.thromboembolism_risk == 'faible') {
+          return get_result(['Continuation', 'Continuation']); // ligne 1 (tableau 2)
+        }
+        else if (rp.thromboembolism_risk == 'élevé') {
+          return get_result(['Stop at J-3', 'Bridge at J-7']); // ligne 1 (tableau 2)
+        }
+      }
+
+      if (rp.bleeding_risk_2 == null) {
+        return 'bleeding_risk_2';
+      }
+      else {
+
+        if (rp.bleeding_risk_2 == 'faible') {
+          res_before = 'no taking the night before or the morning of the invasive gesture.',
+          res_after = 'restart at the usual time and at least 6 hours after the end of the procedure.'
+        }
+        else if (rp.bleeding_risk_2 == 'élevé') {
+          if (rp.traitement2 == null) {
+            return 'traitement2';
+          }
+
+          // avant la procédure
+          var xaban = ["Rivaroxaban, XARELTO", "Apixaban, ELIQUIS", "Edoxaban, LIXIANA"]
+          if (xaban.includes(rp.traitement1) || xaban.includes(rp.traitement2)){
+            if (rp.cockroft_condition_1 == null) {
+              return 'cockroft_condition_1';
+            }
+            else if (rp.cockroft_condition_1 == 'Oui') {
+              res_before = "Dernière prise à J-3." // ligne 1 (tableau 3)
+            }
+          }
+          if (rp.traitement1 == "Dabigatran, PRADAXA" || rp.traitement2 == "Dabigatran, PRADAXA"){
+            if (rp.cockroft_condition_2 == "null") {
+              return 'cockroft_condition_2';
+            }
+            else if (rp.cockroft_condition_2 == "> 50 mL/min") {
+              res_before = "Dernière prise à J-4." // ligne 2 (tableau 3)
+            }
+            else if (rp.cockroft_condition_2 == "30-49 mL/min") {
+              res_before = "Dernière prise à J-5." // ligne 3 (tableau 3)
+            }
+          }
+
+          // après la procédure
+          var thromboprophylaxis = ["Acénocoumarol, SINTROM", "Apixaban, ELIQUIS", "Dabigatran, PRADAXA", "Edoxaban, LIXIANA"]
+          if (thromboprophylaxis.includes(rp.traitement1) || thromboprophylaxis.includes(rp.traitement2)){
+            res_after = "Anticoagulants at a prophylactic dose at least 6 hours after the procedure." // ligne 3 (tableau 3)
+          }
+          else {
+            res_after = "Anticoagulants in curative doses as soon as haemostasis allows it." // ligne 4 (tableau 3)
+          }
+
+        }
+        return ('final', {"Avant l'intervention": res_before + "No bridge. No dosage.",
+                        "Après l'intervention": res_after})
+      }
+    }
+    return ('final', 'Condition non remplie')
+  }
+
+</script>
+
+{% endblock content %}

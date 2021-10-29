@@ -1,5 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load bootstrap %}
+
 
 {% block content %}
+<style type="text/css">
+  #centered-buttons {
+    padding-top: 15px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    max-width: 50%;
+    }
+</style>
+
+<div id="centered-buttons" class="btn-group-vertical">
+  <a type="button" href="{% url 'patient:create' %}" class="btn btn-outline-success">Quel traitement arréter et comment ?</a>
+  <a type="button" href='#' class="btn btn-outline-success">Quand reprendre le traitement ?</a>
+  <a type="button" href="{% url 'patient:patients' 'all' %}" class="btn btn-success">Patients</a>
+
+
+</div>
 {% endblock content %}

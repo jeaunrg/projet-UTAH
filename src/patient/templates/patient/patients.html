@@ -19,32 +19,23 @@
 
 </style>
 
-
-<div class="patients">
-  <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 2fr 1fr;">
-    <div class="d-flex align-items-left">
-      <form class="w-100 me-3" method="get">
-        <div class="form-floating">
-          <input class="form-control"  name="q" type="search" id="id_q" placeholder="recherche">
-          <label for="id_q">Rechercher...</label>
-          {% if n_patients == 0 %}
-          <p>Aucun patients trouvés</p>
-          {% elif n_patients == 1 %}
-          <p>1 patient trouvé</p>
-          {% else %}
-          <p>{{n_patients}} patients trouvés</p>
-          {% endif %}
-        </div>
-      </form>
-    </div>
-
-    <div>
-      <br>
-      <div class="btn-group-vertical" style="float: right;">
-        <a type="button" href="{% url 'patient:create' %}" class="btn btn-outline-success">Quel traitement arréter et comment ?</a>
-        <a type="button" href='#' class="btn btn-outline-success">Quand reprendre le traitement ?</a>
+<a href="{% url 'home' %}" class="btn btn-dark" style="border-radius: 0;"><</a>
+<br><br>
+<div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 2fr;">
+  <div class="d-flex align-items-left">
+    <form class="w-100 me-3" method="get">
+      <div class="form-floating">
+        <input class="form-control"  name="q" type="search" id="id_q" placeholder="recherche">
+        <label for="id_q">Rechercher des patients</label>
+        {% if n_patients == 0 %}
+        <p>Aucun patients trouvés</p>
+        {% elif n_patients == 1 %}
+        <p>1 patient trouvé</p>
+        {% else %}
+        <p>{{n_patients}} patients trouvés</p>
+        {% endif %}
       </div>
-    </div>
+    </form>
   </div>
 
 {% if n_patients %}
@@ -84,8 +75,6 @@
 
 {% endif %}
 
-
-<div>
 
 <script type="text/javascript">
 	document.getElementById("id_q").value = "{{query}}"

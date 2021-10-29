@@ -32,6 +32,7 @@ urlpatterns = [
     path('personal/', include('personal.urls', 'personal')),
     path('account/', account_view, name="account"),
     path('patient/', include('patient.urls', 'patient')),
+    path('algorithm/', include('algorithm.urls', 'algorithm')),
 
     path('admin/', admin.site.urls),
     path('login/', login_view, name="login"),
