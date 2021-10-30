@@ -32,9 +32,6 @@
 
 
 <div class="container px-4">
-
-  <a class='btn btn-primary' href="{% url 'algorithm:algo' slug %}"> Lancer l'algorithme </a>
-
   <div class="header">
     <h4 class="h4"> Patient n°{{incl_num}}</h4>
   </div>
@@ -54,18 +51,11 @@
     <p>Intitulé de l'intervention : {{intervention}}</p>
 
     <br>
-    <form id='progresss-handle' action="{% url 'patient:detail' slug %}" method="post"> {% csrf_token %}
-      <button id="start-button" style="float: right;" class="btn btn-outline-success" type="submit"> Mettre à jour </button>
-    </form>
+    <a class='btn btn-outline-success'  style="float: right;" href="{% url 'algorithm:algo' slug %}"> Lancer l'algorithme </a>
+
     <h4> Traitements proposés</h4>
-
-
-      <div id="progress-bar" class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' style="height:20px; width: 0%; border-radius: 5px">
-        <a id="stop-button" class="btn btn-danger" style="visibility: hidden;" href="{% url 'patient:detail' slug %}">Stop</a>
-      </div>
       <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'False' %}"> Afficher le PDF </a>
       <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'True' %}"> Télécharger le PDF </a>
-
 
   </div>
   <br>
@@ -73,9 +63,6 @@
     Modifié le {{date_updated |date:'d/m/Y'}} par @{{author}}
   </div>
 </div>
-
-{% include 'patient/snippets/progress_calculation.html' with pbar='progress-bar' pstart='start-button' pstop='stop-button'%}
-
 
 
 {% endblock content %}

@@ -7,7 +7,7 @@ def algo_view(request, slug):
     context = {}
     patient = get_object_or_404(Patient, slug=slug)
 
-    print()
+    context['slug'] = slug
     context['default_responses'] = json.dumps(patient.getSerializableInfos())
 
     context['questions'] = {
