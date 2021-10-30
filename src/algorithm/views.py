@@ -5,9 +5,10 @@ import json
 
 def algo_view(request, slug):
     context = {}
-    context['slug'] = slug
+    patient = get_object_or_404(Patient, slug=slug)
 
-    context['initial_responses'] = json.dumps({'traitement1': 'Aspirine, Asaflow, Cardioaspirine'})
+    print()
+    context['default_responses'] = json.dumps(patient.getSerializableInfos())
 
     context['questions'] = {
         'traitement1': {
@@ -42,11 +43,11 @@ def algo_view(request, slug):
         },
 
         'bleeding_risk_1': {
-            'question': "Choisissez le risque d'hémorragie pendant de l'opération",
+            'question': "Choisissez le risque d'hémorragie pendant l'opération",
             'answers': ['faible', 'intermédiaire', 'élevé']
         },
         'bleeding_risk_2': {
-            'question': "Choisissez le risque d'hémorragie pendant de l'opération",
+            'question': "Choisissez le risque d'hémorragie pendant l'opération",
             'answers': ['faible', 'élevé']
         }
 

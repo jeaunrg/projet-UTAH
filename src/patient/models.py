@@ -95,3 +95,6 @@ class Patient(models.Model):
 
     def getInfos(self):
         return {k: v for k, v in self.__dict__.items() if k != '_state'}
+
+    def getSerializableInfos(self):
+        return {k: v for k, v in self.__dict__.items() if isinstance(v, (str, int, float, bool))}

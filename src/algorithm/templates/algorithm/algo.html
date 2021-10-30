@@ -5,85 +5,151 @@
 {% block content %}
 
 <style type="text/css">
-  #question_container {
+  #question-container {
     padding-top: 15px;
-    display: block;
     margin: 0 auto;
     text-align: center;
-    max-width: 300px;
+    max-width: 50%;
     }
+  #previous-button {
+    float: left;
+    width: 80px;
+    max-width: 100%;
+    max-height: 100%;
+    height: 80px;
+    font-size:12px;
+    border-radius: 50%;
+    margin-top: 10%;
+    margin-left: 2%
+  }
+  #next-button {
+    float: right;
+    width: 80px;
+    max-width: 100%;
+    max-height: 100%;
+    height: 80px;
+    font-size:12px;
+    border-radius: 50%;
+    margin-top: 10%;
+    margin-right: 2%
+  }
+
 </style>
 
-<div id="question_container">
-  <button id="start-button" onclick="answer(null)" class="btn btn-success">Commencer</button>
+  <button id="previous-button" onclick="previous()" class="btn btn-outline-success btn-square-md">Précédent</button>
+  <button id="next-button" onclick="next()" class="btn btn-outline-success btn-square-md">Suivant</button>
 
-  {% for key, values in questions.items %}
-      <div id="{{key}}" name="cond" style="display: none;" class="btn-group-vertical">
-        <h4> {{values.question}} </h4><hr>
-        {% for ans in values.answers %}
-          <button value="{{ans}}" onclick="answer(this.value)" class="btn btn-outline-secondary">{{ans}}</button>
-        {% endfor %}
-      </div>
-  {% endfor %}
+  <div id="question-container">
 
-  <div id="intermediary_response" style="display: none;">
-    <h4> La réponse intermédiaire est affichée içi</h4>
-    <button onclick="answer()" class="btn btn-outline-success">continuer</button>
+    {% for key, values in questions.items %}
+        <div id="{{key}}" style="display: none;" class="btn-group-vertical">
+          <h4> {{values.question}} </h4><hr>
+          {% for ans in values.answers %}
+            <input type="radio" class="btn-check" value="{{ans}}" name="options-outlined {{key}}" id="{{key}}-{{ans}}" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="{{key}}-{{ans}}">{{ans}}</label>
+          {% endfor %}
+        </div>
+    {% endfor %}
+
+    <div id="intermediary_response" style="display: none;">
+      <h4> La réponse intermédiaire est affichée içi</h4>
+      <button onclick="answer()" class="btn btn-outline-success">continuer</button>
+    </div>
+
+    <div id="final-response" style="display: none; text-align: left;"> </div>
   </div>
 
-  <h4 id="final_response" style="display: none;"> La réponse final est affichée içi</h4>
-</div>
-
-
-
 <script type="text/javascript">
-  var current_question_id = "start-button";
-  var rp = {}//{{initial_responses | safe}};
+  var current_question_id = null;
+  var rp = {};
+  const none_output = "Condition non remplie.";
+  set_default_responses();
+  answer(null);
 
-  function get_categorie(traitement) {
-    return {{questions.traitement1.answers | safe}}[traitement]
+  function next() {
+    var radios = document.getElementsByName("options-outlined " + current_question_id);
+    for (var radio of radios) {
+      if (radio.checked) {
+        return answer(radio.value);
+      }
+    }
+  }
+
+  function previous() {
+    // remove last response
+    delete rp[Object.keys(rp)[Object.keys(rp).length-1]];
+    return answer(null);
+  }
+
+  function set_default_responses(){
+    for (const [key, value] of Object.entries({{default_responses | safe}})) {
+      if (document.getElementById(key+'-'+value) != null) {
+        document.getElementById(key+'-'+value).checked = true;
+      }
+    }
   }
 
   function show_response(response){
     var resp_mode = response[0];
     var resp_text = response[1];
+
+    var content = "";
+    for (const [key, value] of Object.entries(resp_text)) {
+      content += "<h4>" + key + "</h4><hr>";
+      for (const line of value.split('. ')) {
+        content += "<p>" + line + "</p>";
+      }
+    }
+
     if (resp_mode == 'final') {
-      document.getElementById('final_response').style.display = 'inline';
-      document.getElementById('final_response').textContent = resp_text;
+      document.getElementById('next-button').style.display = 'none';
+      document.getElementById('final-response').style.display = 'inline';
+      document.getElementById('final-response').innerHTML = content;
     }
   }
 
-  function activate_next(question_id) {
-    document.getElementById(current_question_id).style.display = 'none';
-    if (Array.isArray(question_id)) {
-      show_response(question_id)
+
+  function answer(response=null) {
+    if (response != null) {
+      rp[current_question_id] = response;
+    }
+    var output = process_algo();
+
+    if (current_question_id != null) {
+      document.getElementById(current_question_id).style.display = 'none';
+    }
+
+    if (Array.isArray(output)) {
+      show_response(output);
     }
     else {
-      document.getElementById(question_id).style.display = 'inline';
-      current_question_id = question_id;
+      if (Object.keys(rp).length == 0){
+        document.getElementById('previous-button').style.display = 'none';
+      }
+      else {
+        document.getElementById('previous-button').style.display = 'inline';
+      }
+      document.getElementById('final-response').style.display = 'none';
+      document.getElementById('next-button').style.display = 'inline';
+      document.getElementById(output).style.display = 'inline';
+      current_question_id = output;
     }
-  }
-
-  function answer(response) {
-    rp[current_question_id] = response;
-    var next_id = get_next_question_id();
-    activate_next(next_id);
-
   }
 
   function get_result(results) {
+    var res = none_output;
     if (results.length == 3) {
       if (rp.bleeding_risk_1 == null) {
         return 'bleeding_risk_1';
       }
       else if (rp.bleeding_risk_1 == 'faible'){
-        return ['final', results[0]];
+        res = results[0];
       }
       else if (rp.bleeding_risk_1 == 'intermédiaire'){
-        return ['final', results[1]];
+        res = results[1];
       }
       else if (rp.bleeding_risk_1 == 'élevé'){
-        return ['final', results[2]];
+        res = results[2];
       }
     }
     else if (results.length == 2) {
@@ -91,23 +157,23 @@
         return 'bleeding_risk_2';
       }
       else if (rp.bleeding_risk_2 == 'faible'){
-        return ['final', results[0]];
+        res = results[0];
       }
       else if (rp.bleeding_risk_2 == 'élevé'){
-        return ['final', results[1]];
+        res = results[1];
       }
     }
-    return ['final', "Aucune proposition"]
+    return ['final', {'Conclusion': res}]
   }
 
 
-  function get_next_question_id(){
+  function process_algo(){
     var intermediate_result = [];
 
     if (rp.traitement1 == null) {
       return 'traitement1';
     }
-    var cat_traitement1 = get_categorie(rp.traitement1)
+    var cat_traitement1 = {{questions.traitement1.answers | safe}}[rp.traitement1]
 
     if (cat_traitement1 == 'Antiagregant plaquettaire') {
 
@@ -173,58 +239,94 @@
           return get_result(['Stop at J-3', 'Bridge at J-7']); // ligne 1 (tableau 2)
         }
       }
-
+    //
       if (rp.bleeding_risk_2 == null) {
         return 'bleeding_risk_2';
       }
       else {
-
+        var res_before = "";
+        var res_after = none_output;
         if (rp.bleeding_risk_2 == 'faible') {
-          res_before = 'no taking the night before or the morning of the invasive gesture.',
-          res_after = 'restart at the usual time and at least 6 hours after the end of the procedure.'
+          res_before = 'no taking the night before or the morning of the invasive gesture.';
+          res_after = 'restart at the usual time and at least 6 hours after the end of the procedure.';
         }
         else if (rp.bleeding_risk_2 == 'élevé') {
-          if (rp.traitement2 == null) {
-            return 'traitement2';
-          }
 
           // avant la procédure
-          var xaban = ["Rivaroxaban, XARELTO", "Apixaban, ELIQUIS", "Edoxaban, LIXIANA"]
-          if (xaban.includes(rp.traitement1) || xaban.includes(rp.traitement2)){
-            if (rp.cockroft_condition_1 == null) {
-              return 'cockroft_condition_1';
+          var xaban = ["Rivaroxaban, XARELTO", "Apixaban, ELIQUIS", "Edoxaban, LIXIANA"];
+          if (xaban.includes(rp.traitement1)) {
+            if (rp.cockroft_1 == null) {
+              return 'cockroft_1';
             }
-            else if (rp.cockroft_condition_1 == 'Oui') {
-              res_before = "Dernière prise à J-3." // ligne 1 (tableau 3)
+            else if (rp.cockroft_1 == 'Oui') {
+              res_before = "Dernière prise à J-3."; // ligne 1 (tableau 3)
             }
           }
-          if (rp.traitement1 == "Dabigatran, PRADAXA" || rp.traitement2 == "Dabigatran, PRADAXA"){
-            if (rp.cockroft_condition_2 == "null") {
-              return 'cockroft_condition_2';
+          else {
+            if (rp.traitement2 == null) {
+              return 'traitement2';
             }
-            else if (rp.cockroft_condition_2 == "> 50 mL/min") {
+            else if (xaban.includes(rp.traitement2)) {
+              if (rp.cockroft_1 == null) {
+                return 'cockroft_1';
+              }
+              else if (rp.cockroft_1 == 'Oui') {
+                res_before = "Dernière prise à J-3."; // ligne 1 (tableau 3)
+              }
+            }
+          }
+
+          if (rp.traitement1 == "Dabigatran, PRADAXA") {
+            if (rp.cockroft_2 == "null") {
+              return 'cockroft_2';
+            }
+            else if (rp.cockroft_2 == "> 50 mL/min") {
               res_before = "Dernière prise à J-4." // ligne 2 (tableau 3)
             }
-            else if (rp.cockroft_condition_2 == "30-49 mL/min") {
+            else if (rp.cockroft_2 == "30-49 mL/min") {
               res_before = "Dernière prise à J-5." // ligne 3 (tableau 3)
             }
           }
+          else {
+            if (rp.traitement2 == null) {
+              return 'traitement2';
+            }
+            else if (rp.traitement2 == "Dabigatran, PRADAXA") {
+              if (rp.cockroft_2 == "null") {
+                return 'cockroft_2';
+              }
+              else if (rp.cockroft_2 == "> 50 mL/min") {
+                res_before = "Dernière prise à J-4." // ligne 2 (tableau 3)
+              }
+              else if (rp.cockroft_2 == "30-49 mL/min") {
+                res_before = "Dernière prise à J-5." // ligne 3 (tableau 3)
+              }
+            }
+          }
+
 
           // après la procédure
           var thromboprophylaxis = ["Acénocoumarol, SINTROM", "Apixaban, ELIQUIS", "Dabigatran, PRADAXA", "Edoxaban, LIXIANA"]
-          if (thromboprophylaxis.includes(rp.traitement1) || thromboprophylaxis.includes(rp.traitement2)){
+          if (thromboprophylaxis.includes(rp.traitement1)){
             res_after = "Anticoagulants at a prophylactic dose at least 6 hours after the procedure." // ligne 3 (tableau 3)
           }
           else {
-            res_after = "Anticoagulants in curative doses as soon as haemostasis allows it." // ligne 4 (tableau 3)
+            if (rp.traitement2 == null) {
+              return 'traitement2';
+            }
+            else if (thromboprophylaxis.includes(rp.traitement2)) {
+              res_after = "Anticoagulants at a prophylactic dose at least 6 hours after the procedure." // ligne 3 (tableau 3)
+            }
+            else {
+              res_after = "Anticoagulants in curative doses as soon as haemostasis allows it." // ligne 4 (tableau 3)
+            }
           }
-
         }
-        return ('final', {"Avant l'intervention": res_before + "No bridge. No dosage.",
-                        "Après l'intervention": res_after})
+        return ['final', {"Avant l'intervention": res_before + "No bridge. No dosage.",
+                          "Après l'intervention": res_after}]
       }
     }
-    return ('final', 'Condition non remplie')
+    return ['final', {'Conclusion': none_output}]
   }
 
 </script>
