@@ -28,18 +28,18 @@
   #next-button {
     right: 2%;
     top: 30%;
-
   }
 
 </style>
   <a href="{% url 'patient:detail' slug %}" style="border-radius: 0;" class="btn btn-dark"><</a>
 
-
   <button id="next-button" onclick="next()" class="btn btn-success btn-round">&rarr;</button>
   <button id="previous-button" onclick="previous()" class="btn btn-success btn-round">&larr;</button>
 
   <div id="question-container">
-
+    <div class="progress">
+      <div id="algo-progress" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div><br>
     {% for key, values in questions.items %}
         <div id="{{key}}" style="display: none;" class="btn-group-vertical">
           <h4> {{values.question}} </h4><hr>
@@ -58,6 +58,8 @@
 <script type="text/javascript">
   var current_question_id = null;
   var rp = {};
+  var progress_value = 0;
+  const progress_step = 20;
   const none_output = "Condition non remplie.";
   set_default_responses();
   answer();
@@ -66,6 +68,7 @@
     var radios = document.getElementsByName("options-outlined " + current_question_id);
     for (var radio of radios) {
       if (radio.checked) {
+        update(progress_step);
         return answer(response=radio.value);
       }
     }
@@ -74,6 +77,7 @@
   function previous() {
     // remove last response
     delete rp[Object.keys(rp)[Object.keys(rp).length-1]];
+    update(-progress_step);
     return answer();
   }
 
@@ -99,6 +103,7 @@
     document.getElementById(current_question_id).style.display = 'none';
 
     if (resp_id == 'final') {
+      update('end');
       document.getElementById('next-button').style.display = 'none';
       document.getElementById('previous-button').style.display = 'inline';
       document.getElementById('final').style.display = 'inline';
@@ -109,6 +114,7 @@
 
   function show_question(question_id) {
     if (Object.keys(rp).length == 0){
+      update('start');
       document.getElementById('previous-button').style.display = 'none';
     }
     else {
@@ -136,8 +142,18 @@
     }
   }
 
-  function process_algo(){
+  function update(value){
+    if (value == 'end') {
+      progress_value = 100;
+    } else if (value == 'start') {
+      progress_value = 0;
+    } else {
+      progress_value += value;
+    }
+    document.getElementById("algo-progress").setAttribute('style', "width: " + progress_value + "%");
+  }
 
+  function process_algo(){
     if (categorie('traitement1').includes('Antiagregant plaquettaire')) {
 
       if (G('traitement1') == "Aspirine, Asaflow, Cardioaspirine") {
