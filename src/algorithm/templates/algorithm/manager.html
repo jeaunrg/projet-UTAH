@@ -54,6 +54,7 @@
   </div>
 
 
+{% include 'algorithm/algorithm.html' %}
 
 <script type="text/javascript">
   var current_question_id = null;
@@ -136,7 +137,7 @@
     }
 
     try {
-      show_response(process_algo());
+      show_response(algorithm());
     } catch (question){
       show_question(question);
     }
@@ -153,82 +154,6 @@
     document.getElementById("algo-progress").setAttribute('style', "width: " + progress_value + "%");
   }
 
-  function process_algo(){
-    if (categorie('traitement1').includes('Antiagregant plaquettaire')) {
-
-      if (G('traitement1') == "Aspirine, Asaflow, Cardioaspirine") {
-        if (G('pathologie') == 'Prévention primaire') {
-          return get_result(['Arrétez ou continuez.', 'Arrétez.', 'Arrétez.']); // ligne 1 (tableau 1)
-        }
-        else if (G('pathologie') == "Prévention secondaire" && G('traitement2') == 'Aucun') {
-          return get_result(['Continuez.', 'Continuez.', 'Arrétez.']); //ligne 2 (tableau 1)
-        }
-      }
-      else if (G('traitement1') == "Clopidogrel, PLAVIX" && G('pathologie') == "Prévention secondaire" && G('traitement2') == 'Aucun') {
-        return get_result(['Continuez.', "Arrétez. Bridge par l'aspirine.", 'Arrétez.']); //ligne 3 (tableau 1)
-      }
-      else if (G('traitement1') == "Stents Cardiaques" && G('traitement2') != "Aucun") {
-        if (G('stent_condition') != 'Autres') {
-          return get_result(['Postpone the procedure. If impossible, continue the bitherapy.',
-                             'Postpone the procedure. If impossible, stop the anti-P2Y12, continue the aspirin.',
-                             'Postpone the procedure. If impossible, stop the bitherapy.']); //ligne 4 (tableau 1)
-        }
-        else {
-          return get_result(['Continue the bitherapy.',
-                             'Stop the anti-P2Y12. Continue the aspirin.',
-                             'Stop the bitherapy.']); //ligne 5 (tableau 1)
-        }
-      }
-    }
-    else if (categorie('traitement1').includes('ACOD')) {
-      if (categorie('traitement1').includes('AVK')) {
-        if (G('thromboembolism_risk') == 'faible') {
-          return get_result(['Continuation', 'Continuation']); // ligne 1 (tableau 2)
-        }
-        else if (G('thromboembolism_risk') == 'élevé') {
-          return get_result(['Stop at J-3', 'Bridge at J-7']); // ligne 1 (tableau 2)
-        }
-      }
-
-      var res_before = "";
-      var res_after = none_output;
-
-      if (G('bleeding_risk_2') == 'faible') {
-        res_before = 'no taking the night before or the morning of the invasive gesture.';
-        res_after = 'restart at the usual time and at least 6 hours after the end of the procedure.';
-      }
-
-      else if (G('bleeding_risk_2') == 'élevé') {
-
-        // avant la procédure
-        if ((categorie('traitement1').includes('xaban') || categorie('traitement2').includes('xaban')) && G('cockroft_1') == 'Oui') {
-          res_before = "Dernière prise à J-3."; // ligne 1 (tableau 3)
-        }
-
-        if (G('traitement1') == "Dabigatran, PRADAXA" || G('traitement2') == "Dabigatran, PRADAXA") {
-          if (G('cockroft_2') == "> 50 mL/min") {
-            res_before = "Dernière prise à J-4." // ligne 2 (tableau 3)
-          }
-          else if (G('cockroft_2') == "30-49 mL/min") {
-            res_before = "Dernière prise à J-5." // ligne 3 (tableau 3)
-          }
-        }
-
-        // après la procédure
-        if (categorie('traitement1').includes('thrombo') || categorie('traitement2').includes('thrombo')){
-          res_after = "Anticoagulants at a prophylactic dose at least 6 hours after the procedure." // ligne 3 (tableau 3)
-        }
-        else {
-          res_after = "Anticoagulants in curative doses as soon as haemostasis allows it." // ligne 4 (tableau 3)
-        }
-      }
-      return ['final', {"Avant l'intervention": res_before + "No bridge. No dosage.",
-                        "Après l'intervention": res_after}]
-    }
-    return ['final', {'Conclusion': none_output}]
-  }
-
-
   function G(question_id) {
     if (question_id in rp) {
       return rp[question_id];
@@ -242,30 +167,8 @@
     return {{questions.traitement1.answers | safe}}[G(question_id)];
   }
 
-  function get_result(results) {
-    var res = none_output;
-    if (results.length == 3) {
-      if (G('bleeding_risk_1') == 'faible'){
-        res = results[0];
-      }
-      else if (G('bleeding_risk_1') == 'intermédiaire'){
-        res = results[1];
-      }
-      else if (G('bleeding_risk_1') == 'élevé'){
-        res = results[2];
-      }
-    }
-    else if (results.length == 2) {
-      if (G('bleeding_risk_2') == 'faible'){
-        res = results[0];
-      }
-      else if (G('bleeding_risk_2') == 'élevé'){
-        res = results[1];
-      }
-    }
-    return ['final', {'Conclusion': res}]
-  }
-
 </script>
+
+
 
 {% endblock content %}

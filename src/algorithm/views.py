@@ -52,4 +52,4 @@ def algo_view(request, slug):
         }
 
     }
-    return render(request, 'algorithm/algo.html', context)
+    return render(request, 'algorithm/manager.html', context)
