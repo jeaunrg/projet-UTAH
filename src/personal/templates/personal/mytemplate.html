@@ -24,10 +24,11 @@
 <img class="logo" src="{{SERVER_URL}}static/images/logo_erasme.png" alt="logo erasme">
 <div class="body">
   <hr><h1> Modifications traitements fluidificateurs sanguin </h1> <hr><br>
-  <p> Patient né le {{ddn|date:'d-m-Y'}} </p>
-  <p> Taille={{height}}cm. Poids={{weight}}kg </p>
-  <p> Intitulé de l'intervention: {{intervention}} en {{chirurgie}} </p><br>
+  <p> Patient né le {{patient.ddn|date:'d-m-Y'}} </p>
+  <p> Taille={{patient.height}}cm. Poids={{patient.weight}}kg </p>
+  <p> Intitulé de l'intervention: {{patient.intervention}} en {{patient.chirurgie}} </p><br>
   <table class="table table-striped">
+
     <thead>
       <th>Traitement</th>
       <th>Motif</th>
@@ -35,15 +36,25 @@
     </thead>
     <tbody>
       <tr>
-        <td>{{traitement1}}</td>
-        <td>{{pathologie}}</td>
-        <td>{{ddn|date:'d-m-Y'}}</td>
+        <td>{{patient.resultats.traitement1}}</td>
+        <td>{{patient.pathologie}}</td>
+        <td>{{patient.ddn|date:'d-m-Y'}}</td>
       </tr>
       <tr>
-        <td>{{traitement2}}</td>
-        <td>{{pathologie}}</td>
-        <td>{{ddi|date:'d-m-Y'}}</td>
+        <td>{{patient.traitement2}}</td>
+        <td>{{patient.pathologie}}</td>
+        <td>{{patient.ddi|date:'d-m-Y'}}</td>
       </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <tbody>
+      {% for k, v in results.items %}
+        <tr>
+          <th> {{ k }} </th>
+          <td> {{v}} </td>
+        </tr>
+      {% endfor %}
     </tbody>
   </table>
 

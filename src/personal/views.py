@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from patient.models import Patient
 from personal.utils import generate_pdf
 from mysite.settings import STATIC_ROOT
+from patient.data import QUESTIONS
 import os
 
 
@@ -13,12 +14,18 @@ def home_screen_view(request, *args, **kwargs):
 	return render(request, 'personal/home.html', context)
 
 
-	# return redirect("patient:patients", 'all')
-
 @login_required(login_url='login')
 def generate_pdf_view(request, slug, download='False'):
 	filename = 'output.pdf'
 	patient = get_object_or_404(Patient, slug=slug)
-	context = patient.getInfos()
+	context = {}
+	context['patient'] = patient
+	results = {}
+	for k, v in patient.resultats.items():
+		if k in QUESTIONS:
+			results[QUESTIONS[k]['question']] = v
+		else:
+			results['Conclusion'] = v
+	context['results'] = results
 	context['SERVER_URL'] = request.build_absolute_uri('/')
 	return generate_pdf("personal/mytemplate.html", context, filename, download=='True')

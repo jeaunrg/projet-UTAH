@@ -1,55 +1,20 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from patient.models import Patient
-from patient.models import TRAIT_CHOICES, PATH_CHOICES
+from patient.data import QUESTIONS
 import json
 
 def algo_view(request, slug):
     context = {}
     patient = get_object_or_404(Patient, slug=slug)
-
     context['slug'] = slug
+
+    if request.POST:
+        patient.resultats = {k: v for k, v in request.POST.items() if k != 'csrfmiddlewaretoken'}
+        patient.save()
+        return redirect('patient:detail', slug)
+
     context['default_responses'] = json.dumps(patient.getSerializableInfos())
+    context['auto_skip'] = False;
 
-    context['questions'] = {
-        'traitement1': {
-            'question': "Premier traitement ?",
-            'answers': TRAIT_CHOICES
-        },
-        'traitement2': {
-            'question': "Deuxième traitement ?",
-            'answers': ['Aucun'] + list(TRAIT_CHOICES.keys())
-        },
-        'pathologie': {
-            'question': "Quelle pathologie ?",
-            'answers': PATH_CHOICES
-        },
-        'stent_condition': {
-            'answers': ["Stent <1 mois ?", "Stent <6 mois avec un haut risque de thrombose ?", "Infarctus du myocarde <6 mois ?", "Autres"]
-        },
-        'cockroft_1': {
-            'question': 'Cockroft > 30mL/min',
-            'answers': ["Oui", "Non"]
-        },
-        'cockroft_2': {
-            'question': 'Cockroft',
-            'answers': ["<30 mL/min", "30-49 mL/min", "> 50 mL/min"]
-        },
-        'venous_thrombo': {
-            'question': "Un thrombophylaxis veineux est-il indiqué ?"
-        },
-        'thromboembolism_risk': {
-            'question': 'Quel est le risque de thromboemobolisme ?',
-            'answers': ['faible', 'élevé']
-        },
-
-        'bleeding_risk_1': {
-            'question': "Choisissez le risque d'hémorragie pendant l'opération",
-            'answers': ['faible', 'intermédiaire', 'élevé']
-        },
-        'bleeding_risk_2': {
-            'question': "Choisissez le risque d'hémorragie pendant l'opération",
-            'answers': ['faible', 'élevé']
-        }
-
-    }
+    context['questions'] = QUESTIONS
     return render(request, 'algorithm/manager.html', context)

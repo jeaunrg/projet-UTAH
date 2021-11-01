@@ -1,6 +1,8 @@
 <script type="text/javascript">
 
   function algorithm(){
+
+    //---------------------------- TABLEAU 1 ---------------------------------
     if (categorie('traitement1').includes('Antiagregant plaquettaire')) {
 
       if (G('traitement1') == "Aspirine, Asaflow, Cardioaspirine") {
@@ -17,8 +19,8 @@
       else if (G('traitement1') == "Stents Cardiaques" && G('traitement2') != "Aucun") {
         if (G('stent_condition') != 'Autres') {
           return bleeding(['Postpone the procedure. If impossible, continue the bitherapy.',
-                             'Postpone the procedure. If impossible, stop the anti-P2Y12, continue the aspirin.',
-                             'Postpone the procedure. If impossible, stop the bitherapy.']); //ligne 4 (tableau 1)
+                           'Postpone the procedure. If impossible, stop the anti-P2Y12, continue the aspirin.',
+                           'Postpone the procedure. If impossible, stop the bitherapy.']); //ligne 4 (tableau 1)
         }
         else {
           return bleeding(['Continue the bitherapy.',
@@ -27,7 +29,10 @@
         }
       }
     }
+
     else if (categorie('traitement1').includes('ACOD')) {
+
+      //---------------------------- TABLEAU 2 ---------------------------------
       if (categorie('traitement1').includes('AVK')) {
         if (G('thromboembolism_risk') == 'faible') {
           return bleeding(['Continuation', 'Continuation']); // ligne 1 (tableau 2)
@@ -37,6 +42,7 @@
         }
       }
 
+      //---------------------------- TABLEAU 3 ---------------------------------
       var res_before = "";
       var res_after = none_output;
 
@@ -69,10 +75,9 @@
           res_after = "Anticoagulants in curative doses as soon as haemostasis allows it." // ligne 4 (tableau 3)
         }
       }
-      return ['final', {"Avant l'intervention": res_before + "No bridge. No dosage.",
-                        "Après l'intervention": res_after}]
+      return res_before + "No bridge. No dosage.\n" + res_after;
     }
-    return ['final', {'Conclusion': none_output}]
+    return none_output
   }
 
 
@@ -97,6 +102,6 @@
         res = results[1];
       }
     }
-    return ['final', {'Conclusion': res}]
+    return res
   }
   </script>
