@@ -23,10 +23,6 @@
 </style>
 
 
-<!-- <div class="btn-group-vertical" style="float: right;">
-  <a type="button" href="{% url 'patient:create' %}" class="btn btn-outline-success">Quel traitement arréter et comment ?</a>
-  <a type="button" href='#' class="btn btn-outline-success">Quand reprendre le traitement ?</a>
-</div> -->
 <a href="{% url 'patient:patients' 'all' %}" style="border-radius: 0;" class="btn btn-dark"><</a>
 <br><br>
 
@@ -51,16 +47,22 @@
     <p>Intitulé de l'intervention : {{intervention}}</p>
 
     <br>
-    <a class='btn btn-outline-success'  style="float: right;" href="{% url 'algorithm:algo' slug %}"> Lancer l'algorithme </a>
+
+    {% if patient.resultats %}
+      <a class='btn btn-outline-success'  style="float: right;" href="{% url 'algorithm:algo' slug %}"> Relancer l'algorithme </a>
+    {% endif %}
 
     <h4> Traitements proposés</h4>
-      <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'False' %}"> Afficher le PDF </a>
-      <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'True' %}"> Télécharger le PDF </a>
-
+      {% if patient.resultats %}
+        <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'False' %}"> Afficher les résultats </a>
+        <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'True' %}"> Télécharger les résultats </a>
+      {% else %}
+        <a class='btn btn-outline-success' href="{% url 'algorithm:algo' slug %}"> Lancer l'algorithme </a>
+      {% endif %}
   </div>
   <br>
   <div class="card-footer text-muted">
-    Modifié le {{date_updated |date:'d/m/Y'}} par @{{author}}
+    Modifié le {{date_updated |date:'d/m/Y'}} par @{{patient.author}}
   </div>
 </div>
 
