@@ -1,0 +1,22 @@
+<!-- Combo box with bootstrap -->
+{% if field.input_type == 'select' %}
+  <div class="form-floating">
+    <select class="form-select" id={{field.name}} name={{field.name}}>
+      {% for value, label in field.field.choices %}
+          <option value="{{value}}"{% if field.value == value %} selected {% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <label for={{field.name}}>{{field.label}}</label>
+  </div>
+
+<!-- other inputs with bootstrap -->
+{% else %}
+  <div class="form-floating">
+    {% if field.input_type == 'date' %}
+      <input {% if field.field.required %} required {% endif %} type="{{field.input_type}}" name={{field.name}} id={{field.name}} class="form-control" placeholder={{field.label}} value="{{field.value|date:'Y-m-d'}}">
+    {% else %}
+      <input {% if field.field.required %} required {% endif %} type="{{field.input_type}}" name={{field.name}} id={{field.name}} class="form-control" placeholder={{field.label}} value="{{field.value}}">
+    {% endif %}
+    <label for={{field.name}}>{{field.label}}</label>
+  </div>
+{% endif %}
