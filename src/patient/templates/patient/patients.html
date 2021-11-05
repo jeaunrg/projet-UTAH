@@ -38,8 +38,12 @@
     </form>
   </div>
 
+<div>
+  <a href="{% url 'patient:preop' %}" class="btn btn-success">+ Nouveau patient</a>
+  <a href="{% url 'patient:preop' %}" style="float: right;" class="btn btn-link">Quel traitement arréter et comment ?</a>
+</div>
+
 {% if n_patients %}
-<br>
 
 <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 

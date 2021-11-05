@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from patient.models import Patient
 from patient.data import QUESTIONS
+from django.contrib.auth.decorators import login_required
 import json
 
+@login_required(login_url='login')
 def algo_view(request, slug):
     context = {}
     patient = get_object_or_404(Patient, slug=slug)

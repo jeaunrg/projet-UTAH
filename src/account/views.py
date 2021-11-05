@@ -4,10 +4,6 @@ from account.forms import AccountAuthenticationForm, AccountUpdateForm
 from django.contrib.auth.decorators import login_required
 from patient.models import Patient
 
-def logout_view(request):
-	logout(request)
-	return redirect('/')
-
 
 def login_view(request):
 
@@ -37,6 +33,12 @@ def login_view(request):
 	return render(request, "account/login.html", context)
 
 
+@login_required(login_url='login')
+def logout_view(request):
+	logout(request)
+	return redirect('/')
+
+	
 @login_required(login_url='login')
 def account_view(request):
 

@@ -1,36 +1,55 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from patient.models import Patient
-from patient.forms import CreatePatientFileForm, UpdatePatientFileForm
+from patient.forms import PreopPatientFileForm, PostopPatientFileForm, UpdatePatientFileForm
 from account.models import Account
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from patient.utils import get_patients_page
+from patient.data import TRAIT_CHOICES
 
 N_PATIENTS_PER_PAGE = 10
 
 
 
 @login_required(login_url='login')
-def create_patient_view(request):
+def preop_patient_view(request):
 
     context = {}
 
-    user = request.user
-    if not user.is_authenticated:
-        return redirect('must_authenticate')
-
-    form = CreatePatientFileForm(request.POST or None)
+    form = PreopPatientFileForm(request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
-        author = Account.objects.filter(username=user.username).first()
+        author = Account.objects.filter(username=request.user.username).first()
         obj.author = author
         obj.save()
         return redirect("patient:detail", obj.slug)
 
     context['form'] = form
     context['is_editable'] = True
-    return render(request, "patient/create_patient.html", context)
+    return render(request, "patient/preop_patient.html", context)
+
+
+@login_required(login_url='login')
+def postop_patient_view(request, slug):
+
+    patient = get_object_or_404(Patient, slug=slug)
+    context = {}
+
+    form = PostopPatientFileForm(request.POST or None, instance=patient)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        author = Account.objects.filter(username=request.user.username).first()
+        obj.author = author
+        obj.save()
+        return redirect("patient:detail", obj.slug)
+
+    context['slug'] = slug
+    context['form'] = form
+    context['patient'] = patient
+    context['categorie'] = TRAIT_CHOICES
+    context['is_editable'] = True
+    return render(request, "patient/postop_patient.html", context)
 
 
 @login_required(login_url='login')
@@ -49,8 +68,6 @@ def detail_patient_view(request, slug):
 def edit_patient_view(request, slug):
 
     context = {'editable': False}
-
-    user = request.user
 
     patient = get_object_or_404(Patient, slug=slug)
 

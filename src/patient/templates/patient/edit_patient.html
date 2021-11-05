@@ -24,8 +24,9 @@
   {% csrf_token %}
     <br>
     <h3> Patient n°{{incl_num}}</h3><hr>
-    {% include 'patient/snippets/form2html.html' %}
-
+    {% for field in form %}
+      {% include 'patient/snippets/field2html.html' %}
+    {% endfor %}
   <button type="submit" class="btn btn-success"> Enregistrer</button>
   <a type="button" href="{% url 'patient:detail' slug %}" class="btn btn-secondary">Annuler</a>
 

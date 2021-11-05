@@ -3,7 +3,7 @@
   function algorithm(){
 
     //---------------------------- TABLEAU 1 ---------------------------------
-    if (categorie('traitement1').includes('Antiagregant plaquettaire')) {
+    if (flags('traitement1').includes('Antiagregant plaquettaire')) {
 
       if (G('traitement1') == "Aspirine, Asaflow, Cardioaspirine") {
         if (G('pathologie') == 'Prévention primaire') {
@@ -30,10 +30,10 @@
       }
     }
 
-    else if (categorie('traitement1').includes('ACOD')) {
+    else if (flags('traitement1').includes('ACOD')) {
 
       //---------------------------- TABLEAU 2 ---------------------------------
-      if (categorie('traitement1').includes('AVK')) {
+      if (flags('traitement1').includes('AVK')) {
         if (G('thromboembolism_risk') == 'faible') {
           return bleeding(['Continuation', 'Continuation']); // ligne 1 (tableau 2)
         }
@@ -54,7 +54,7 @@
       else if (G('bleeding_risk_2') == 'élevé') {
 
         // avant la procédure
-        if ((categorie('traitement1').includes('xaban') || categorie('traitement2').includes('xaban')) && G('cockroft_1') == 'Oui') {
+        if ((flags('traitement1').includes('xaban') || flags('traitement2').includes('xaban')) && G('cockroft_1') == 'Oui') {
           res_before = "Dernière prise à J-3."; // ligne 1 (tableau 3)
         }
 
@@ -68,7 +68,7 @@
         }
 
         // après la procédure
-        if (categorie('traitement1').includes('thrombo') || categorie('traitement2').includes('thrombo')){
+        if (flags('traitement1').includes('thrombo') || flags('traitement2').includes('thrombo')){
           res_after = "Anticoagulants at a prophylactic dose at least 6 hours after the procedure." // ligne 3 (tableau 3)
         }
         else {

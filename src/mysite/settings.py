@@ -147,7 +147,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 AUTH_USER_MODEL = 'account.Account'
 
 
-ALLOWED_HOSTS = ['192.168.1.100', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.1.58', '127.0.0.1']
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # During development only
