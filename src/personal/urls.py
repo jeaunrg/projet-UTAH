@@ -1,5 +1,5 @@
 from django.urls import path
-from personal.views import (
+from .views import (
     generate_pdf_view,
 )
 

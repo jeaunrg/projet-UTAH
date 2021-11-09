@@ -1,20 +1,35 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
-from patient.models import Patient
-from patient.forms import PreopPatientFileForm, PostopPatientFileForm, UpdatePatientFileForm
+from .models import Patient
+from .forms import PreopPatientFileForm, PostopPatientFileForm, UpdatePatientFileForm
 from account.models import Account
-from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
-from patient.utils import get_patients_page
-from patient.data import TRAIT_CHOICES
+from .utils import get_patients_page
+from .data import TRAIT_CHOICES
 
 N_PATIENTS_PER_PAGE = 10
 
 
+@login_required(login_url='login')
+def select_patient_view(request, op):
+    context = {'op': op}
+
+    if request.POST:
+        num_incl = request.POST['num_incl']
+        if Patient.objects.filter(pk=num_incl).exists():
+            patient = Patient.objects.get(pk=num_incl)
+            print(patient.slug)
+            if op == 'preop':
+                return redirect("patient:preop")
+                return
+            if op == 'postop':
+                return redirect("patient:postop", patient.slug)
+        else:
+            context['error'] = "Aucun patient n'a ce numéro d'inclusion."
+    return render(request, "patient/select_patient.html", context)
+
 
 @login_required(login_url='login')
 def preop_patient_view(request):
-
     context = {}
 
     form = PreopPatientFileForm(request.POST or None)
@@ -32,7 +47,6 @@ def preop_patient_view(request):
 
 @login_required(login_url='login')
 def postop_patient_view(request, slug):
-
     patient = get_object_or_404(Patient, slug=slug)
     context = {}
 
@@ -55,10 +69,10 @@ def postop_patient_view(request, slug):
 @login_required(login_url='login')
 def detail_patient_view(request, slug):
     patient = get_object_or_404(Patient, slug=slug)
-    context = patient.getInfos()
+    context = patient.get_infos()
 
     hm = int(context['height'] / 100)
-    context['height'] = "{0}m{1}".format(hm, int(context['height'] - hm*100))
+    context['height'] = "{0}m{1}".format(hm, int(context['height'] - hm * 100))
     context['age'] = ((context['ddi'] - context['ddn']) / 365).days
     context['patient'] = patient
     return render(request, 'patient/detail_patient.html', context)
@@ -66,7 +80,6 @@ def detail_patient_view(request, slug):
 
 @login_required(login_url='login')
 def edit_patient_view(request, slug):
-
     context = {'editable': False}
 
     patient = get_object_or_404(Patient, slug=slug)
@@ -78,7 +91,7 @@ def edit_patient_view(request, slug):
             obj.save()
             return redirect("patient:detail", slug)
 
-    form = UpdatePatientFileForm(initial=patient.getInfos())
+    form = UpdatePatientFileForm(initial=patient.get_infos())
     context['incl_num'] = patient.incl_num
     context['slug'] = patient.slug
     context['form'] = form

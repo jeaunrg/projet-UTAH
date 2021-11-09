@@ -4,6 +4,7 @@ from patient.data import QUESTIONS
 from django.contrib.auth.decorators import login_required
 import json
 
+
 @login_required(login_url='login')
 def algo_view(request, slug):
     context = {}
@@ -15,8 +16,8 @@ def algo_view(request, slug):
         patient.save()
         return redirect('patient:detail', slug)
 
-    context['default_responses'] = json.dumps(patient.getSerializableInfos())
-    context['auto_skip'] = False;
+    context['default_responses'] = json.dumps(patient.get_serializable_infos())
+    context['auto_skip'] = False
 
     context['questions'] = QUESTIONS
     return render(request, 'algorithm/manager.html', context)

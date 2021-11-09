@@ -3,7 +3,7 @@
   <div class="form-floating">
     <select class="form-select" id={{field.name}} name={{field.name}}>
       {% for value, label in field.field.choices %}
-          <option value="{{value}}"{% if field.value == value %} selected {% endif %}>{{ label }}</option>
+        <option value="{{value}}" {% if field.value == value %} selected {% endif %} >{{ label }}</option>
       {% endfor %}
     </select>
     <label for={{field.name}}>{{field.label}}</label>

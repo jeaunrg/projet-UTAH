@@ -1,20 +1,21 @@
-
 from django.http import HttpResponse
 from django.template.loader import get_template
-from django.template import Context
 import os
 
-
 import pdfkit
-def generate_pdf(template, context={}, save_filename="outut.pdf", download=False):
+
+
+def generate_pdf(template, context=None, save_filename="outut.pdf", download=False):
+    if context is None:
+        context = {}
     margin = '0'
     options = {
-	    'page-size': 'A4',
-	    'margin-top': margin+'in',
-	    'margin-right': margin+'in',
-	    'margin-bottom': margin+'in',
-	    'margin-left': margin+'in',
-	}
+        'page-size': 'A4',
+        'margin-top': margin + 'in',
+        'margin-right': margin + 'in',
+        'margin-bottom': margin + 'in',
+        'margin-left': margin + 'in',
+    }
 
     template = get_template(template)
     html = template.render(context)

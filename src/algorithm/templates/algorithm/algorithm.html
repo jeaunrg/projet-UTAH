@@ -7,14 +7,14 @@
 
       if (G('traitement1') == "Aspirine, Asaflow, Cardioaspirine") {
         if (G('pathologie') == 'Prévention primaire') {
-          return bleeding(['Arrétez ou continuez.', 'Arrétez.', 'Arrétez.']); // ligne 1 (tableau 1)
+          return bleeding(['Arrétez ou continuez le traitement.', 'Arrétez le traitement.', 'Arrétez le traitement.']); // ligne 1 (tableau 1)
         }
         else if (G('pathologie') == "Prévention secondaire" && G('traitement2') == 'Aucun') {
-          return bleeding(['Continuez.', 'Continuez.', 'Arrétez.']); //ligne 2 (tableau 1)
+          return bleeding(['Continuez le traitement.', 'Continuez le traitement.', 'Arrétez le traitement.']); //ligne 2 (tableau 1)
         }
       }
       else if (G('traitement1') == "Clopidogrel, PLAVIX" && G('pathologie') == "Prévention secondaire" && G('traitement2') == 'Aucun') {
-        return bleeding(['Continuez.', "Arrétez. Bridge par l'aspirine.", 'Arrétez.']); //ligne 3 (tableau 1)
+        return bleeding(['Continuez le traitement.', "Arrétez le traitement. Bridge par l'aspirine.", 'Arrétez le traitement.']); //ligne 3 (tableau 1)
       }
       else if (G('traitement1') == "Stents Cardiaques" && G('traitement2') != "Aucun") {
         if (G('stent_condition') != 'Autres') {

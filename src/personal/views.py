@@ -1,11 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from account.models import Account
 from django.contrib.auth.decorators import login_required
 from patient.models import Patient
-from personal.utils import generate_pdf
-from mysite.settings import STATIC_ROOT
+from .utils import generate_pdf
 from patient.data import QUESTIONS
-import os
 
 
 @login_required(login_url='login')
@@ -18,8 +15,7 @@ def home_screen_view(request, *args, **kwargs):
 def generate_pdf_view(request, slug, download='False'):
 	filename = 'output.pdf'
 	patient = get_object_or_404(Patient, slug=slug)
-	context = {}
-	context['patient'] = patient
+	context = {'patient': patient}
 	results = {}
 	for k, v in patient.resultats.items():
 		if k in QUESTIONS:

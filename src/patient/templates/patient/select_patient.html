@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+
+{% block content %}
+
+<style type="text/css">
+    .selection {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+    }
+</style>
+<a href="{% url 'home' %}" class="btn btn-dark" style="border-radius: 0;"><</a>
+
+<div class="selection">
+    {% if op == 'preop' %}
+        <h4> Quel traitement arréter et comment ? </h4>
+    {% elif op == 'postop' %}
+        <h4> Quand reprendre le traitement ? </h4>
+    {% endif %}
+    <hr>
+    <p>N°inclusion du patient:</p>
+    <form class="w-100 me-3" method="post">
+        {% csrf_token %}
+        <input name="num_incl" type="number" id="id_q" placeholder="">
+    </form>
+    <br>
+    <a href="{% url 'patient:preop' %}" class="btn btn-success">+ Nouveau patient</a>
+</div>
+
+{% endblock content %}

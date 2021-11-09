@@ -1,7 +1,5 @@
 from django.urls import path
-from algorithm.views import (
-	algo_view,
-)
+from .views import algo_view
 
 app_name = 'algorithm'
 

@@ -6,7 +6,6 @@
 {% block content %}
 
 <style type="text/css">
-
   	.submit-button{
   		max-width: 200px;
   	}
@@ -28,13 +27,13 @@
 
 
 <div class="container px-4">
-  <div class="header">
+<!--  <div class="header">
     <h4 class="h4"> Patient n°{{incl_num}}</h4>
-    <a href="{% url 'patient:postop' slug %}" style="float: right;" class="btn btn-link">Quand reprendre le traitement ?</a>        
-  </div>
+    <a href="{% url 'patient:postop' slug %}" style="float: right;" class="btn btn-link">Quand reprendre le traitement ?</a>
+  </div>-->
   <hr>
 
-  <h2 align="center"> Proposition de prise en charge </h2>
+  <h2 align="center"> Patient n°{{incl_num}} </h2>
 
   <hr>
   <div class="info container">
@@ -49,17 +48,22 @@
 
     <br>
 
-    {% if patient.resultats %}
+<!--    {% if patient.resultats %}
       <a class='btn btn-outline-success'  style="float: right;" href="{% url 'algorithm:algo' slug %}"> Relancer l'algorithme </a>
-    {% endif %}
+    {% endif %}-->
 
-    <h4> Traitements proposés</h4>
+    <h4> Proposition de prise en charge </h4>
       {% if patient.resultats %}
         <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'False' %}"> Afficher les résultats </a>
         <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'True' %}"> Télécharger les résultats </a>
-      {% else %}
-        <a class='btn btn-outline-success' href="{% url 'algorithm:algo' slug %}"> Lancer l'algorithme </a>
       {% endif %}
+
+      <a class='btn btn-link' href="{% url 'algorithm:algo' slug %}"> Quel traitement arréter et comment ? </a>
+      <br>
+      <a class='btn btn-link'  href="{% url 'patient:postop' slug %}">Quand reprendre le traitement ?</a>
+
+</div>
+
   </div>
   <br>
   <div class="card-footer text-muted">

@@ -28,8 +28,7 @@
 <form method="post" class="create-form">
   {% csrf_token %}
   <br>
-  <h3> Saisie des données pré-opératoires </h3>
-  <hr>
+  <h3> Saisie des données pré-opératoires </h3> <hr>
   {% for field in form %}
     {% include 'patient/snippets/field2html.html' %}
   {% endfor %}

@@ -18,6 +18,7 @@
       margin-top: 150px;
     }
 </style>
+
 <a href="{% url 'patient:detail' slug %}" style="border-radius: 0;" class="btn btn-dark "><</a>
 
 <form method="post" class="create-form">
@@ -29,7 +30,6 @@
     {% endfor %}
   <button type="submit" class="btn btn-success"> Enregistrer</button>
   <a type="button" href="{% url 'patient:detail' slug %}" class="btn btn-secondary">Annuler</a>
-
 
 </form>
 
