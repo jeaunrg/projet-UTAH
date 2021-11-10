@@ -14,6 +14,7 @@ def to_choice(data):
 
 class Patient(models.Model):
     # preop
+    
     height = models.IntegerField('taille')
     weight = models.IntegerField('poids')
     ddn = models.DateTimeField('Date de naissance')
