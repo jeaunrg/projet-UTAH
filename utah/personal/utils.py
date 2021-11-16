@@ -28,7 +28,6 @@ def generate_pdf(template, context=None, save_filename="outut.pdf", download=Fal
     os.remove("out.pdf")
     return response
 
-
 def generate_bar_code(num):
     svg = barcode.get('ean13', str(num))
-    return svg.render().decode("utf-8") 
+    return svg.render().decode("utf-8")

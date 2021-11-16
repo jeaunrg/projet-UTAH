@@ -8,5 +8,4 @@ app_name = 'personal'
 
 urlpatterns = [
     path('pdf/<slug>/<download>/', generate_pdf_view, name='pdf'),
-
  ]
