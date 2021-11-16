@@ -40,7 +40,7 @@ python3 -m venv venv
 - Installez les librairies python
 
 ```bash
-pip install -r ./src/requirements.txt
+pip install -r ./requirements.txt
 ```
 
 ### Lancer l'application web
