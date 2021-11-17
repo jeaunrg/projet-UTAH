@@ -37,6 +37,9 @@ class Patient(models.Model):
     traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), null=True, blank=True)
     resultats = JSONField(default=dict)
 
+    #-------------------- ALGO -----------------#
+    
+
     #-------------------- POSTOP -----------------#
     schema_therap = models.CharField("Schéma thérapeutique donné au patient", max_length=40, default="Date exacte",
                                      choices=to_choice(["Date exacte", "Terminologie 'dernière prise à J-xx'", "Pas d'arrêt du traitement"]))

@@ -13,6 +13,9 @@ def algo_view(request, slug):
 
     if request.POST:
         patient.resultats = {k: v for k, v in request.POST.items() if k != 'csrfmiddlewaretoken'}
+        for k, v in request.POST.items():
+            if k in patient.__dict__:
+                patient.__dict__[k] = v
         patient.save()
         return redirect('patient:detail', slug)
 

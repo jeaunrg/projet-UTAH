@@ -1,9 +1,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
-{% load bootstrap %}
 {% load static %}
 <style type="text/css">
   .logo {
@@ -24,6 +21,10 @@
   h1 {
     text-align: center;
   }
+  th {
+      float: left;
+  }
+
 </style>
 
 
@@ -32,32 +33,43 @@
   <p class="bar-code" > {{ barcode|safe }}</p>
 </div>
 
-<div class="body"">
-  <hr><h1> Modifications traitements fluidificateurs sanguin </h1> <hr>
-  <p> Patient N°{{num_patient}} </p>
+<div class="body">
+  <hr>
+  <h1> Modifications traitements fluidificateurs sanguin </h1>
+  <hr><br>
 
-  <br><h2> Informations </h2>
-  <table class="table table-striped">
+  <h2> Patient N°{{num_patient}} </h2>
+  <table class="table" id="info">
     <tbody>
-      {% for k, v in infos.items %}
-        <tr>
-          <th> {{k}} </th>
-          <td> {{v}} </td>
-        </tr>
-      {% endfor %}
+      <tr><th>Nom :</th>                <td>{{patient.lastname}}</td></tr>
+      <tr><th>Prénom :</th>             <td>{{patient.firstname}}</td></tr>
+      <tr><th>Date de naissance :</th>  <td>{{patient.ddn | date:'d-m-Y'}}</td></tr>
+      <tr><th>Poids :</th>              <td>{{patient.weight}} kg</td></tr>
+      <tr><th>Taille :</th>             <td>{{patient.height}} cm</td></tr>
+    </tbody>
+  </table>
+  <br>
+
+  <h2> Intervention </h2>
+  <table class="table" id="intervention">
+    <tbody>
+      <tr><th>Nom du chirurgien :</th>                  <td>{{patient.chirurgien}}</td></tr>
+      <tr><th>Type de chirurgie :</th>                  <td>{{patient.chirurgie}}</td></tr>
+      <tr><th>Date de la chirurgie :</th>               <td>{{patient.ddi | date:'d-m-Y'}}</td></tr>
+      <tr><th>Médecin quie fait la consultation :</th>  <td>{{patient.consultant}}</td></tr>
+      <tr><th>Date de la consultation :</th>            <td>{{patient.ddconsult | date:'d-m-Y'}}</td></tr>
+    </tbody>
+  </table>
+  <br>
+
+  <h2> Résultats </h2>
+  <table class="table" id="result">
+    <tbody>
+      <tr><th>Types de traitements :</th>          <td>{{patient.traitement1}}</td></tr>
+      <tr><th>Modalités d'interruption :</th>      <td>{{patient.resultat}}</td></tr>
+      <tr><th>Algorithme suivi :</th>              <td>Belge</td></tr>
     </tbody>
   </table>
 
-  <br><h2> Résultats </h2>
-  <table class="table table-striped">
-    <tbody>
-      {% for k, v in results.items %}
-        <tr>
-          <th> {{k}} </th>
-          <td> {{v}} </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 
 </div>

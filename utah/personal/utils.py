@@ -4,6 +4,8 @@ import os
 import pdfkit
 import barcode
 
+def get_patient_hospital_num(patient):
+    return 251239853244
 
 def generate_pdf(template, context=None, save_filename="outut.pdf", download=False):
     if context is None:
