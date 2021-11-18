@@ -40,9 +40,8 @@ class PostopPatientFileForm(CustomModelForm):
 class UpdatePatientFileForm(CustomModelForm):
     class Meta:
         model = Patient
-        fields = ["firstname", "lastname", "height", "weight", "ddn", "ddi", "intervention",
-                  "consultant",
-                  "chirurgien", "chirurgie", "pathologie", "traitement1", "traitement2",
+        fields = ["firstname", "lastname", "height", "weight", "ddn", "consultant",
+                  "ddi", "intervention", "chirurgien", "chirurgie", "pathologie", "traitement1", "traitement2",
                   "algo", "algo_result",
                   "schema_therap", "date_derniere_prise_th1", "date_derniere_prise1", "inobservance1", "date_derniere_prise_th2", "date_derniere_prise2", "inobservance2",
                   "aptt", "pt", "inr", "hemoglobine", "plaquette", "dfg", "vol_sang", "coag"]

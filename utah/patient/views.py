@@ -15,11 +15,11 @@ def select_patient_view(request, op):
     context = {'op': op}
 
     if request.POST:
-        num_incl = request.POST['num_incl']
-        if Patient.objects.filter(pk=num_incl).exists():
-            patient = Patient.objects.get(pk=num_incl)
+        incl_num = request.POST['incl_num']
+        if Patient.objects.filter(pk=incl_num).exists():
+            patient = Patient.objects.get(pk=incl_num)
             if op == 'preop':
-                return redirect("patient:preop")
+                return redirect("algorithm:algo", patient.slug)
             if op == 'postop':
                 return redirect("patient:postop", patient.slug)
         else:
@@ -34,7 +34,9 @@ def preop_patient_view(request):
     form = PreopPatientFileForm(request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
-        author = Account.objects.filter(username=request.user.username).first()
+        uname = request.user.username
+        author = Account.objects.filter(username=uname).first()
+        obj.consultant = uname
         obj.author = author
         obj.save()
         return redirect("patient:detail", obj.slug)

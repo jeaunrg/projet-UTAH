@@ -24,7 +24,7 @@
     <p>N°inclusion du patient:</p>
     <form class="w-100 me-3" method="post">
         {% csrf_token %}
-        <input name="num_incl" type="number" id="id_q" placeholder="">
+        <input name="incl_num" type="number" id="id_q" placeholder="">
     </form>
     <br>
     <a href="{% url 'patient:preop' %}" class="btn btn-success">+ Nouveau patient</a>

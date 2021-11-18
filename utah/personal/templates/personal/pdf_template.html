@@ -18,6 +18,11 @@
     padding-top: 150px;
     width: 75%;
   }
+  .title {
+    padding: 5px;
+    background: grey;
+    color: white
+  }
   h1 {
     text-align: center;
   }
@@ -37,11 +42,13 @@
 </div>
 
 <div class="body">
-  <hr>
-  <h1> Modifications traitements fluidificateurs sanguin </h1>
-  <hr><br>
 
-  <h2> Patient N°{{num_patient}} </h2>
+  <div class="title">
+    <h1> Modifications traitements fluidificateurs sanguin </h1>
+  </div>
+  <br><br>
+
+  <h2> Patient N°{{num_patient}} </h2><hr>
   <table class="table" id="info">
     <tbody>
       <tr><th>Nom :</th>                <td>{{patient.lastname}}</td></tr>
@@ -51,9 +58,9 @@
       <tr><th>Taille :</th>             <td>{{patient.height}} cm</td></tr>
     </tbody>
   </table>
-  <br>
+  <br><br>
 
-  <h2> Intervention </h2>
+  <h2> Intervention </h2><hr>
   <table class="table" id="intervention">
     <tbody>
       <tr><th>Nom du chirurgien :</th>    <td>{{patient.chirurgien}}</td></tr>
@@ -61,18 +68,18 @@
       <tr><th>Date de la chirurgie :</th> <td>{{patient.ddi | date:'d/m/Y'}}</td></tr>
     </tbody>
   </table>
-  <br>
+  <br><br>
 
-  <h2> Consultation </h2>
+  <h2> Consultation </h2><hr>
   <table class="table" id="consultation">
     <tbody>
-      <tr><th>Médecin qui fait la consultation :</th>  <td>{{patient.consultant}}</td></tr>
+      <tr><th>Médecin :</th>  <td>{{patient.consultant}}</td></tr>
       <tr><th>Date de la consultation :</th>           <td>{{patient.ddconsult | date:'d/m/Y'}}</td></tr>
     </tbody>
   </table>
-  <br>
+  <br><br>
 
-  <h2> Résultats </h2>
+  <h2> Résultats </h2><hr>
   <table class="table" id="result">
     <tbody>
       <tr><th>Algorithme suivi :</th>          <td>{{patient.algo}}</td></tr>

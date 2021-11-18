@@ -40,7 +40,9 @@
     <a href="{% url 'patient:edit' slug %}" style="float: right;" class="btn btn-outline-success">Modifier</a>
     <h4> Rappel des informations saisies </h4>
     <p><strong>Numéro de registre UTAH: {{incl_num}} </strong></p>
-    <p>Intervention prévue le {{ddi|date:'d/m/Y'}} </p>
+    {% if ddi %}
+      <p>Intervention prévue le {{ddi|date:'d/m/Y'}} </p>
+    {% endif %}
     <p>Taille: {{height}}. Poids: {{weight}} kg </p>
     <p>Date de naissance : {{ddn|date:'d/m/Y'}} {% if age %}, soit {{age}} ans le jour de l'intervention {% endif %} </p>
 

@@ -28,6 +28,9 @@
     right: 2%;
     top: 30%;
   }
+  h3 {
+    text-align: center;
+  }
 
 </style>
 <html>
@@ -36,6 +39,8 @@
 
   <button id="next-button" onclick="next()" class="btn btn-success btn-round">&rarr;</button>
   <button id="previous-button" onclick="previous()" class="btn btn-success btn-round">&larr;</button>
+
+  <h3> Patient n°{{incl_num}}</h3>
 
   <div id="question-container">
     <div class="progress">
