@@ -67,12 +67,12 @@
       var res_before = "";
       var res_after = none_output;
 
-      if (G('bleeding_risk_2') == 'faible') {
+      if (G('bleeding_risk') == 'faible') {
         res_before = "Pas de prise la nuit avant ou le matin du geste invasive";
         res_after = "Reprise au moment habituel et au moins 6 heures après la fin de la procédure";
       }
 
-      else if (G('bleeding_risk_2') == 'élevé') {
+      else if (G('bleeding_risk') == 'élevé') {
 
         // avant la procédure
         if ((flags('traitement1').includes('xaban') || flags('traitement2').includes('xaban')) && G('cockroft_1') == 'Oui') {
@@ -104,21 +104,21 @@
 
   function bleeding(results) {
     if (results.length == 3) {
-      if (G('bleeding_risk_1') == 'faible'){
+      if (G('bleeding_risk') == 'faible'){
         return results[0];
       }
-      else if (G('bleeding_risk_1') == 'intermédiaire'){
+      else if (G('bleeding_risk') == 'intermédiaire'){
         return results[1];
       }
-      else if (G('bleeding_risk_1') == 'élevé'){
+      else if (G('bleeding_risk') == 'élevé'){
         return results[2];
       }
     }
     else if (results.length == 2) {
-      if (G('bleeding_risk_2') == 'faible'){
+      if (G('bleeding_risk') == 'faible'){
         return results[0];
       }
-      else if (G('bleeding_risk_2') == 'élevé'){
+      else if (G('bleeding_risk') == 'élevé'){
         return results[1];
       }
     }

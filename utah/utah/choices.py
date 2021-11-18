@@ -1,5 +1,7 @@
 ALGO_CHOICES = ['Belge', 'Français', 'Européen']
 
+BLEEDRISK_CHOICES = ['faible', 'intermédiaire', 'élevé']
+
 CHIR_CHOICES = [
     "Chirurgie Cardiaque",
     "Chirurgie Digestive",
@@ -17,7 +19,7 @@ CHIR_CHOICES = [
     "Stomatologie"
 ]
 
-PATH_CHOICES = (
+PATH_CHOICES = [
     "Prévention primaire",
     "Prévention secondaire",
     "Fibrilation Atriale",
@@ -32,7 +34,7 @@ PATH_CHOICES = (
     "Greffe",
     "Thrombose Porte",
     "Thrombose Mesenterique"
-)
+]
 
 TRAIT_CHOICES = {
     "Aucun": "",

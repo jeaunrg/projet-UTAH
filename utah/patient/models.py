@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.conf import settings
 from jsonfield import JSONField
-from utah.choices import CHIR_CHOICES, PATH_CHOICES, TRAIT_CHOICES, ALGO_CHOICES
+from utah.choices import *
 from django.core.validators import RegexValidator
 
 def to_choice(data):
@@ -29,6 +29,7 @@ class Patient(models.Model):
     intervention = models.CharField('intervention', max_length=200, default="", blank=True)
     chirurgien = models.CharField('chirurgien', max_length=200, default="", blank=True)
     chirurgie = models.CharField("Discipline de l'intervention", max_length=40, choices=to_choice(CHIR_CHOICES), blank=True)
+    bleeding_risk = models.CharField("Risque hémorragique de la chirurgie", max_length=100, choices=to_choice(BLEEDRISK_CHOICES), blank=True)
 
     # consultation
     consultant = models.CharField('Medecin qui fait la consultation', max_length=200, default="", blank=True)

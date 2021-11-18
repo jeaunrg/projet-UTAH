@@ -35,13 +35,8 @@ QUESTIONS = {
         'question': 'Quel est le risque de thromboemobolisme ?',
         'answers': ['faible', 'élevé']
     },
-
-    'bleeding_risk_1': {
-        'question': "Choisissez le risque d'hémorragie pendant l'opération",
-        'answers': ['faible', 'intermédiaire', 'élevé']
-    },
-    'bleeding_risk_2': {
-        'question': "Choisissez le risque d'hémorragie pendant l'opération",
+    'bleeding_risk': {
+        'question': "Quel est le risque d'hémorragie pendant l'opération",
         'answers': ['faible', 'élevé']
     }
 }
