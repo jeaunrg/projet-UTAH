@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, HttpResponse
 from patient.models import Patient
 from .utils import generate_pdf, generate_bar_code, get_patient_hospital_num
 from algorithm.questions import QUESTIONS
 import os
-
+from django.db import connection
+import pandas as pd
+from io import BytesIO as IO
 
 @login_required(login_url='login')
 def home_screen_view(request, *args, **kwargs):
@@ -24,4 +27,19 @@ def generate_pdf_view(request, slug, download='False'):
 	context['num_patient'] = num_patient
 	context['barcode'] = generate_bar_code(num_patient)
 	context['patient'] = patient
-	return generate_pdf("personal/pdf_template.html", context, 'output.pdf', download=='True')
+	return generate_pdf("personal/pdf_template.html", context, 'patient_{}.pdf'.format(patient.incl_num), download=='True')
+
+
+@login_required(login_url='login')
+def download_data_view(request):
+	query = str(Patient.objects.all().query)
+	df = pd.read_sql_query(query, connection)
+	excel_file = IO()
+	xlwriter = pd.ExcelWriter(excel_file, engine='xlsxwriter')
+	df.to_excel(xlwriter, 'sheetname')
+	xlwriter.save()
+	xlwriter.close()
+	excel_file.seek(0)
+	response = HttpResponse(excel_file.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+	response['Content-Disposition'] = 'attachment; filename=data.xlsx'
+	return response

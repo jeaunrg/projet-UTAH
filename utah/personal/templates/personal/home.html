@@ -15,9 +15,8 @@
 </style>
 
 <div id="centered-buttons" class="btn-group-vertical">
-  <a type="button" href="{% url 'patient:select' 'preop' %}" class="btn btn-outline-success">Quel traitement arréter et comment ?</a>
-  <a type="button" href="{% url 'patient:select' 'postop' %}" class="btn btn-outline-success">Quand reprendre le traitement ?</a>
-  <a type="button" href="{% url 'patient:patients' 'all' %}" class="btn btn-success">Patients</a>
+  <a type="button" href="{% url 'patient:preop' %}" class="btn btn-outline-success">Inclure un nouveau patient</a>
+  <a type="button" href="{% url 'patient:patients' 'all' %}" class="btn btn-outline-success">Retrouver un patient déjà inclus</a>
 
 
 </div>

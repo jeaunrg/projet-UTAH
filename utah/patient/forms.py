@@ -19,8 +19,7 @@ class CustomModelForm(forms.ModelForm):
 class PreopPatientFileForm(CustomModelForm):
     class Meta:
         model = Patient
-        fields = ["firstname", "lastname", "height", "weight", "ddn", "ddi", "intervention",
-                  "chirurgien", "chirurgie", "pathologie", "traitement1", "traitement2"]
+        fields = ["incl_num", "height", "weight", "ddn", "chirurgie", "ddi", "intervention", "chirurgien"]
 
 
 class PostopPatientFileForm(CustomModelForm):
