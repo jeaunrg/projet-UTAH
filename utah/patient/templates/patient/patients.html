@@ -40,9 +40,6 @@
 
   <div>
     <a href="{% url 'patient:preop' %}" class="btn btn-success">+ Nouveau patient</a>
-<!--
-    <a href="{% url 'patient:preop' %}" style="float: right;" class="btn btn-link">Quel traitement arréter et comment ?</a>
--->
   </div>
 
   {% if n_patients %}
@@ -52,28 +49,28 @@
   <div class="table-responsive">
     <table id="mytable" class="table table-bordred table-striped sortable">
       <thead>
-        <th>N°Patient</th>
+        <th>N°Utah</th>
+        <th>N°Dossier</th>
         <th>Prénom</th>
         <th>Nom</th>
         <th>Intervention</th>
         <th>Chirurgie</th>
         <th>Pathologie</th>
-        <th>Traitement 1</th>
-        <th>Traitement 2</th>
-        <th>Auteur</th>
+        <th>Chirurgien</th>
+        <th>Consultation</th>
       </thead>
       <tbody>
         {% for file in patients %}
           <tr data-href="{% url 'patient:detail' file.slug %}">
             <td>{{file.incl_num}}</td>
+            <td>{{file.hosp_num}}</td>
             <td>{{file.firstname}}</td>
-            <td>{{file.lastname}}</td>            
+            <td>{{file.lastname}}</td>
             <td>{{file.intervention}}</td>
             <td>{{file.chirurgie}}</td>
             <td>{{file.pathologie}}</td>
-            <td>{{file.traitement1}}</td>
-            <td>{{file.traitement2}}</td>
-            <td>{{file.author}}</td>
+            <td>{{file.chirurgien}}</td>
+            <td>{{file.consultant}}</td>
           </tr>
         {% endfor %}
       </tbody>

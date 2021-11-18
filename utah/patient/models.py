@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django.conf import settings
 from jsonfield import JSONField
 from utah.choices import CHIR_CHOICES, PATH_CHOICES, TRAIT_CHOICES, ALGO_CHOICES
-
+from django.core.validators import RegexValidator
 
 def to_choice(data):
     if isinstance(data, dict):
@@ -15,21 +15,24 @@ def to_choice(data):
 class Patient(models.Model):
     #-------------------- PREOP -----------------#
     # patient
+    hosp_num = models.CharField("n°dossier", max_length=12, default="", validators=[
+        RegexValidator(regex='^.{12}$', message='Length has to be 12'),
+        RegexValidator(regex='^[0-9]*$', message='Only digits accepted')])
     firstname = models.CharField('prénom', max_length=200, default="")
     lastname = models.CharField('nom', max_length=200, default="")
     height = models.IntegerField('taille')
     weight = models.IntegerField('poids')
-    ddn = models.DateTimeField('Date de naissance')
+    ddn = models.DateField('Date de naissance')
 
     # intervention
-    ddi = models.DateTimeField("Date de l'intervention", null=True, blank=True)
+    ddi = models.DateField("Date de l'intervention", null=True, blank=True)
     intervention = models.CharField('intervention', max_length=200, default="", blank=True)
     chirurgien = models.CharField('chirurgien', max_length=200, default="", blank=True)
     chirurgie = models.CharField("Discipline de l'intervention", max_length=40, choices=to_choice(CHIR_CHOICES), blank=True)
 
     # consultation
     consultant = models.CharField('Medecin qui fait la consultation', max_length=200, default="", blank=True)
-    ddconsult = models.DateTimeField("Date de la consultation", auto_now_add=True, blank=True)
+    ddconsult = models.DateField("Date de la consultation", auto_now_add=True, blank=True)
 
     # traitement
     pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=to_choice(PATH_CHOICES), blank=True)
@@ -46,13 +49,13 @@ class Patient(models.Model):
     schema_therap = models.CharField("Schéma thérapeutique donné au patient", max_length=40, default="Date exacte",
                                      choices=to_choice(["Date exacte", "Terminologie 'dernière prise à J-xx'", "Pas d'arrêt du traitement"]))
     # traitement 1
-    date_derniere_prise_th1 = models.DateTimeField('Date de dernière prise théorique (premier traitement)', null=True, blank=True)
-    date_derniere_prise1 = models.DateTimeField('Date de dernière prise pratique (premier traitement)', null=True, blank=True)
+    date_derniere_prise_th1 = models.DateField('Date de dernière prise théorique (premier traitement)', null=True, blank=True)
+    date_derniere_prise1 = models.DateField('Date de dernière prise pratique (premier traitement)', null=True, blank=True)
     inobservance1 = models.CharField("Inobservance (premier traitement)", max_length=40, default="Pas d'inobservance",
                                      choices=to_choice(["Pas d'inobservance", "Oubli", "Incompréhension", "Contre-ordre médical"]))
     # traitement 2
-    date_derniere_prise_th2 = models.DateTimeField('Date de dernière prise théorique (deuxième traitement)', null=True, blank=True)
-    date_derniere_prise2 = models.DateTimeField('Date de dernière prise pratique (deuxième traitement)', null=True, blank=True)
+    date_derniere_prise_th2 = models.DateField('Date de dernière prise théorique (deuxième traitement)', null=True, blank=True)
+    date_derniere_prise2 = models.DateField('Date de dernière prise pratique (deuxième traitement)', null=True, blank=True)
     inobservance2 = models.CharField("Inobservance (deuxième traitement)", max_length=40, default="Pas d'inobservance",
                                      choices=to_choice(["Pas d'inobservance", "Oubli", "Incompréhension", "Contre-ordre médical"]))
 
@@ -98,6 +101,13 @@ class Patient(models.Model):
                     v = ""
                 infos[k] = v
         return infos
+
+    def get_age_at_intervention(self):
+        return ((self.ddi - self.ddn) / 365).days
+
+    def get_height(self):
+        hm = int(self.height / 100)
+        return "{0}m{1}".format(hm, int(self.height - hm * 100))
 
     def get_algo_result(self):
         if '\n' in self.algo_result:

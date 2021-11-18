@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import Patient
 
 
@@ -10,7 +9,7 @@ class CustomModelForm(forms.ModelForm):
 
     def init_input_types(self):
         for field in self:
-            if isinstance(field.field, forms.fields.DateTimeField):
+            if isinstance(field.field, (forms.fields.DateField)):
                 field.input_type = 'date'
             else:
                 field.input_type = field.field.widget.input_type
@@ -19,7 +18,7 @@ class CustomModelForm(forms.ModelForm):
 class PreopPatientFileForm(CustomModelForm):
     class Meta:
         model = Patient
-        fields = ["incl_num", "height", "weight", "ddn", "chirurgie", "ddi", "intervention", "chirurgien"]
+        fields = ["hosp_num", "firstname", "lastname", "height", "weight", "ddn", "chirurgie", "ddi", "intervention", "chirurgien"]
 
 
 class PostopPatientFileForm(CustomModelForm):
@@ -39,7 +38,7 @@ class PostopPatientFileForm(CustomModelForm):
 class UpdatePatientFileForm(CustomModelForm):
     class Meta:
         model = Patient
-        fields = ["firstname", "lastname", "height", "weight", "ddn", "consultant",
+        fields = ["hosp_num", "firstname", "lastname", "height", "weight", "ddn", "consultant",
                   "ddi", "intervention", "chirurgien", "chirurgie", "pathologie", "traitement1", "traitement2",
                   "algo", "algo_result",
                   "schema_therap", "date_derniere_prise_th1", "date_derniere_prise1", "inobservance1", "date_derniere_prise_th2", "date_derniere_prise2", "inobservance2",

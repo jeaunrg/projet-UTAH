@@ -30,16 +30,15 @@ def select_patient_view(request, op):
 @login_required(login_url='login')
 def preop_patient_view(request):
     context = {}
-
     form = PreopPatientFileForm(request.POST or None)
     if form.is_valid():
-        obj = form.save(commit=False)
+        patient = form.save(commit=False)
         uname = request.user.username
         author = Account.objects.filter(username=uname).first()
-        obj.consultant = uname
-        obj.author = author
-        obj.save()
-        return redirect("patient:detail", obj.slug)
+        patient.consultant = uname
+        patient.author = author
+        patient.save()
+        return redirect("patient:detail", patient.slug)
 
     context['form'] = form
     return render(request, "patient/preop_patient.html", context)
@@ -78,32 +77,27 @@ def postop_patient_view(request, slug):
 @login_required(login_url='login')
 def detail_patient_view(request, slug):
     patient = get_object_or_404(Patient, slug=slug)
-    context = patient.get_infos()
-
-    hm = int(context['height'] / 100)
-    context['height'] = "{0}m{1}".format(hm, int(context['height'] - hm * 100))
-    if context['ddi']:
-        context['age'] = ((context['ddi'] - context['ddn']) / 365).days
+    context = {}
     context['patient'] = patient
     return render(request, 'patient/detail_patient.html', context)
 
 
 @login_required(login_url='login')
 def edit_patient_view(request, slug):
-    context = {'editable': False}
+    context = {}
 
     patient = get_object_or_404(Patient, slug=slug)
 
+    form = UpdatePatientFileForm(request.POST or None, instance=patient)
+
     if request.POST:
-        form = UpdatePatientFileForm(request.POST, instance=patient)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
             return redirect("patient:detail", slug)
-
-    form = UpdatePatientFileForm(initial=patient.get_infos())
-    context['incl_num'] = patient.incl_num
-    context['slug'] = patient.slug
+    print(form)
+    # form = UpdatePatientFileForm(None, instance=patient)#initial=patient.get_infos())
+    context['patient'] = patient
     context['form'] = form
     return render(request, 'patient/edit_patient.html', context)
 

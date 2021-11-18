@@ -6,9 +6,6 @@ import barcode
 import random
 
 
-def get_patient_hospital_num(patient):
-    return random.randint(100000000000, 900000000000)
-
 def generate_pdf(template, context={}, save_filename="outut.pdf", download=False):
     margin = '0'
     options = {

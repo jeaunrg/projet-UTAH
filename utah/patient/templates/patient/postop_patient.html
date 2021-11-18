@@ -30,12 +30,12 @@
 
 </style>
 
-<a href="{% url 'patient:detail' slug %}" style="border-radius: 0;" class="btn btn-dark"><</a>
+<a href="{% url 'patient:detail' patient.slug %}" style="border-radius: 0;" class="btn btn-dark"><</a>
 
 <form method="post" class="create-form">
   {% csrf_token %}
   <br>
-  <h3> Patient n° {{patient.incl_num}} | Saisie des données post-opératoires </h3> <hr>
+  <h3> Patient n° {{patient.hosp_num}} | Saisie des données post-opératoires </h3> <hr>
   {% include 'patient/snippets/field2html.html' with field=form.schema_therap %}
 
   <div class="table-responsive">
@@ -55,14 +55,8 @@
         <td> {{patient.categorie1}} </td>
         <td> {{patient.pathologie}} </td>
         <td> {{patient.date_derniere_prise_th1 | date:'d/m/Y'}} </td>
-        <td> <input type="date" name="date_derniere_prise1" id="date_derniere_prise1" class="form-control" value="{{patient.date_derniere_prise1 | date:'Y-m-d'}}"> </td>
-        <td>
-          <select class="form-select" id="inobservance1" name="inobservance1">
-            {% for value, label in form.inobservance1.field.choices %}
-              <option value="{{value}}" {% if field.value == value %} selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-        </td>
+        <td>{% include 'patient/snippets/field2html.html' with field=form.date_derniere_prise1 nolabel='True' %}</td>
+        <td>{% include 'patient/snippets/field2html.html' with field=form.inobservance1 nolabel='True' %}</td>
       </tr>
       {% if patient.traitement2 %}
         <tr>

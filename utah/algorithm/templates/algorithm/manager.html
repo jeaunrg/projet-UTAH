@@ -35,12 +35,12 @@
 </style>
 <html>
 
-  <a href="{% url 'patient:detail' slug %}" style="border-radius: 0;" class="btn btn-dark"><</a>
+  <a href="{% url 'patient:detail' patient.slug %}" style="border-radius: 0;" class="btn btn-dark"><</a>
 
   <button id="next-button" onclick="next()" class="btn btn-success btn-round">&rarr;</button>
   <button id="previous-button" onclick="previous()" class="btn btn-success btn-round">&larr;</button>
 
-  <h3> Patient n°{{incl_num}}</h3>
+  <h3> Patient n°{{patient.hosp_num}}</h3>
 
   <div id="question-container">
     <div class="progress">

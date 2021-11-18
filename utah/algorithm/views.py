@@ -9,8 +9,7 @@ import json
 def algo_view(request, slug):
     context = {}
     patient = get_object_or_404(Patient, slug=slug)
-    context['slug'] = slug
-    context['incl_num'] = patient.incl_num
+    context['patient'] = patient
 
     if request.POST:
         patient.algo_complete_results = {k: v for k, v in request.POST.items() if k != 'csrfmiddlewaretoken'}

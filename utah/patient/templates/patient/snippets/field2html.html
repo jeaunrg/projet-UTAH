@@ -1,22 +1,30 @@
-<!-- Combo box with bootstrap -->
-{% if field.input_type == 'select' %}
+{% if not nolabel %}
   <div class="form-floating">
+{% else %}
+  <div class="form">
+{% endif %}
+
+  <!-- Combo box -->
+  {% if field.input_type == 'select' %}
     <select class="form-select" id={{field.name}} name={{field.name}}>
       {% for value, label in field.field.choices %}
         <option value="{{value}}" {% if field.value == value %} selected {% endif %} >{{ label }}</option>
       {% endfor %}
     </select>
-    <label for={{field.name}}>{{field.label}}</label>
-  </div>
 
-<!-- other inputs with bootstrap -->
-{% else %}
-  <div class="form-floating">
-    {% if field.input_type == 'date' %}
-      <input {% if field.field.required %} required {% endif %} type="{{field.input_type}}" name={{field.name}} id={{field.name}} class="form-control" placeholder={{field.label}} value="{{field.value|date:'Y-m-d'}}">
-    {% else %}
-      <input {% if field.field.required %} required {% endif %} type="{{field.input_type}}" name={{field.name}} id={{field.name}} class="form-control" placeholder={{field.label}} value="{{field.value}}">
-    {% endif %}
+  <!-- not formatted date -->
+  {% elif field.input_type == 'date' and patient.slug %}
+    <input {% if field.field.required %} required {% endif %} type="{{field.input_type}}" name={{field.name}} id={{field.name}} class="form-control" placeholder={{field.label}} value="{{field.value|date:'Y-m-d'}}">
+
+  <!-- other input -->
+  {% else %}
+    <input {% if field.field.required %} required {% endif %} type="{{field.input_type}}" name={{field.name}} id={{field.name}} class="form-control" placeholder={{field.label}} value="{{field.value}}">
+
+  {% endif %}
+
+  <!-- label -->
+  {% if not nolabel %}
     <label for={{field.name}}>{{field.label}}</label>
-  </div>
-{% endif %}
+  {% endif %}
+
+</div>

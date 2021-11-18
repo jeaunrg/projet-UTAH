@@ -27,47 +27,45 @@
 
 
 <div class="container px-4">
-<!--  <div class="header">
-    <h4 class="h4"> Patient n°{{incl_num}}</h4>
-    <a href="{% url 'patient:postop' slug %}" style="float: right;" class="btn btn-link">Quand reprendre le traitement ?</a>
-  </div>-->
   <hr>
 
-  <h2 align="center"> Patient n°{{incl_num}} </h2>
+  <h2 align="center"> Patient n°{{patient.hosp_num}} </h2>
 
   <hr>
   <div class="info container">
-    <a href="{% url 'patient:edit' slug %}" style="float: right;" class="btn btn-outline-success">Modifier</a>
+    <a href="{% url 'patient:edit' patient.slug %}" style="float: right;" class="btn btn-outline-success">Modifier</a>
     <h4> Rappel des informations saisies </h4>
-    <p><strong>Numéro de registre UTAH: {{incl_num}} </strong></p>
+    <p><strong>Numéro de registre UTAH: {{patient.incl_num}} </strong></p>
     {% if ddi %}
-      <p>Intervention prévue le {{ddi|date:'d/m/Y'}} </p>
+      <p>Intervention prévue le {{patient.ddi | date:'d/m/Y'}} </p>
     {% endif %}
-    <p>Taille: {{height}}. Poids: {{weight}} kg </p>
-    <p>Date de naissance : {{ddn|date:'d/m/Y'}} {% if age %}, soit {{age}} ans le jour de l'intervention {% endif %} </p>
+    <p>Taille: {{patient.get_height}}. Poids: {{patient.weight}} kg </p>
+    <p>Date de naissance : {{patient.ddn | date:'d/m/Y'}} {% if patient.ddi %}, soit {{patient.get_age_at_intervention}} ans le jour de l'intervention {% endif %} </p>
 
-    {% if chirurgie %}
-      <p>Catégorie de l'intervention : {{chirurgie}}</p>
+    {% if patient.chirurgie %}
+      <p>Catégorie de l'intervention : {{patient.chirurgie}}</p>
     {% endif %}
-    {% if intervention %}
-      <p>Intitulé de l'intervention : {{intervention}}</p>
+    {% if patient.intervention %}
+      <p>Intitulé de l'intervention : {{patient.intervention}}</p>
     {% endif %}
-
+    {% if patient.chirurgien %}
+      <p>Chirurgien : {{patient.chirurgien}}</p>
+    {% endif %}
     <br>
 
     <h4> Proposition de prise en charge </h4>
-      <a class='btn btn-link' href="{% url 'algorithm:algo' slug %}"> Quel traitement arréter et comment ? </a>
+      <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug %}"> Quel traitement arréter et comment ? </a>
       <br>
-      <a class='btn btn-link'  href="{% url 'patient:postop' slug %}">Quand reprendre le traitement ?</a>
+      <a class='btn btn-link'  href="{% url 'patient:postop' patient.slug %}">Quand reprendre le traitement ?</a>
     <br><br>
-    <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'False' %}"> Afficher les résultats </a>
-    <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'True' %}"> Télécharger les résultats </a>
+    <a class='btn btn-primary' href="{% url 'personal:pdf' patient.slug 'False' %}"> Afficher les résultats </a>
+    <a class='btn btn-primary' href="{% url 'personal:pdf' patient.slug 'True' %}"> Télécharger les résultats </a>
   </div>
 
 </div>
 <br>
 <div class="card-footer text-muted">
-  Modifié le {{date_updated |date:'d/m/Y'}} par @{{patient.author}}
+  Modifié le {{patient.date_updated |date:'d/m/Y'}} par @{{patient.author}}
 </div>
 
 

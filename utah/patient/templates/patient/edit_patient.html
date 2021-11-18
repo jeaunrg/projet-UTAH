@@ -19,17 +19,17 @@
     }
 </style>
 
-<a href="{% url 'patient:detail' slug %}" style="border-radius: 0;" class="btn btn-dark "><</a>
+<a href="{% url 'patient:detail' patient.slug %}" style="border-radius: 0;" class="btn btn-dark "><</a>
 
 <form method="post" class="create-form">
   {% csrf_token %}
     <br>
-    <h3> Patient n°{{incl_num}}</h3><hr>
+    <h3> Patient n°{{patient.hosp_num}}</h3><hr>
     {% for field in form %}
       {% include 'patient/snippets/field2html.html' %}
     {% endfor %}
   <button type="submit" class="btn btn-success"> Enregistrer</button>
-  <a type="button" href="{% url 'patient:detail' slug %}" class="btn btn-secondary">Annuler</a>
+  <a type="button" href="{% url 'patient:detail' patient.slug %}" class="btn btn-secondary">Annuler</a>
 
 </form>
 
