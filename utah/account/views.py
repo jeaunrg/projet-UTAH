@@ -41,7 +41,6 @@ def logout_view(request):
 def account_view(request):
     context = {}
     if request.POST:
-        
         form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             account = form.save(commit=False)

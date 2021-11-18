@@ -45,8 +45,10 @@
         <div id="{{key}}" style="display: none;" class="btn-group-vertical">
           <h4> {{values.question}} </h4><hr>
           {% for ans in values.answers %}
-            <input type="radio" class="btn-check" value="{{ans}}" name="options-outlined {{key}}" id="{{key}}-{{ans}}" autocomplete="off">
-            <label class="btn btn-outline-secondary" for="{{key}}-{{ans}}">{{ans}}</label>
+            {% if ans %}
+              <input type="radio" class="btn-check" value="{{ans}}" name="options-outlined {{key}}" id="{{key}}-{{ans}}" autocomplete="off">
+              <label class="btn btn-outline-secondary" for="{{key}}-{{ans}}">{{ans}}</label>
+            {% endif %}
           {% endfor %}
         </div>
     {% endfor %}
@@ -199,7 +201,7 @@
   }
 
   function send_results() {
-    rp['conclusion'] = conclusion;
+    rp['algo_result'] = conclusion;
     const form = document.getElementById('algo-form');
 
     for (const key in rp) {

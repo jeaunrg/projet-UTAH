@@ -2,14 +2,14 @@ from django.db import models
 from django.utils.text import slugify
 from django.conf import settings
 from jsonfield import JSONField
-from .data import CHIR_CHOICES, PATH_CHOICES, TRAIT_CHOICES
+from utah.choices import CHIR_CHOICES, PATH_CHOICES, TRAIT_CHOICES, ALGO_CHOICES
 
 
 def to_choice(data):
     if isinstance(data, dict):
-        return [(i, i) for i in data.keys()]
+        return [('', '')] + [(i, i) for i in data.keys()]
     else:
-        return [(i, i) for i in data]
+        return [('', '')] + [(i, i) for i in data]
 
 
 class Patient(models.Model):
@@ -22,30 +22,36 @@ class Patient(models.Model):
     ddn = models.DateTimeField('Date de naissance')
 
     # intervention
-    ddi = models.DateTimeField("Date de l'intervention")
-    intervention = models.CharField('intervention', max_length=200, default="")
-    chirurgien = models.CharField('chirurgien', max_length=200, default="")
-    chirurgie = models.CharField("Discipline de l'intervention", max_length=40, choices=to_choice(CHIR_CHOICES), null=True, blank=True)
+    ddi = models.DateTimeField("Date de l'intervention", null=True, blank=True)
+    intervention = models.CharField('intervention', max_length=200, default="", blank=True)
+    chirurgien = models.CharField('chirurgien', max_length=200, default="", blank=True)
+    chirurgie = models.CharField("Discipline de l'intervention", max_length=40, choices=to_choice(CHIR_CHOICES), blank=True)
 
     # consultation
-    consultant = models.CharField('Medecin qui fait la consultation', max_length=200, default="", null=True, blank=True)
+    consultant = models.CharField('Medecin qui fait la consultation', max_length=200, default="", blank=True)
     ddconsult = models.DateTimeField("Date de la consultation", auto_now_add=True, blank=True)
 
     # traitement
-    pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=to_choice(PATH_CHOICES), null=True, blank=True)
-    traitement1 = models.CharField("Premier traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), null=True, blank=True)
-    traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), null=True, blank=True)
-    resultats = JSONField(default=dict)
+    pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=to_choice(PATH_CHOICES), blank=True)
+    traitement1 = models.CharField("Premier traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
+    traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
 
     #-------------------- ALGO -----------------#
-    
+    algo = models.CharField("Algorithme suivi", max_length=40, choices=to_choice(ALGO_CHOICES), blank=True)
+    algo_result = models.CharField('Résultat', max_length=400, default="", blank=True)
+    algo_complete_results = JSONField(default=dict)
+
 
     #-------------------- POSTOP -----------------#
     schema_therap = models.CharField("Schéma thérapeutique donné au patient", max_length=40, default="Date exacte",
                                      choices=to_choice(["Date exacte", "Terminologie 'dernière prise à J-xx'", "Pas d'arrêt du traitement"]))
+    # traitement 1
+    date_derniere_prise_th1 = models.DateTimeField('Date de dernière prise théorique (premier traitement)', null=True, blank=True)
     date_derniere_prise1 = models.DateTimeField('Date de dernière prise pratique (premier traitement)', null=True, blank=True)
     inobservance1 = models.CharField("Inobservance (premier traitement)", max_length=40, default="Pas d'inobservance",
                                      choices=to_choice(["Pas d'inobservance", "Oubli", "Incompréhension", "Contre-ordre médical"]))
+    # traitement 2
+    date_derniere_prise_th2 = models.DateTimeField('Date de dernière prise théorique (deuxième traitement)', null=True, blank=True)
     date_derniere_prise2 = models.DateTimeField('Date de dernière prise pratique (deuxième traitement)', null=True, blank=True)
     inobservance2 = models.CharField("Inobservance (deuxième traitement)", max_length=40, default="Pas d'inobservance",
                                      choices=to_choice(["Pas d'inobservance", "Oubli", "Incompréhension", "Contre-ordre médical"]))
@@ -77,13 +83,29 @@ class Patient(models.Model):
             self.save()
 
     def categorie1(self):
-        return TRAIT_CHOICES.get(self.traitement1).split('-')[0]
+        if self.traitement1 in TRAIT_CHOICES:
+            return TRAIT_CHOICES.get(self.traitement1).split('-')[0]
 
     def categorie2(self):
-        return TRAIT_CHOICES.get(self.traitement2).split('-')[0]
+        if self.traitement2 in TRAIT_CHOICES:
+            return TRAIT_CHOICES.get(self.traitement2).split('-')[0]
 
     def get_infos(self):
-        return {k: v for k, v in self.__dict__.items() if k != '_state'}
+        infos = {}
+        for k, v in self.__dict__.items():
+            if k != '_state':
+                if v is None:
+                    v = ""
+                infos[k] = v
+        return infos
+
+    def get_algo_result(self):
+        if '\n' in self.algo_result:
+            output = "Avant l'intervention:\n- " + self.algo_result.replace('\n', "\nAprès l'intervention:\n- ")
+        else:
+            output = self.algo_result
+        output = output.replace('. ', '\n- ')
+        return output
 
     def get_serializable_infos(self):
         return {k: v for k, v in self.__dict__.items() if isinstance(v, (str, int, float, bool))}

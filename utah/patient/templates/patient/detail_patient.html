@@ -40,35 +40,32 @@
     <a href="{% url 'patient:edit' slug %}" style="float: right;" class="btn btn-outline-success">Modifier</a>
     <h4> Rappel des informations saisies </h4>
     <p><strong>Numéro de registre UTAH: {{incl_num}} </strong></p>
-    <p>Intervention prévue le {{ddi|date:'d-m-Y'}} </p>
+    <p>Intervention prévue le {{ddi|date:'d/m/Y'}} </p>
     <p>Taille: {{height}}. Poids: {{weight}} kg </p>
-    <p>Date de naissance : {{ddn|date:'d-m-Y'}}, soit {{age}} ans le jour de la chirurgie.</p>
-    <p>Catégorie de l'intervention : {{chirurgie}}</p>
-    <p>Intitulé de l'intervention : {{intervention}}</p>
+    <p>Date de naissance : {{ddn|date:'d/m/Y'}} {% if age %}, soit {{age}} ans le jour de l'intervention {% endif %} </p>
+
+    {% if chirurgie %}
+      <p>Catégorie de l'intervention : {{chirurgie}}</p>
+    {% endif %}
+    {% if intervention %}
+      <p>Intitulé de l'intervention : {{intervention}}</p>
+    {% endif %}
 
     <br>
 
-<!--    {% if patient.resultats %}
-      <a class='btn btn-outline-success'  style="float: right;" href="{% url 'algorithm:algo' slug %}"> Relancer l'algorithme </a>
-    {% endif %}-->
-
     <h4> Proposition de prise en charge </h4>
-      {% if patient.resultats %}
-        <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'False' %}"> Afficher les résultats </a>
-        <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'True' %}"> Télécharger les résultats </a>
-      {% endif %}
-
       <a class='btn btn-link' href="{% url 'algorithm:algo' slug %}"> Quel traitement arréter et comment ? </a>
       <br>
       <a class='btn btn-link'  href="{% url 'patient:postop' slug %}">Quand reprendre le traitement ?</a>
+    <br><br>
+    <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'False' %}"> Afficher les résultats </a>
+    <a class='btn btn-primary' href="{% url 'personal:pdf' slug 'True' %}"> Télécharger les résultats </a>
+  </div>
 
 </div>
-
-  </div>
-  <br>
-  <div class="card-footer text-muted">
-    Modifié le {{date_updated |date:'d/m/Y'}} par @{{patient.author}}
-  </div>
+<br>
+<div class="card-footer text-muted">
+  Modifié le {{date_updated |date:'d/m/Y'}} par @{{patient.author}}
 </div>
 
 

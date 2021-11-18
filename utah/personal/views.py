@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from patient.models import Patient
 from .utils import generate_pdf, generate_bar_code, get_patient_hospital_num
-from patient.data import QUESTIONS
+from algorithm.questions import QUESTIONS
 import os
 
 

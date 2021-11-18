@@ -3,13 +3,13 @@ from django.template.loader import get_template
 import os
 import pdfkit
 import barcode
+import random
+
 
 def get_patient_hospital_num(patient):
-    return 251239853244
+    return random.randint(100000000000, 900000000000)
 
-def generate_pdf(template, context=None, save_filename="outut.pdf", download=False):
-    if context is None:
-        context = {}
+def generate_pdf(template, context={}, save_filename="outut.pdf", download=False):
     margin = '0'
     options = {
         'page-size': 'A4',

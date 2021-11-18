@@ -4,7 +4,8 @@ from .forms import PreopPatientFileForm, PostopPatientFileForm, UpdatePatientFil
 from account.models import Account
 from django.contrib.auth.decorators import login_required
 from .utils import get_patients_page
-from .data import TRAIT_CHOICES
+from utah.choices import TRAIT_CHOICES
+from datetime import datetime
 
 N_PATIENTS_PER_PAGE = 10
 
@@ -17,10 +18,8 @@ def select_patient_view(request, op):
         num_incl = request.POST['num_incl']
         if Patient.objects.filter(pk=num_incl).exists():
             patient = Patient.objects.get(pk=num_incl)
-            print(patient.slug)
             if op == 'preop':
                 return redirect("patient:preop")
-                return
             if op == 'postop':
                 return redirect("patient:postop", patient.slug)
         else:
@@ -41,7 +40,6 @@ def preop_patient_view(request):
         return redirect("patient:detail", obj.slug)
 
     context['form'] = form
-    context['is_editable'] = True
     return render(request, "patient/preop_patient.html", context)
 
 
@@ -49,6 +47,16 @@ def preop_patient_view(request):
 def postop_patient_view(request, slug):
     patient = get_object_or_404(Patient, slug=slug)
     context = {}
+
+    if not patient.date_derniere_prise_th1:
+        patient.date_derniere_prise_th1 = datetime.now()
+    if not patient.date_derniere_prise1:
+        patient.date_derniere_prise1 = patient.date_derniere_prise_th1
+
+    if not patient.date_derniere_prise_th2:
+        patient.date_derniere_prise_th2 = datetime.now()
+    if not patient.date_derniere_prise2:
+        patient.date_derniere_prise2 = patient.date_derniere_prise_th2
 
     form = PostopPatientFileForm(request.POST or None, instance=patient)
     if form.is_valid():
@@ -62,7 +70,6 @@ def postop_patient_view(request, slug):
     context['form'] = form
     context['patient'] = patient
     context['categorie'] = TRAIT_CHOICES
-    context['is_editable'] = True
     return render(request, "patient/postop_patient.html", context)
 
 
@@ -73,7 +80,8 @@ def detail_patient_view(request, slug):
 
     hm = int(context['height'] / 100)
     context['height'] = "{0}m{1}".format(hm, int(context['height'] - hm * 100))
-    context['age'] = ((context['ddi'] - context['ddn']) / 365).days
+    if context['ddi']:
+        context['age'] = ((context['ddi'] - context['ddn']) / 365).days
     context['patient'] = patient
     return render(request, 'patient/detail_patient.html', context)
 
@@ -85,7 +93,7 @@ def edit_patient_view(request, slug):
     patient = get_object_or_404(Patient, slug=slug)
 
     if request.POST:
-        form = UpdatePatientFileForm(request.POST or None, instance=patient)
+        form = UpdatePatientFileForm(request.POST, instance=patient)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
@@ -95,7 +103,6 @@ def edit_patient_view(request, slug):
     context['incl_num'] = patient.incl_num
     context['slug'] = patient.slug
     context['form'] = form
-    context['is_editable'] = True
     return render(request, 'patient/edit_patient.html', context)
 
 

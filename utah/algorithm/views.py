@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from patient.models import Patient
-from patient.data import QUESTIONS
+from algorithm.questions import QUESTIONS
 from django.contrib.auth.decorators import login_required
 import json
 
@@ -12,7 +12,7 @@ def algo_view(request, slug):
     context['slug'] = slug
 
     if request.POST:
-        patient.resultats = {k: v for k, v in request.POST.items() if k != 'csrfmiddlewaretoken'}
+        patient.algo_complete_results = {k: v for k, v in request.POST.items() if k != 'csrfmiddlewaretoken'}
         for k, v in request.POST.items():
             if k in patient.__dict__:
                 patient.__dict__[k] = v
