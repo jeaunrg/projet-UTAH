@@ -13,7 +13,7 @@
     </select>
 
   <!-- not formatted date -->
-  {% elif field.input_type == 'date' and patient.slug %}
+  {% elif field.input_type == 'date' and format_date %}
     <input {% if field.field.required %} required {% endif %} type="{{field.input_type}}" name={{field.name}} id={{field.name}} class="form-control" placeholder={{field.label}} value="{{field.value|date:'Y-m-d'}}">
 
   <!-- other input -->

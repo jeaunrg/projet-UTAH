@@ -39,27 +39,29 @@
   <br>
   <div class="info container">
 
-      <a href="{% url 'patient:edit' patient.slug %}" style="float: right;padding: 4px;" class="btn btn-outline-success">Modifier</a>
-      <h4> Rappel des informations saisies </h4>
-      <hr>
-    <strong>Numéro de dossier</strong><a> {{patient.hosp_num}} </a><br>
-    <strong>Taille</strong> <a>{{patient.get_height}}. </a><br>
-    <strong>Poids</strong> <a>{{patient.weight}} kg </a><br>
-    <strong>Date de naissance </strong> <a>{{patient.ddn | date:'d/m/Y'}} {% if patient.ddi %}, soit {{patient.get_age_at_intervention}} ans le jour de l'intervention {% endif %} </a><br><br>
+    <a href="{% url 'patient:edit' patient.slug %}" style="float: right;padding: 4px;" class="btn btn-outline-success">Modifier</a>
+    <h4> Rappel des informations saisies </h4>
+    <hr>
+    <div style="padding-left: 10px;">
+      <strong>Numéro de dossier</strong><a> {{patient.hosp_num}} </a><br>
+      <strong>Taille</strong> <a>{{patient.get_height}}. </a><br>
+      <strong>Poids</strong> <a>{{patient.weight}} kg </a><br>
+      <strong>Date de naissance </strong> <a>{{patient.ddn | date:'d/m/Y'}} {% if patient.ddi %}, soit {{patient.get_age_at_intervention}} ans le jour de l'intervention {% endif %} </a><br><br>
 
-    <strong> Intervention </strong>
-    {% if patient.ddi %}
-      <a>Prévue le {{patient.ddi | date:'d/m/Y'}} </a>
-    {% endif %}<br>
-    {% if patient.chirurgie %}
-      <strong>Catégorie </strong> <a>{{patient.chirurgie}}</a><br>
-    {% endif %}
-    {% if patient.intervention %}
-      <strong>Intitulé </strong> <a>{{patient.intervention}}</a><br>
-    {% endif %}
-    {% if patient.chirurgien %}
-      <strong>Chirurgien </strong> <a>{{patient.chirurgien}}</a><br>
-    {% endif %}
+      <strong> Intervention </strong>
+      {% if patient.ddi %}
+        <a>Prévue le {{patient.ddi | date:'d/m/Y'}} </a>
+      {% endif %}<br>
+      {% if patient.chirurgie %}
+        <strong>Catégorie </strong> <a>{{patient.chirurgie}}</a><br>
+      {% endif %}
+      {% if patient.intervention %}
+        <strong>Intitulé </strong> <a>{{patient.intervention}}</a><br>
+      {% endif %}
+      {% if patient.chirurgien %}
+        <strong>Chirurgien </strong> <a>{{patient.chirurgien}}</a><br>
+      {% endif %}
+    </div>
     <br><br>
 
 

@@ -96,6 +96,7 @@ def edit_patient_view(request, slug):
 
     context['patient'] = patient
     context['form'] = form
+    context['format_date'] = True
     return render(request, 'patient/edit_patient.html', context)
 
 
@@ -124,19 +125,19 @@ def edit_traitement_view(request, slug, idtrt):
     patient = get_object_or_404(Patient, slug=slug)
     context['patient'] = patient
 
-    form = TraitementFileForm(request.POST or None)
-    context['form'] = form
-
+    form = TraitementFileForm(request.POST or patient.traitements[idtrt])
     if request.POST:
+
         if form.is_valid():
-            print(request.POST)
             if request.POST.get('submitType') == "delete":
-                print("delete")
                 del patient.traitements[idtrt]
             else:
                 patient.traitements[idtrt] = {k: v for k, v in request.POST.items() if k in form.fields}
             patient.save()
             return redirect("patient:detail", slug)
+
+    context['form'] = form
+
     return render(request, 'patient/edit_traitement.html', context)
 
 @login_required(login_url='login')
