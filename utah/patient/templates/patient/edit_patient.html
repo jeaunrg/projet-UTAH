@@ -24,7 +24,7 @@
 <form method="post" class="create-form">
   {% csrf_token %}
     <br>
-    <h3> Patient n°{{patient.hosp_num}}</h3><hr>
+    <h3> Patient n°{{patient.incl_num}}</h3><hr>
     {% for field in form %}
       {% include 'patient/snippets/field2html.html' %}
     {% endfor %}

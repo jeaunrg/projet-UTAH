@@ -1,16 +1,18 @@
 from django.db import models
 from django.utils.text import slugify
 from django.conf import settings
-from jsonfield import JSONField
 from utah.choices import *
 from django.core.validators import RegexValidator
 
-def to_choice(data):
-    if isinstance(data, dict):
-        return [('', '')] + [(i, i) for i in data.keys()]
-    else:
-        return [('', '')] + [(i, i) for i in data]
 
+def to_choice(data, add_empty=True):
+    if isinstance(data, dict):
+        choices = [(i, i) for i in data.keys()]
+    else:
+        choices = [(i, i) for i in data]
+    if add_empty:
+        choices = [('', '')] + choices
+    return choices
 
 class Patient(models.Model):
     #-------------------- PREOP -----------------#
@@ -36,6 +38,7 @@ class Patient(models.Model):
     ddconsult = models.DateField("Date de la consultation", auto_now_add=True, blank=True)
 
     # traitement
+    traitements = models.JSONField(default=dict, blank=True)    
     pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=to_choice(PATH_CHOICES), blank=True)
     traitement1 = models.CharField("Premier traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
     traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
@@ -43,7 +46,7 @@ class Patient(models.Model):
     #-------------------- ALGO -----------------#
     algo = models.CharField("Algorithme suivi", max_length=40, choices=to_choice(ALGO_CHOICES), blank=True)
     algo_result = models.CharField('Résultat', max_length=400, default="", blank=True)
-    algo_complete_results = JSONField(default=dict)
+    algo_complete_results = models.JSONField(default=dict)
 
 
     #-------------------- POSTOP -----------------#

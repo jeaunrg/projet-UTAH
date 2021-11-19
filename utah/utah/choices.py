@@ -2,6 +2,8 @@ ALGO_CHOICES = ['Belge', 'Français', 'Européen']
 
 BLEEDRISK_CHOICES = ['faible', 'intermédiaire', 'élevé']
 
+INOBS_CHOICES = ["Pas d'inobservance", "Oubli", "Incompréhension", "Contre-ordre médical"]
+
 CHIR_CHOICES = [
     "Chirurgie Cardiaque",
     "Chirurgie Digestive",
@@ -37,7 +39,6 @@ PATH_CHOICES = [
 ]
 
 TRAIT_CHOICES = {
-    "Aucun": "",
     "Aspirine, Asaflow, Cardioaspirine"   : "Antiagregant plaquettaire",
     "Clopidogrel, PLAVIX"                 : "Antiagregant plaquettaire",
     "Prasugrel, EFFIENT"                  : "Antiagregant plaquettaire",

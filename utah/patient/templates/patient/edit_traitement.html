@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+
+{% block content %}
+
+<style type="text/css">
+
+</style>
+
+<a href="{% url 'patient:detail' patient.slug %}" style="border-radius: 0;" class="btn btn-dark"><</a>
+
+<div class="container px-4">
+  <h2 align="center"> Patient n°{{patient.incl_num}} </h2>
+  <hr>
+  <form method="post" class="create-form" id="myform">
+    {% csrf_token %}
+
+    {% for field in form %}
+      {% include 'patient/snippets/field2html.html' %}
+    {% endfor %}
+
+    <input type="hidden" name="submitType" id="submitType">
+    <button type="submit" class="btn btn-success">Modifier</button>
+    <button type="submit" onclick='document.getElementById("submitType").value = "delete"' class="btn btn-danger">Supprimer</button>
+  </form>
+
+
+</div>
+
+{% endblock content %}

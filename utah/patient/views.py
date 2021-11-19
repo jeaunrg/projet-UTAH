@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Patient
-from .forms import PreopPatientFileForm, PostopPatientFileForm, UpdatePatientFileForm
+from .forms import PreopPatientFileForm, PostopPatientFileForm, UpdatePatientFileForm, TraitementFileForm
 from account.models import Account
 from django.contrib.auth.decorators import login_required
 from .utils import get_patients_page
@@ -61,11 +61,11 @@ def postop_patient_view(request, slug):
 
     form = PostopPatientFileForm(request.POST or None, instance=patient)
     if form.is_valid():
-        obj = form.save(commit=False)
+        patient = form.save(commit=False)
         author = Account.objects.filter(username=request.user.username).first()
-        obj.author = author
-        obj.save()
-        return redirect("patient:detail", obj.slug)
+        patient.author = author
+        patient.save()
+        return redirect("patient:detail", patient.slug)
 
     context['slug'] = slug
     context['form'] = form
@@ -85,22 +85,59 @@ def detail_patient_view(request, slug):
 @login_required(login_url='login')
 def edit_patient_view(request, slug):
     context = {}
-
     patient = get_object_or_404(Patient, slug=slug)
-
     form = UpdatePatientFileForm(request.POST or None, instance=patient)
 
     if request.POST:
         if form.is_valid():
-            obj = form.save(commit=False)
-            obj.save()
+            patient = form.save(commit=False)
+            patient.save()
             return redirect("patient:detail", slug)
-    print(form)
-    # form = UpdatePatientFileForm(None, instance=patient)#initial=patient.get_infos())
+
     context['patient'] = patient
     context['form'] = form
     return render(request, 'patient/edit_patient.html', context)
 
+
+@login_required(login_url='login')
+def add_traitement_view(request, slug):
+    context = {}
+    patient = get_object_or_404(Patient, slug=slug)
+    context['patient'] = patient
+
+    form = TraitementFileForm(request.POST or None)
+    context['form'] = form
+
+    if request.POST:
+        if form.is_valid():
+            idtrt = 0
+            while str(idtrt) in patient.traitements:
+                idtrt += 1
+            patient.traitements[idtrt] = {k: v for k, v in request.POST.items() if k in form.fields}
+            patient.save()
+            return redirect("patient:detail", slug)
+    return render(request, 'patient/add_traitement.html', context)
+
+@login_required(login_url='login')
+def edit_traitement_view(request, slug, idtrt):
+    context = {}
+    patient = get_object_or_404(Patient, slug=slug)
+    context['patient'] = patient
+
+    form = TraitementFileForm(request.POST or None)
+    context['form'] = form
+
+    if request.POST:
+        if form.is_valid():
+            print(request.POST)
+            if request.POST.get('submitType') == "delete":
+                print("delete")
+                del patient.traitements[idtrt]
+            else:
+                patient.traitements[idtrt] = {k: v for k, v in request.POST.items() if k in form.fields}
+            patient.save()
+            return redirect("patient:detail", slug)
+    return render(request, 'patient/edit_traitement.html', context)
 
 @login_required(login_url='login')
 def patients_view(request, filter):

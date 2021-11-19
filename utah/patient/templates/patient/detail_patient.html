@@ -12,6 +12,11 @@
     .h3 {
       margin-top: 150px;
     }
+    .title {
+      padding: 5px;
+      background: rgb(180, 180, 180);
+      color: white;
+    }
     input {
       border-style: hidden;
     }
@@ -27,36 +32,56 @@
 
 
 <div class="container px-4">
-  <hr>
 
-  <h2 align="center"> Patient n°{{patient.hosp_num}} </h2>
-
-  <hr>
+  <div class="title">
+    <h2 align="center"> Patient n°{{patient.incl_num}} </h2>
+  </div>
+  <br>
   <div class="info container">
-    <a href="{% url 'patient:edit' patient.slug %}" style="float: right;" class="btn btn-outline-success">Modifier</a>
-    <h4> Rappel des informations saisies </h4>
-    <p><strong>Numéro de registre UTAH: {{patient.incl_num}} </strong></p>
-    {% if ddi %}
-      <p>Intervention prévue le {{patient.ddi | date:'d/m/Y'}} </p>
-    {% endif %}
-    <p>Taille: {{patient.get_height}}. Poids: {{patient.weight}} kg </p>
-    <p>Date de naissance : {{patient.ddn | date:'d/m/Y'}} {% if patient.ddi %}, soit {{patient.get_age_at_intervention}} ans le jour de l'intervention {% endif %} </p>
 
+      <a href="{% url 'patient:edit' patient.slug %}" style="float: right;padding: 4px;" class="btn btn-outline-success">Modifier</a>
+      <h4> Rappel des informations saisies </h4>
+      <hr>
+    <strong>Numéro de dossier</strong><a> {{patient.hosp_num}} </a><br>
+    <strong>Taille</strong> <a>{{patient.get_height}}. </a><br>
+    <strong>Poids</strong> <a>{{patient.weight}} kg </a><br>
+    <strong>Date de naissance </strong> <a>{{patient.ddn | date:'d/m/Y'}} {% if patient.ddi %}, soit {{patient.get_age_at_intervention}} ans le jour de l'intervention {% endif %} </a><br><br>
+
+    <strong> Intervention </strong>
+    {% if patient.ddi %}
+      <a>Prévue le {{patient.ddi | date:'d/m/Y'}} </a>
+    {% endif %}<br>
     {% if patient.chirurgie %}
-      <p>Catégorie de l'intervention : {{patient.chirurgie}}</p>
+      <strong>Catégorie </strong> <a>{{patient.chirurgie}}</a><br>
     {% endif %}
     {% if patient.intervention %}
-      <p>Intitulé de l'intervention : {{patient.intervention}}</p>
+      <strong>Intitulé </strong> <a>{{patient.intervention}}</a><br>
     {% endif %}
     {% if patient.chirurgien %}
-      <p>Chirurgien : {{patient.chirurgien}}</p>
+      <strong>Chirurgien </strong> <a>{{patient.chirurgien}}</a><br>
+    {% endif %}
+    <br><br>
+
+
+    <a href="{% url 'patient:addtrt' patient.slug %}" style="float: right; padding: 4px;" class="btn btn-outline-success">Ajouter</a>
+    <h4> Traitements suivis </h4>
+    <hr>
+
+    {% if patient.traitements %}
+      {% for idtrt, values in patient.traitements.items %}
+        <a class='btn' href="{% url 'patient:edittrt' patient.slug idtrt %}"> <strong>{{values.pathologie}} - </strong>{{values.traitement}} </a><br>
+      {% endfor %}
+    {% else %}
+      <p> Aucun traitement. </p>
     {% endif %}
     <br>
 
     <h4> Proposition de prise en charge </h4>
-      <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug %}"> Quel traitement arréter et comment ? </a>
-      <br>
-      <a class='btn btn-link'  href="{% url 'patient:postop' patient.slug %}">Quand reprendre le traitement ?</a>
+    <hr>
+
+    <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug %}"> Quel traitement arréter et comment ? </a>
+    <br>
+    <a class='btn btn-link'  href="{% url 'patient:postop' patient.slug %}">Quand reprendre le traitement ?</a>
     <br><br>
     <a class='btn btn-primary' href="{% url 'personal:pdf' patient.slug 'False' %}"> Afficher les résultats </a>
     <a class='btn btn-primary' href="{% url 'personal:pdf' patient.slug 'True' %}"> Télécharger les résultats </a>

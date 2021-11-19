@@ -1,8 +1,26 @@
 from django import forms
 from .models import Patient
+from utah.choices import *
+from .models import to_choice
 
 
 class CustomModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.init_input_types()
+
+    def init_input_types(self):
+        for field in self:
+            if isinstance(field.field, (forms.fields.DateField)):
+                field.input_type = 'date'
+            else:
+                field.input_type = field.field.widget.input_type
+
+class TraitementFileForm(forms.Form):
+    pathologie = forms.ChoiceField(label="Pathologie justifiant le traitement", choices=to_choice(PATH_CHOICES, False))
+    traitement = forms.ChoiceField(label="Traitement", choices=to_choice(TRAIT_CHOICES, False))
+    ddprise_th = forms.DateField(label="Date de dernière prise théorique", required=False)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.init_input_types()
