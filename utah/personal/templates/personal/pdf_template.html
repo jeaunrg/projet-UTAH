@@ -79,12 +79,20 @@
   </table>
   <br><br>
 
-  <h2> Modifications à faire </h2><hr>
-  <table class="table" id="result">
+  <h2> Modifications à faire (algorithme {{patient.algo}}) </h2><hr>
+
+  <table class="table table-bordred table-striped " id="result">
     <tbody>
-      <tr><th>Algorithme suivi :</th>          <td>{{patient.algo}}</td></tr>
-      <tr><th>Types de traitements :</th>      <td>{{patient.traitement1}} {% if patient.traitement2 %}<br>{{patient.traitement2}} {% endif %}</td></tr>
-      <tr><th>Modalités d'interruption :</th>  <td>{{patient.get_algo_result}}</td></tr>
+      <tr>
+        <td><strong>Traitements</strong></td>
+        <td><strong>Modalités d'interruption</strong></td>
+      </tr>
+      {% for v in patient.traitements.values %}
+        <tr>
+          <td>{{v.traitement}}</td>
+          <td>{{v.conclusion}}</td>
+        </tr>
+      {% endfor %}
     </tbody>
   </table>
 

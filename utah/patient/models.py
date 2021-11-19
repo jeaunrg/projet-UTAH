@@ -38,7 +38,9 @@ class Patient(models.Model):
     ddconsult = models.DateField("Date de la consultation", auto_now_add=True, blank=True)
 
     # traitement
-    traitements = models.JSONField(default=dict, blank=True)    
+    traitements = models.JSONField(default=dict, blank=True)
+
+
     pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=to_choice(PATH_CHOICES), blank=True)
     traitement1 = models.CharField("Premier traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
     traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
