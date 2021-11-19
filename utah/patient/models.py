@@ -91,14 +91,6 @@ class Patient(models.Model):
             self.slug = slugify('patient') + "-" + str(self.incl_num)
             self.save()
 
-    def categorie1(self):
-        if self.traitement1 in TRAIT_CHOICES:
-            return TRAIT_CHOICES.get(self.traitement1).split('-')[0]
-
-    def categorie2(self):
-        if self.traitement2 in TRAIT_CHOICES:
-            return TRAIT_CHOICES.get(self.traitement2).split('-')[0]
-
     def get_infos(self):
         infos = {}
         for k, v in self.__dict__.items():

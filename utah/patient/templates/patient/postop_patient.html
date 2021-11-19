@@ -41,7 +41,6 @@
   <div class="table-responsive">
     <table id="mytable" class="table table-bordred table-striped sortable">
       <thead>
-        {% if patient.traitement2 %} <th> </th> {% endif %}
         <th>Traitement</th>
         <th>Catégorie</th>
         <th>Indication</th>
@@ -49,38 +48,34 @@
         <th>Date de dernière prise pratique</th>
         <th>Inobservance</th>
       </thead>
-      <tr>
-        {% if patient.traitement2 %} <th> 1er </th> {% endif %}
-        <td> {{patient.traitement1}} </td>
-        <td> {{patient.categorie1}} </td>
-        <td> {{patient.pathologie}} </td>
-        <td> {{patient.date_derniere_prise_th1 | date:'d/m/Y'}} </td>
-        <td>{% include 'patient/snippets/field2html.html' with field=form.date_derniere_prise1 nolabel='True' %}</td>
-        <td>{% include 'patient/snippets/field2html.html' with field=form.inobservance1 nolabel='True' %}</td>
-      </tr>
-      {% if patient.traitement2 %}
+      {% for i, v in patient.traitements.items %}
         <tr>
-          <th> 2ème </th>
-          <td> {{patient.traitement2}} </td>
-          <td> {{patient.categorie2}} </td>
-          <td> {{patient.pathologie}} </td>
-          <td> {{patient.date_derniere_prise_th2 | date:'d/m/Y'}} </td>
-          <td> <input type="date" name="date_derniere_prise2" id="date_derniere_prise2" class="form-control" value="{{patient.date_derniere_prise2 | date:'d/m/Y'}}"> </td>
+          <td> {{v.traitement}} </td>
+          <td> {{v.categorie}} </td>
+          <td> {{v.pathologie}} </td>
+          <td> {{v.ddprise_th}} </td>
           <td>
-            <select class="form-select" id="inobservance2" name="inobservance2">
-              {% for value, label in form.inobservance2.field.choices %}
-                <option value="{{value}}"{% if field.value == value %} selected{% endif %}>{{ label }}</option>
+          {% if v.ddprise_pr %}
+            <input type="date" name="ddprise_pr__{{i}}" id="ddprise_pr__{{i}}" class="form-control" value={{v.ddprise_pr}}>
+          {% else %}
+            <input type="date" name="ddprise_pr__{{i}}" id="ddprise_pr__{{i}}" class="form-control" value={{v.ddprise_th}}>
+          {% endif %}
+          </td>
+          <td>
+            <select class="form-select" id="inobservance__{{i}}" name="inobservance__{{i}}">
+              {% for value in form.get_inobservance_choices %}
+                <option value="{{value}}" {% if v.inobservance == value %} selected {% endif %} >{{ value }}</option>
               {% endfor %}
             </select>
           </td>
         </tr>
-      {% endif %}
+      {% endfor %}
     </table>
   </div>
   <hr><br>
 
   {% for field in form %}
-    {% if field.name != 'date_derniere_prise1' and field.name != 'date_derniere_prise_th1' and field.name != 'inobservance1' and field.name != 'date_derniere_prise2' and field.name != 'date_derniere_prise_th2' and field.name != 'inobservance2' and field.name != 'schema_therap' %}
+    {% if field.name != 'schema_therap' %}
       {% include 'patient/snippets/field2html.html' %}
     {% endif %}
   {% endfor %}

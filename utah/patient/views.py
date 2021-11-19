@@ -44,35 +44,6 @@ def preop_patient_view(request):
     return render(request, "patient/preop_patient.html", context)
 
 
-@login_required(login_url='login')
-def postop_patient_view(request, slug):
-    patient = get_object_or_404(Patient, slug=slug)
-    context = {}
-
-    if not patient.date_derniere_prise_th1:
-        patient.date_derniere_prise_th1 = datetime.now()
-    if not patient.date_derniere_prise1:
-        patient.date_derniere_prise1 = patient.date_derniere_prise_th1
-
-    if not patient.date_derniere_prise_th2:
-        patient.date_derniere_prise_th2 = datetime.now()
-    if not patient.date_derniere_prise2:
-        patient.date_derniere_prise2 = patient.date_derniere_prise_th2
-
-    form = PostopPatientFileForm(request.POST or None, instance=patient)
-    if form.is_valid():
-        patient = form.save(commit=False)
-        author = Account.objects.filter(username=request.user.username).first()
-        patient.author = author
-        patient.save()
-        return redirect("patient:detail", patient.slug)
-
-    context['slug'] = slug
-    context['form'] = form
-    context['patient'] = patient
-    context['categorie'] = TRAIT_CHOICES
-    return render(request, "patient/postop_patient.html", context)
-
 
 @login_required(login_url='login')
 def detail_patient_view(request, slug):
@@ -114,7 +85,10 @@ def add_traitement_view(request, slug):
             idtrt = 0
             while str(idtrt) in patient.traitements:
                 idtrt += 1
-            patient.traitements[idtrt] = {k: v for k, v in request.POST.items() if k in form.fields}
+            values = {k: v for k, v in request.POST.items() if k in form.fields}
+            if values['traitement'] in TRAIT_CHOICES:
+                values['categorie'] = TRAIT_CHOICES.get(values['traitement']).split('-')[0]
+            patient.traitements[idtrt] = values
             patient.save()
             return redirect("patient:detail", slug)
     return render(request, 'patient/add_traitement.html', context)
@@ -132,13 +106,43 @@ def edit_traitement_view(request, slug, idtrt):
             if request.POST.get('submitType') == "delete":
                 del patient.traitements[idtrt]
             else:
-                patient.traitements[idtrt] = {k: v for k, v in request.POST.items() if k in form.fields}
+                values = {k: v for k, v in request.POST.items() if k in form.fields}
+                if values['traitement'] in TRAIT_CHOICES:
+                    values['categorie'] = TRAIT_CHOICES.get(values['traitement']).split('-')[0]
+                patient.traitements[idtrt] = values
             patient.save()
             return redirect("patient:detail", slug)
 
     context['form'] = form
 
     return render(request, 'patient/edit_traitement.html', context)
+
+
+@login_required(login_url='login')
+def postop_patient_view(request, slug):
+    patient = get_object_or_404(Patient, slug=slug)
+    context = {}
+
+    form = PostopPatientFileForm(request.POST or None, instance=patient)
+    if request.POST:
+        if form.is_valid():
+            patient = form.save(commit=False)
+            author = Account.objects.filter(username=request.user.username).first()
+            patient.author = author
+            for k, v in request.POST.items():
+                for label in ['ddprise_pr', 'inobservance']:
+                    if k.startswith(label):
+                        idtrt = k.split('__')[-1]
+                        patient.traitements[idtrt][label] = v
+
+            patient.save()
+            return redirect("patient:detail", patient.slug)
+
+    context['slug'] = slug
+    context['form'] = form
+    context['patient'] = patient
+    return render(request, "patient/postop_patient.html", context)
+
 
 @login_required(login_url='login')
 def patients_view(request, filter):

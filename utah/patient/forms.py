@@ -42,8 +42,7 @@ class PreopPatientFileForm(CustomModelForm):
 class PostopPatientFileForm(CustomModelForm):
     class Meta:
         model = Patient
-        fields = ["schema_therap", "date_derniere_prise_th1", "date_derniere_prise1", "inobservance1", "date_derniere_prise_th2", "date_derniere_prise2", "inobservance2",
-                  "aptt", "pt", "inr", "hemoglobine", "plaquette", "dfg", "vol_sang", "coag"]
+        fields = ["schema_therap", "aptt", "pt", "inr", "hemoglobine", "plaquette", "dfg", "vol_sang", "coag"]
 
     def save(self, commit=True):
         patient = self.instance
@@ -51,6 +50,9 @@ class PostopPatientFileForm(CustomModelForm):
         if commit:
             patient.save()
         return patient
+
+    def get_inobservance_choices(self):
+        return INOBS_CHOICES
 
 
 class UpdatePatientFileForm(CustomModelForm):
