@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from patient.models import Patient
-from algorithm.questions import QUESTIONS
+from algorithm.questions import QUESTIONS, ALGO
 from django.contrib.auth.decorators import login_required
 import json
 
+def get_default_responses(patient):
+    default = {k: v for k, v in patient.__dict__.items() if isinstance(v, (str, int, float, bool))}
+    return json.dumps(default)
 
 @login_required(login_url='login')
 def algo_view(request, slug):
@@ -19,7 +22,9 @@ def algo_view(request, slug):
         patient.save()
         return redirect('patient:detail', slug)
 
-    context['default_responses'] = json.dumps(patient.get_serializable_infos())
-    context['auto_skip'] = False
     context['questions'] = QUESTIONS
+    context['default_responses'] = get_default_responses(patient)
+    context['auto_skip'] = False
+    context['algo'] = json.dumps(ALGO)
+    context['quests'] = json.dumps(QUESTIONS)    
     return render(request, 'algorithm/manager.html', context)

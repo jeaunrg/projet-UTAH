@@ -14,6 +14,7 @@ def to_choice(data, add_empty=True):
         choices = [('', '')] + choices
     return choices
 
+
 class Patient(models.Model):
     #-------------------- PREOP -----------------#
     # patient
@@ -40,11 +41,6 @@ class Patient(models.Model):
     # traitement
     traitements = models.JSONField(default=dict, blank=True)
 
-
-    pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=to_choice(PATH_CHOICES), blank=True)
-    traitement1 = models.CharField("Premier traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
-    traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
-
     #-------------------- ALGO -----------------#
     algo = models.CharField("Algorithme suivi", max_length=40, choices=to_choice(ALGO_CHOICES), blank=True)
     algo_result = models.CharField('Résultat', max_length=400, default="", blank=True)
@@ -54,6 +50,29 @@ class Patient(models.Model):
     #-------------------- POSTOP -----------------#
     schema_therap = models.CharField("Schéma thérapeutique donné au patient", max_length=40, default="Date exacte",
                                      choices=to_choice(["Date exacte", "Terminologie 'dernière prise à J-xx'", "Pas d'arrêt du traitement"]))
+    aptt = models.IntegerField('APTT', null=True, blank=True)
+    pt = models.IntegerField('PT', null=True, blank=True)
+    inr = models.IntegerField('INR', null=True, blank=True)
+    hemoglobine = models.IntegerField('Hémoglobine', null=True, blank=True)
+    plaquette = models.IntegerField('Plaquettes', null=True, blank=True)
+    dfg = models.IntegerField('DFG', null=True, blank=True)
+    vol_sang = models.IntegerField('Volume de saignement peropératoire', null=True, blank=True)
+    coag = models.CharField("Qualité de la coagulation selon le chirurgien", max_length=2, default='-5',
+                            choices=to_choice(['-' + str(i) for i in range(6)] + ['+' + str(i) for i in range(5, -1, -1)]))
+
+    #-------------------- HIDDEN -----------------#
+    # hidden fields
+    incl_num = models.AutoField(primary_key=True)
+    date_published = models.DateTimeField(auto_now_add=True, verbose_name="date published")
+    date_updated = models.DateTimeField(auto_now=True, verbose_name="date updated")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    slug = models.SlugField(blank=True, unique=True)
+
+    #-------------------- A supprimer -----------------#
+    pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=to_choice(PATH_CHOICES), blank=True)
+    traitement1 = models.CharField("Premier traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
+    traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
+
     # traitement 1
     date_derniere_prise_th1 = models.DateField('Date de dernière prise théorique (premier traitement)', null=True, blank=True)
     date_derniere_prise1 = models.DateField('Date de dernière prise pratique (premier traitement)', null=True, blank=True)
@@ -65,22 +84,6 @@ class Patient(models.Model):
     inobservance2 = models.CharField("Inobservance (deuxième traitement)", max_length=40, default="Pas d'inobservance",
                                      choices=to_choice(["Pas d'inobservance", "Oubli", "Incompréhension", "Contre-ordre médical"]))
 
-    aptt = models.IntegerField('APTT', null=True, blank=True)
-    pt = models.IntegerField('PT', null=True, blank=True)
-    inr = models.IntegerField('INR', null=True, blank=True)
-    hemoglobine = models.IntegerField('Hémoglobine', null=True, blank=True)
-    plaquette = models.IntegerField('Plaquettes', null=True, blank=True)
-    dfg = models.IntegerField('DFG', null=True, blank=True)
-    vol_sang = models.IntegerField('Volume de saignement peropératoire', null=True, blank=True)
-    coag = models.CharField("Qualité de la coagulation selon le chirurgien", max_length=2, default='-5',
-                            choices=to_choice(['-' + str(i) for i in range(6)] + ['+' + str(i) for i in range(5, -1, -1)]))
-
-    # hidden fields
-    incl_num = models.AutoField(primary_key=True)
-    date_published = models.DateTimeField(auto_now_add=True, verbose_name="date published")
-    date_updated = models.DateTimeField(auto_now=True, verbose_name="date updated")
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    slug = models.SlugField(blank=True, unique=True)
 
     def __str__(self):
         return str(self.incl_num)
@@ -115,5 +118,13 @@ class Patient(models.Model):
         output = output.replace('. ', '\n- ')
         return output
 
-    def get_serializable_infos(self):
-        return {k: v for k, v in self.__dict__.items() if isinstance(v, (str, int, float, bool))}
+    def get_cure(self, **kwargs):
+        for data in self.traitements.values():
+            boolean = True
+            for k, v in kwargs.items():
+                if data.get(k) != v:
+                    boolean = False
+                    break
+            if boolean:
+                return True
+        return False
