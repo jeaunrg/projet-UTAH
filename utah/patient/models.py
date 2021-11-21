@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.conf import settings
-from utah.choices import *
+from editable.data import *
 from django.core.validators import RegexValidator
 
 
@@ -43,9 +43,7 @@ class Patient(models.Model):
 
     #-------------------- ALGO -----------------#
     algo = models.CharField("Algorithme suivi", max_length=40, choices=to_choice(ALGO_CHOICES), blank=True)
-    algo_result = models.CharField('Résultat', max_length=400, default="", blank=True)
     algo_complete_results = models.JSONField(default=dict)
-
 
     #-------------------- POSTOP -----------------#
     schema_therap = models.CharField("Schéma thérapeutique donné au patient", max_length=40, default="Date exacte",
@@ -109,14 +107,6 @@ class Patient(models.Model):
     def get_height(self):
         hm = int(self.height / 100)
         return "{0}m{1}".format(hm, int(self.height - hm * 100))
-
-    def get_algo_result(self):
-        if '\n' in self.algo_result:
-            output = "Avant l'intervention:\n- " + self.algo_result.replace('\n', "\nAprès l'intervention:\n- ")
-        else:
-            output = self.algo_result
-        output = output.replace('. ', '\n- ')
-        return output
 
     def get_traitement_ids(self, **kwargs):
         ids = []

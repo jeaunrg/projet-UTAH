@@ -1,6 +1,6 @@
 from django import forms
 from .models import Patient
-from utah.choices import *
+from editable.data import *
 from .models import to_choice
 
 
@@ -52,7 +52,7 @@ class PostopPatientFileForm(CustomModelForm):
         return patient
 
     def get_inobservance_choices(self):
-        return INOBS_CHOICES
+        return ["Pas d'inobservance", "Oubli", "Incompréhension", "Contre-ordre médical"]
 
 
 class UpdatePatientFileForm(CustomModelForm):
@@ -60,7 +60,6 @@ class UpdatePatientFileForm(CustomModelForm):
         model = Patient
         fields = ["hosp_num", "firstname", "lastname", "height", "weight", "ddn", "consultant",
                   "ddi", "intervention", "chirurgien", "chirurgie", "bleeding_risk",
-                  "algo", "algo_result",
                   "schema_therap", "aptt", "pt", "inr", "hemoglobine", "plaquette", "dfg", "vol_sang", "coag"]
 
     def save(self, commit=True):

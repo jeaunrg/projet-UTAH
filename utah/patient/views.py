@@ -4,10 +4,10 @@ from .forms import PreopPatientFileForm, PostopPatientFileForm, UpdatePatientFil
 from account.models import Account
 from django.contrib.auth.decorators import login_required
 from .utils import get_patients_page
-from utah.choices import TRAIT_CHOICES
+from editable.data import TRAIT_CHOICES
+from editable.settings import N_PATIENTS_PER_PAGE
 from datetime import datetime
 
-N_PATIENTS_PER_PAGE = 10
 
 
 @login_required(login_url='login')
@@ -101,19 +101,19 @@ def edit_traitement_view(request, slug, idtrt):
 
     form = TraitementFileForm(request.POST or patient.traitements[idtrt])
     if request.POST:
-
         if form.is_valid():
             if request.POST.get('submitType') == "reset" and 'conclusion' in patient.traitements[idtrt]:
                 del patient.traitements[idtrt]['conclusion']
-            elif request.POST.get('submitType') == "delete":
-                del patient.traitements[idtrt]
             else:
-                values = {k: v for k, v in request.POST.items() if k in form.fields}
-                if values['traitement'] in TRAIT_CHOICES:
-                    values['categorie'] = TRAIT_CHOICES.get(values['traitement']).split('-')[0]
-                patient.traitements[idtrt] = values
-            patient.save()
-            return redirect("patient:detail", slug)
+                if request.POST.get('submitType') == "delete":
+                    del patient.traitements[idtrt]
+                else:
+                    values = {k: v for k, v in request.POST.items() if k in form.fields}
+                    if values['traitement'] in TRAIT_CHOICES:
+                        values['categorie'] = TRAIT_CHOICES.get(values['traitement']).split('-')[0]
+                    patient.traitements[idtrt] = values
+                patient.save()
+                return redirect("patient:detail", slug)
 
     context['form'] = form
     context['traitement'] = patient.traitements[idtrt]

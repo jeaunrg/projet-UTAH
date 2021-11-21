@@ -28,8 +28,8 @@
     {% for field in form %}
       {% include 'patient/snippets/field2html.html' %}
     {% endfor %}
-  <button type="submit" class="btn btn-success"> Enregistrer</button>
   <a type="button" href="{% url 'patient:detail' patient.slug %}" class="btn btn-secondary">Annuler</a>
+  <button type="submit" class="btn btn-success"> Enregistrer</button>
 
 </form>
 

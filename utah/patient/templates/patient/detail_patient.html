@@ -81,12 +81,18 @@
 
     <h4> Proposition de prise en charge </h4>
     <hr>
+    <a> Quel traitement arréter et comment ?</a><br>
+    {% if patient.traitements %}
+      <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug 'classic' %}"> Lancer l'algorithme automatique</a>
+      <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug 'from_scratch' %}"> (algo. classique) </a>
+    {% else %}
+      <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug 'from_scratch' %}"> Lancer l'algorithme </a>
+    {% endif %}
 
-    <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug 'from_scratch' %}"> Quel traitement arréter et comment (algorithme complet) ? </a>
     <br>
-    <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug 'classic' %}"> Quel traitement arréter et comment ? </a>
     <br>
-    <a class='btn btn-link'  href="{% url 'patient:postop' patient.slug %}">Quand reprendre le traitement ?</a>
+    <a> Quand reprendre le traitement ?</a><br>
+    <a class='btn btn-link'  href="{% url 'patient:postop' patient.slug %}">Cliquez içi</a>
     <br><br>
     <a class='btn btn-primary' href="{% url 'personal:pdf' patient.slug 'False' %}"> Afficher les résultats </a>
     <a class='btn btn-primary' href="{% url 'personal:pdf' patient.slug 'True' %}"> Télécharger les résultats </a>

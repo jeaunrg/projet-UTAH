@@ -4,27 +4,19 @@ import os
 import pdfkit
 import barcode
 import random
+from editable.settings import PDF_OPTIONS
 
 
 def generate_pdf(template, context={}, save_filename="outut.pdf", download=False):
-    margin = '0'
-    options = {
-        'page-size': 'A4',
-        'margin-top': margin + 'in',
-        'margin-right': margin + 'in',
-        'margin-bottom': margin + 'in',
-        'margin-left': margin + 'in',
-    }
-
     template = get_template(template)
     html = template.render(context)
-    pdfkit.from_string(html, 'out.pdf', options=options)
-    pdf = open("out.pdf", 'rb')
+    pdfkit.from_string(html, 'tmp.pdf', options=PDF_OPTIONS)
+    pdf = open("tmp.pdf", 'rb')
     response = HttpResponse(pdf.read(), content_type='application/pdf')
     if download:
         response['Content-Disposition'] = 'attachment; filename={}'.format(save_filename)
     pdf.close()
-    os.remove("out.pdf")
+    os.remove("tmp.pdf")
     return response
 
 def generate_bar_code(num):
