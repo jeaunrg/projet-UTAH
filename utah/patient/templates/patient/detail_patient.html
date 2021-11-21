@@ -71,7 +71,8 @@
 
     {% if patient.traitements %}
       {% for idtrt, values in patient.traitements.items %}
-        <a class='btn' href="{% url 'patient:edittrt' patient.slug idtrt %}"> <strong>{{values.pathologie}} - </strong>{{values.traitement}} </a><br>
+        <a class='btn' href="{% url 'patient:edittrt' patient.slug idtrt %}"> <strong>{{values.pathologie}} - </strong>{{values.traitement}}{% if values.conclusion %}<i> - {{values.conclusion}}</i>{% endif %} </a><br>
+
       {% endfor %}
     {% else %}
       <p> Aucun traitement. </p>
@@ -81,7 +82,9 @@
     <h4> Proposition de prise en charge </h4>
     <hr>
 
-    <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug %}"> Quel traitement arréter et comment ? </a>
+    <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug 'from_scratch' %}"> Quel traitement arréter et comment (algorithme complet) ? </a>
+    <br>
+    <a class='btn btn-link' href="{% url 'algorithm:algo' patient.slug 'classic' %}"> Quel traitement arréter et comment ? </a>
     <br>
     <a class='btn btn-link'  href="{% url 'patient:postop' patient.slug %}">Quand reprendre le traitement ?</a>
     <br><br>

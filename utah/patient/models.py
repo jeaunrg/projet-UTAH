@@ -118,6 +118,26 @@ class Patient(models.Model):
         output = output.replace('. ', '\n- ')
         return output
 
+    def get_traitement_ids(self, **kwargs):
+        ids = []
+        for i, data in self.traitements.items():
+            # categorie
+            b1, b2, b3 = True, True, True
+            if 'categorie' in kwargs:
+                if kwargs['categorie'] not in data['categorie']:
+                    b1 = False
+            # pathologie
+            if 'pathologie' in kwargs:
+                if kwargs['pathologie'] != data['pathologie']:
+                    b2 = False
+             # traitement
+            if 'traitement' in kwargs:
+                if data['traitement'] not in kwargs['traitement'].split(' | '):
+                    b3 = False
+            if b1 and b2 and b3:
+                ids.append(i)
+        return ids
+
     def get_cure(self, **kwargs):
         for data in self.traitements.values():
             boolean = True

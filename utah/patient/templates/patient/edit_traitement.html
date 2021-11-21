@@ -19,10 +19,18 @@
     {% for field in form %}
       {% include 'patient/snippets/field2html.html' %}
     {% endfor %}
-
+    {% if traitement.conclusion %}
+      <br><br><strong>Résultats: </strong> <p>{{traitement.conclusion}}</p>
+      {% endif %}
+    <br>
+    
     <input type="hidden" name="submitType" id="submitType">
     <button type="submit" class="btn btn-success">Modifier</button>
-    <button type="submit" onclick='document.getElementById("submitType").value = "delete"' class="btn btn-danger">Supprimer</button>
+    <button type="submit" onclick='document.getElementById("submitType").value = "delete"' class="btn btn-danger">Supprimer le traitement</button>
+
+    {% if traitement.conclusion %}
+      <button type="submit" onclick='document.getElementById("submitType").value = "reset"' class="btn btn-outline-danger">Supprimer les résultats</button>
+    {% endif %}
   </form>
 
 

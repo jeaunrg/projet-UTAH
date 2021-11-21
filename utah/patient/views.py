@@ -103,7 +103,9 @@ def edit_traitement_view(request, slug, idtrt):
     if request.POST:
 
         if form.is_valid():
-            if request.POST.get('submitType') == "delete":
+            if request.POST.get('submitType') == "reset" and 'conclusion' in patient.traitements[idtrt]:
+                del patient.traitements[idtrt]['conclusion']
+            elif request.POST.get('submitType') == "delete":
                 del patient.traitements[idtrt]
             else:
                 values = {k: v for k, v in request.POST.items() if k in form.fields}
@@ -114,6 +116,7 @@ def edit_traitement_view(request, slug, idtrt):
             return redirect("patient:detail", slug)
 
     context['form'] = form
+    context['traitement'] = patient.traitements[idtrt]
 
     return render(request, 'patient/edit_traitement.html', context)
 

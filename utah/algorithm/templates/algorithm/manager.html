@@ -57,7 +57,11 @@
           {% endfor %}
         </div>
         <div id="conclusions" style="display: none;" class="btn-group-vertical">
-          <h4> Conclusions </h4><hr>
+          <div id="conclusion-content">
+          </div>
+          <br>
+          <button id="submit-result-button" onclick="send_results()" class="btn btn-success">Enregistrer les résultats</button>
+          <form id="result-form" method="post">{% csrf_token %}</form>
 
         </div>
 
@@ -66,8 +70,7 @@
     <div id="final" style="display: none; text-align: left;"> </div>
     <br>
 
-    <button id="submit-result-button" onclick="send_results()" class="btn btn-success" style="display: none;">Enregistrer les résultats</button>
-    <form id="algo-form" method="post">{% csrf_token %}</form>
+
 
   </div>
 </html>
@@ -77,11 +80,33 @@
 
   const init_algo = {{algo|safe}};
   const questions = {{quests|safe}};
+  const references = {{refs|safe}};
+  const default_results = {{results|safe}};
   var current_qid = null;
   var results = {}
   var conclusions = {};
-  var current_traitement = 'conclusion';
+  var traitement_ref = 'conclusion'
   start_algo()
+
+  function dict_to_hiddenform(dico, form, prefix='') {
+    for (const key in dico) {
+      if (dico.hasOwnProperty(key)) {
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = prefix + key;
+        hiddenField.value = dico[key];
+        form.appendChild(hiddenField);
+      }
+    }
+  }
+
+  function send_results() {
+    const form = document.getElementById('result-form');
+    dict_to_hiddenform(conclusions, form, 'CONCLUSIONS-');
+    dict_to_hiddenform(default_results, form, 'RESULTS-');
+    dict_to_hiddenform(results, form, 'RESULTS-');
+    form.submit();
+  }
 
   function p_update(value){
     document.getElementById("algo-progress").setAttribute('style', "width: " + value + "%");
@@ -111,12 +136,15 @@
     }
     var content = "<h4>Conclusions</h4><hr>";
     for (const [key, value] of Object.entries(conclusions)) {
-      if (key != 'null') {
+      if (key in references) {
+        content += "<strong>"+references[key].label+": </strong>";
+      }
+      else {
         content += "<strong>"+key+": </strong>";
       }
       content += "<a>"+value+"</a><br>";
     }
-    document.getElementById('conclusions').innerHTML = content;
+    document.getElementById('conclusion-content').innerHTML = content;
     current_qid = 'conclusions'
   }
 
@@ -151,24 +179,37 @@
 
   function algorithm(algo) {
     if (typeof algo == "string"){
-      conclusions[current_traitement] = algo;
+      conclusions[traitement_ref] = algo;
       return;
     }
 
     for (const [step, subalgo] of Object.entries(algo)) {
-      key = step.split(' #')[0];
-      prog = parseInt(step.split(' #')[1]);
-      p_update((prog-1) / 28 * 100);
-      if (key in results) {
-        if ('details' in questions[key]) {
-          current_traitement = key;
-        }
-        if (results[key] in subalgo){
-          algorithm(subalgo[results[key]]);
+      // get progressbar value
+      var label = step.split(' #');
+      var progress_num = parseInt(label.pop()) - 1;
+      p_update((progress_num) / 28 * 100);
+
+      // get answer references
+      var question_id = label[0]
+      console.log(question_id);
+      if (question_id.includes(' %')) {
+        traitement_ref = question_id.split(' %')[1];
+        question_id = question_id.split(' %')[0];
+      }
+      // apply recursion if already response
+      if (question_id in default_results) {
+        if (default_results[question_id] in subalgo){
+          algorithm(subalgo[default_results[question_id]]);
         }
       }
-      else if (key in questions) {
-        throw key;
+      else if (question_id in results){
+        if (results[question_id] in subalgo){
+          algorithm(subalgo[results[question_id]]);
+        }
+      }
+      // else ask question
+      else if (question_id in questions) {
+        throw question_id;
       }
     }
   }

@@ -12,26 +12,18 @@ QUESTIONS = {
         'answers': ['Oui', 'Non']
     },
     'aspirin1': {
-        'details': {'pathologie': "Prévention primaire", "traitement": "Aspirine, Asaflow, Cardioaspirine"},
         'question': "Aspirine en prévention primaire ?",
         'answers': ['Oui', 'Non']
     },
-    'apa2': {
-        'question': "APA en prévention secondaire ?",
-        'answers': ['Oui', 'Non']
-    },
     'aspirin_mono': {
-        'details': {'pathologie': "Prévention secondaire", "traitement": "Aspirine, Asaflow, Cardioaspirine"},
-        'question': "Aspirine en monotherapy ?",
+        'question': "Aspirine en monotherapie et prévention secondaire ?",
         'answers': ['Oui', 'Non']
     },
     'clopi_mono': {
-        'details': {'pathologie': "Prévention secondaire", "traitement": "Clopidogrel, PLAVIX"},
-        'question': "Clopidogrel en monotherapy ?",
+        'question': "Clopidogrel en monotherapie et prévention secondaire ?",
         'answers': ['Oui', 'Non']
     },
     'stent_bitherapy': {
-        'details': {'pathologie': "Stents Cardiaques"},
         'question': "Bithérapie pour les stents coronaires ?",
         'answers': ['Oui', 'Non']
     },
@@ -45,7 +37,6 @@ QUESTIONS = {
 
     #--------------------- VKA ------------------------------#
     'vka': {
-        'details': {"categorie": "Anticoagulant-ACOD-AVK"},
         'question': 'Le patient prend-il des VKA ?',
         'answers': ['Oui', 'Non']
     },
@@ -60,22 +51,18 @@ QUESTIONS = {
         'answers': ['Oui', 'Non']
     },
     'before': {
-        'details': {"categorie": "Anticoagulant-ACOD", "more": "before"},
         'question': 'Avant la procédure',
         'answers': ["Oui"]
     },
     'after': {
-        'details': {"categorie": "Anticoagulant-ACOD", "more": "after"},
         'question': 'Après la procédure',
         'answers': ["Oui"]
     },
     'xaban': {
-        'details': {"traitement": "Apixaban, ELIQUIS | Edoxaban, LIXIANA | Rivaroxaban, XARELTO", "more": "before"},
         'question': 'Le patient prend-il des xaban ?',
         'answers': ['Oui', 'Non']
     },
     'dabigatran': {
-        'details': {"traitement": "Dabigatran, PRADAXA", "more": "before"},
         'question': 'Le patient prend-il du dabigatran ?',
         'answers': ['Oui', 'Non']
     },
@@ -103,6 +90,28 @@ QUESTIONS = {
     },
 }
 
+REFS = {
+    'aspirin1': {'label': 'Aspirine en prévention primaire', 'pathologie': "Prévention primaire", "traitement": "Aspirine, Asaflow, Cardioaspirine"},
+    'aspirin_mono': {'label': 'Aspirine en prévention secondaire et monothérapie', 'pathologie': "Prévention secondaire", "traitement": "Aspirine, Asaflow, Cardioaspirine"},
+    'clopi_mono': {'label': 'Clopidrogen en prévention secondaire et monothérapie', 'pathologie': "Prévention secondaire", "traitement": "Clopidogrel, PLAVIX"},
+    'stent_bitherapy': {'label': 'Bithérapie pour les stents coronaires', 'pathologie': "Stents Cardiaques"},
+    'vka': {'label': "VKA", "categorie": "AVK"},
+    'doac': {'label': "DOAC", "categorie": "ACOD"},
+    'xaban': {'label': 'Rivaroxaban, apixaban et edoxaban', "categorie": "xaban"},
+    'dabigatran': {'label': 'Dabigatran', "traitement": "Dabigatran, PRADAXA"},
+}
+
+ALGO = {
+    'algo #1': {
+        'Français': {
+            'bleeding_risk %aspirin1 #1': {
+                'faible': "Pas d'arrêt du traitement.",
+                'intermédiaire': "Pas d'arrêt du traitement.",
+                'élevé': "Arrêt du traitement."
+            }
+        }
+    }
+}
 
 ALGO = {
     'algo #1': {
@@ -111,32 +120,28 @@ ALGO = {
                 'Oui': {
                     'aspirin1 #3': {
                         'Oui': {
-                            'bleeding_risk #4': {
+                            'bleeding_risk %aspirin1 #4': {
                                 'faible': 'Arrêt ou non du traitement.',
                                 'intermédiaire': 'Arrêt du traitement.',
                                 'élevé': 'Arrêt du traitement.'
                             }
                         }
                     },
-                    'apa2 #5': {
+                    'aspirin_mono #6': {
                         'Oui': {
-                            'aspirin_mono #6': {
-                                'Oui': {
-                                    'bleeding_risk #8': {
-                                        'faible': "Pas d'arrêt du traitement.",
-                                        'intermédiaire': "Pas d'arrêt du traitement.",
-                                        'élevé': "Arrêt du traitement."
-                                    }
-                                }
-                            },
-                            'clopi_mono #9':{
-                                'Oui': {
-                                    'bleeding_risk #10': {
-                                        'faible': "Pas d'arrêt du traitement.",
-                                        'intermédiaire': "Arrêt du traitement. Bridge par l'aspirine.",
-                                        'élevé': 'Arrêt du traitement.'
-                                    }
-                                }
+                            'bleeding_risk %aspirin_mono #8': {
+                                'faible': "Pas d'arrêt du traitement.",
+                                'intermédiaire': "Pas d'arrêt du traitement.",
+                                'élevé': "Arrêt du traitement."
+                            }
+                        }
+                    },
+                    'clopi_mono #9':{
+                        'Oui': {
+                            'bleeding_risk %clopi_mono #10': {
+                                'faible': "Pas d'arrêt du traitement.",
+                                'intermédiaire': "Arrêt du traitement. Bridge par l'aspirine.",
+                                'élevé': 'Arrêt du traitement.'
                             }
                         }
                     },
@@ -144,14 +149,14 @@ ALGO = {
                         'Oui': {
                             'stent_condition #12': {
                                 'Oui': {
-                                    'bleeding_risk #13': {
+                                    'bleeding_risk %stent_bitherapy #13': {
                                         'faible': "Report de la procédure. Si impossible, poursuite de la bitherapie.",
                                         'intermédiaire': "Report de la procédure. Si impossible, arrêt de l'anti-P2Y12, pas d'arrêt de l'aspirine.",
                                         'élevé': "Report de la procédure. Si impossible, arrêt de la bitherapie."
                                     }
                                 },
                                 'Non': {
-                                    'bleeding_risk #14': {
+                                    'bleeding_risk %stent_bitherapy #14': {
                                         'faible': "Pas d'arrêt de la bitherapie.",
                                         'intermédiaire': "Arrêt de l'anti-P2Y12. Pas d'arrêt de l'aspirine.",
                                         'élevé': "Arrêt de la bitherapie."
@@ -164,10 +169,10 @@ ALGO = {
             },
             'vka #15': {
                 'Oui': {
-                    'thromboembolism_risk #16': {
+                    'thromboembolism_risk %vka #16': {
                         'faible': "Pas d'arrêt du traitement.",
                         'élevé': {
-                            'bleeding_risk2 #17': {
+                            'bleeding_risk2 %vka #17': {
                                 'faible': "Arrét du traitement à J-3.",
                                 'élevé': "Bridge à J-7."
                             }
@@ -179,19 +184,19 @@ ALGO = {
                 'Oui': {
                     'before #19': {
                         'Oui': {
-                            'bleeding_risk2 #20': {
+                            'bleeding_risk2 %doac #20': {
                                 'faible': "Pas de prise la nuit avant ou le matin du geste invasive. Pas de bridge. Pas de dosage.",
                                 'élevé': {
                                     'xaban #21': {
                                         'Oui': {
-                                            'cockroft_1 #22': {
+                                            'cockroft_1 %xaban #22': {
                                                 'Oui': 'dernière prise à J-3. Pas de bridge. Pas de dosage.'
                                             }
                                         }
                                     },
                                     'dabigatran #23': {
                                         'Oui': {
-                                            'cockroft_2 #24': {
+                                            'cockroft_2 %dabigatran #24': {
                                                 '> 50 mL/min': 'dernière prise à J-4. Pas de bridge. Pas de dosage.',
                                                 '30-49 mL/min': 'dernière prise à J-5. Pas de bridge. Pas de dosage.'
                                             }
@@ -203,10 +208,10 @@ ALGO = {
                     },
                     'after #25': {
                         'Oui': {
-                            'bleeding_risk2 #26': {
+                            'bleeding_risk2 %doac #26': {
                                 'faible': "Reprise au moment habituel et au moins 6 heures après la fin de la procédure.",
                                 'élevé': {
-                                    'venous_thrombo #27': {
+                                    'venous_thrombo %doac #27': {
                                         'Oui': "Anticoagulants à dose prophylactique au moins 6 heures après l'intervention. Anticoagulants à doses curatives dès que l'hémostase le permet.",
                                         'Non': "Anticoagulants à doses curatives dès que l'hémostase le permet."
                                     }
