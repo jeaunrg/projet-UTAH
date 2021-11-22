@@ -23,7 +23,7 @@
 
 </style>
 
-<a href="{% url 'patient:patients' 'all' %}" style="border-radius: 0;" class="btn btn-dark"><</a>
+<a href="{% url 'home' %}" style="border-radius: 0;" class="btn btn-dark"><</a>
 
 <form method="post" class="create-form">
   {% csrf_token %}
@@ -32,7 +32,8 @@
   {% for field in form %}
     {% include 'patient/snippets/field2html.html' %}
   {% endfor %}
-  <button type="submit" class="btn btn-success">Envoyer</button>
+  <br>
+  <button type="submit" class="btn btn-success">Inclure</button>
 </form>
 
 

@@ -1,6 +1,5 @@
 from django.urls import path
 from .views import (
-    select_patient_view,
     preop_patient_view,
     postop_patient_view,
     detail_patient_view,
@@ -13,7 +12,6 @@ from .views import (
 app_name = 'patient'
 
 urlpatterns = [
-    path('select/<op>/', select_patient_view, name="select"),
     path('patients/<filter>/', patients_view, name="patients"),
     path('preop/', preop_patient_view, name="preop"),
     path('postop/<slug>/', postop_patient_view, name="postop"),

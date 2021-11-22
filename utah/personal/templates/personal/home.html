@@ -5,29 +5,34 @@
 
 {% block content %}
 <style type="text/css">
-  #centered-buttons {
-    padding-top: 15px;
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    max-width: 50%;
-    top: 30%;
-    left: 25%;
-    right: 25%;
-    position: fixed;
-    }
+    #centered-buttons {
+      padding-top: 15px;
+      margin: 0 auto;
+      text-align: center;
+      top: 30%;
+      left: 25%;
+      right: 25%;
+      }
+
   .btn {
     font-size: 100%;
+    width: 50%;
+    max-width: 300px;
   }
-
-
 
 </style>
 
-<div id="centered-buttons" class="btn-group-vertical">
-  <a type="button" href="{% url 'patient:preop' %}" class="btn btn-outline-success">Inclure un nouveau patient</a>
-  <a type="button" href="{% url 'patient:patients' 'all' %}" class="btn btn-outline-success">Retrouver un patient déjà inclus</a>
 
-
+<div id='centered-buttons'>
+<a type="button" href="{% url 'patient:preop' %}" class="btn btn-outline-success">
+  <img src="{% static 'images/add_patient.svg' %}" class="icon1" width="80px"/>
+  <p> Inclure un nouveau patient</p>
+</a>
+<br><br>
+<a type="button" href="{% url 'patient:patients' 'all' %}" class="btn btn-outline-success">
+  <img src="{% static 'images/find_patient.svg' %}" class="icon1" width="80px" />
+  <p> Retrouver un patient déjà inclus</p>
+</a>
 </div>
+
 {% endblock content %}

@@ -39,7 +39,9 @@
   <br>
   <div class="info container">
 
-    <a href="{% url 'patient:edit' patient.slug %}" style="float: right;padding: 4px;" class="btn btn-outline-success">Modifier</a>
+    <a href="{% url 'patient:edit' patient.slug %}" style="float: right;padding: 4px;" class="btn">
+      <img src="{% static 'images/edit.svg' %}" class="icon2" width="25px" />
+    </a>
     <h4> Rappel des informations saisies </h4>
     <hr>
     <div style="padding-left: 10px;">
@@ -65,7 +67,9 @@
     <br><br>
 
 
-    <a href="{% url 'patient:addtrt' patient.slug %}" style="float: right; padding: 4px;" class="btn btn-outline-success">Ajouter</a>
+    <a href="{% url 'patient:addtrt' patient.slug %}" style="float: right; padding: 4px;" class="btn">
+      <img src="{% static 'images/add_drug.svg' %}" class="icon2" width="25px" />
+    </a>
     <h4> Traitements suivis </h4>
     <hr>
 
@@ -94,8 +98,15 @@
     <a> Quand reprendre le traitement ?</a><br>
     <a class='btn btn-link'  href="{% url 'patient:postop' patient.slug %}">Cliquez içi</a>
     <br><br>
-    <a class='btn btn-primary' href="{% url 'personal:pdf' patient.slug 'False' %}"> Afficher les résultats </a>
-    <a class='btn btn-primary' href="{% url 'personal:pdf' patient.slug 'True' %}"> Télécharger les résultats </a>
+
+    <h4> Résultats </h4>
+    <hr>
+    <a class='btn' href="{% url 'personal:pdf' patient.slug 'False' %}">
+      <img src="{% static 'images/aspdf.svg' %}" class="icon3" width="80px" />
+     </a>
+    <a class='btn' href="{% url 'personal:pdf' patient.slug 'True' %}">
+      <img src="{% static 'images/download.svg' %}" class="icon3" width="80px" />
+     </a>
   </div>
 
 </div>

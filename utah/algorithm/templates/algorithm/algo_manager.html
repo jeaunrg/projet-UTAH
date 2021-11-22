@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap %}
+{% load static %}
 
 {% block content %}
 
@@ -15,23 +16,17 @@
       white-space: pre-line;
     }
 
-  .btn-round {
-    width: 60px;
-    height: 60px;
-    max-width: 100%;
-    max-height: 100%;
-    font-size:20px;
-    border-radius: 50%;
-    position: fixed;
-  }
-  #previous-button {
-    left: 2%;
-    top: 30%;
-  }
-  #next-button {
-    right: 2%;
-    top: 30%;
-  }
+    .btn-round {
+      position: fixed;
+    }
+    #previous-button {
+      left: 2%;
+      top: 30%;
+    }
+    #next-button {
+      right: 2%;
+      top: 30%;
+    }
   h3 {
     text-align: center;
   }
@@ -41,8 +36,13 @@
 
   <a href="{% url 'patient:detail' patient.slug %}" style="border-radius: 0;" class="btn btn-dark"><</a>
 
-  <button id="next-button" onclick="next()" class="btn btn-success btn-round">&rarr;</button>
-  <button id="previous-button" onclick="previous()" class="btn btn-success btn-round">&larr;</button>
+  <button id="next-button" onclick="next()" class="btn btn-round">
+    <img src="{% static 'images/next.svg' %}" class="icon1" width="80px"/>
+
+  </button>
+  <button id="previous-button" onclick="previous()" class="btn btn-round">
+    <img src="{% static 'images/previous.svg' %}" class="icon1" width="80px"/>
+  </button>
 
   <h3> Patient n°{{patient.incl_num}}</h3>
 

@@ -1,3 +1,5 @@
+{% load bootstrap_icons %}
+
 <!DOCTYPE html>
 <html lang=fr>
 
@@ -12,7 +14,13 @@
 
 </head>
 
+
+
 <body>
+
+
+
+
 {% include 'snippets/base_css.html' %}
 
 {% if request.user.is_authenticated %}
@@ -31,6 +39,8 @@
 
 	{% endblock content %}
   <br><br>
+
+
 </div>
 <!-- End Body -->
 

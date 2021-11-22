@@ -9,24 +9,6 @@ from editable.settings import N_PATIENTS_PER_PAGE
 from datetime import datetime
 
 
-
-@login_required(login_url='login')
-def select_patient_view(request, op):
-    context = {'op': op}
-
-    if request.POST:
-        incl_num = request.POST['incl_num']
-        if Patient.objects.filter(pk=incl_num).exists():
-            patient = Patient.objects.get(pk=incl_num)
-            if op == 'preop':
-                return redirect("algorithm:algo", patient.slug)
-            if op == 'postop':
-                return redirect("patient:postop", patient.slug)
-        else:
-            context['error'] = "Aucun patient n'a ce numéro d'inclusion."
-    return render(request, "patient/select_patient.html", context)
-
-
 @login_required(login_url='login')
 def preop_patient_view(request):
     context = {}
