@@ -65,14 +65,6 @@ QUESTIONS = {
         'question': 'Le patient prend-il des DOAC ?',
         'answers': ['Oui', 'Non']
     },
-    'before': {
-        'question': 'Avant la procédure',
-        'answers': ["Oui", 'Non']
-    },
-    'after': {
-        'question': 'Après la procédure',
-        'answers': ["Oui", 'Non']
-    },
     'xaban': {
         'question': 'Le patient prend-il des xaban ?',
         'answers': ['Oui', 'Non']

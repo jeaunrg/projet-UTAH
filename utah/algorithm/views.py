@@ -31,7 +31,9 @@ def algo_view(request, slug, mode):
             if k in REFS:
                 traitement_ids = patient.get_traitement_ids(**REFS[k])
                 for i in traitement_ids:
-                    patient.traitements[i]['conclusion'] = v
+                    if 'conclusion' not in patient.traitements[i]:
+                        patient.traitements[i]['conclusion'] = []
+                    patient.traitements[i]['conclusion'].append(v)
         patient.save()
         return redirect('patient:detail', slug)
 

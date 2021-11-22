@@ -22,14 +22,15 @@ TRAIT_CHOICES:      Liste des traitements envisageables.
 
 
 REFS = {
-    'ref_aspirin1':         {'label': 'Aspirine en prévention primaire',                        'pathologie': "Prévention primaire",    "traitement": "Aspirine, Asaflow, Cardioaspirine"},
-    'ref_aspirin_mono':     {'label': 'Aspirine en prévention secondaire et monothérapie',      'pathologie': "Prévention secondaire",  "traitement": "Aspirine, Asaflow, Cardioaspirine"},
-    'ref_clopi_mono':       {'label': 'Clopidrogen en prévention secondaire et monothérapie',   'pathologie': "Prévention secondaire",  "traitement": "Clopidogrel, PLAVIX"},
-    'ref_stent_bitherapy':  {'label': 'Bithérapie pour les stents coronaires',                  'pathologie': "Stents Cardiaques"},
-    'ref_vka':              {'label': "VKA",                                                    "categorie": "AVK"},
-    'ref_doac':             {'label': "DOAC",                                                   "categorie": "ACOD"},
-    'ref_xaban':            {'label': 'Rivaroxaban, apixaban et edoxaban',                      "categorie": "xaban"},
-    'ref_dabigatran':       {'label': 'Dabigatran',                                             "traitement": "Dabigatran, PRADAXA"},
+    'ref_aspirin1':          {'label': 'Aspirine en prévention primaire',                           'pathologie': "Prévention primaire",    "traitement": "Aspirine, Asaflow, Cardioaspirine"},
+    'ref_aspirin_mono':      {'label': 'Aspirine en prévention secondaire et monothérapie',         'pathologie': "Prévention secondaire",  "traitement": "Aspirine, Asaflow, Cardioaspirine"},
+    'ref_clopi_mono':        {'label': 'Clopidrogen en prévention secondaire et monothérapie',      'pathologie': "Prévention secondaire",  "traitement": "Clopidogrel, PLAVIX"},
+    'ref_stent_bitherapy':   {'label': 'Bithérapie pour les stents coronaires',                     'pathologie': "Stents Cardiaques"},
+    'ref_vka':               {'label': "VKA",                                                       "flags": "AVK"},
+    'ref_doac_before':       {'label': "DOAC avant l'intervention",                                 "flags": "ACOD"},
+    'ref_doac_after':        {'label': "DOAC après l'intervention",                                 "flags": "ACOD"},
+    'ref_xaban_before':      {'label': "Rivaroxaban, apixaban et edoxaban, avant l'intervention",   "flags": "xaban"},
+    'ref_dabigatran_before': {'label': "Dabigatran, avant l'intervention",                          "traitement": "Dabigatran, PRADAXA"},
 }
 
 ALGO_CHOICES = ['Belge', 'Français', 'Européen']

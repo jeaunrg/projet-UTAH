@@ -20,11 +20,12 @@ def get_default_results(patient):
     """
     results = {'antiplatelets': 'Non', 'aspirin1': 'Non', 'aspirin_mono': 'Non',
                'clopi_mono': 'Non', 'stent_bitherapy': 'Non', 'vka': 'Non', 'doac': 'Non',
-               'xaban': 'Non', 'dabigatran': 'Oui', 'before': 'Oui', 'after': 'Oui'}
+               'xaban': 'Non', 'dabigatran': 'Non'}
 
     for values in patient.traitements.values():
-
-        if 'Antiagregant plaquettaire' in values['categorie']:
+        print('')
+        print(values)
+        if 'Antiagregant plaquettaire' in values['flags']:
             results['antiplatelets'] = 'Oui'
 
         if values['traitement'] == "Aspirine, Asaflow, Cardioaspirine" and values['pathologie'] == "Prévention primaire":
@@ -39,13 +40,13 @@ def get_default_results(patient):
         if values['pathologie'] == "Stents Cardiaques":
             results['stent_bitherapy'] = 'Oui'
 
-        if 'AVK' in values['categorie']:
+        if 'AVK' in values['flags']:
             results['vka'] = 'Oui'
 
-        if 'ACOD' in values['categorie']:
+        if 'ACOD' in values['flags']:
             results['doac'] = 'Oui'
 
-        if 'xaban' in values['categorie']:
+        if 'xaban' in values['flags']:
             results['xaban'] = 'Oui'
 
         if values['traitement'] == "Dabigatran, PRADAXA":
@@ -56,5 +57,5 @@ def get_default_results(patient):
         results['bleeding_risk'] = patient.bleeding_risk
         if patient.bleeding_risk != 'intermédiaire':
             results['bleeding_risk2'] = patient.bleeding_risk
-
+    print(results)
     return results

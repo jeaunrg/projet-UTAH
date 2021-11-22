@@ -42,7 +42,7 @@ ALGO = {
                     'aspirin1': {
                         'Oui': {
                             'bleeding_risk %ref_aspirin1': {
-                                'faible': 'Arrêt ou non du traitement.',
+                                'faible': ['Arrêt ou non du traitement.', 'Deuxième conclusion'],
                                 'intermédiaire': 'Arrêt du traitement.',
                                 'élevé': 'Arrêt du traitement.'
                             }
@@ -103,40 +103,33 @@ ALGO = {
             },
             'doac': {
                 'Oui': {
-                    'before': {
-                        'Oui': {
-                            'bleeding_risk2 %ref_doac': {
-                                'faible': "Pas de prise la nuit avant ou le matin du geste invasive. Pas de bridge. Pas de dosage.",
-                                'élevé': {
-                                    'xaban': {
-                                        'Oui': {
-                                            'cockroft_1 %ref_xaban': {
-                                                'Oui': 'dernière prise à J-3. Pas de bridge. Pas de dosage.'
-                                            }
-                                        }
-                                    },
-                                    'dabigatran': {
-                                        'Oui': {
-                                            'cockroft_2 %ref_dabigatran': {
-                                                '> 50 mL/min': 'dernière prise à J-4. Pas de bridge. Pas de dosage.',
-                                                '30-49 mL/min': 'dernière prise à J-5. Pas de bridge. Pas de dosage.'
-                                            }
-                                        }
+                    'bleeding_risk2 %ref_doac_before': {
+                        'faible': "Pas de prise la nuit avant ou le matin du geste invasive. Pas de bridge. Pas de dosage.",
+                        'élevé': {
+                            'xaban': {
+                                'Oui': {
+                                    'cockroft_1 %ref_xaban_before': {
+                                        'Oui': "Dernière prise à J-3. Pas de bridge. Pas de dosage."
                                     }
                                 }
-                            }
+                            },
+                            'dabigatran': {
+                                'Oui': {
+                                    'cockroft_2 %ref_dabigatran_before': {
+                                        '> 50 mL/min':  "Dernière prise à J-4. Pas de bridge. Pas de dosage.",
+                                        '30-49 mL/min': "Dernière prise à J-5. Pas de bridge. Pas de dosage."
+                                    }
+                                }
+                            },
+
                         }
                     },
-                    'after': {
-                        'Oui': {
-                            'bleeding_risk2 %ref_doac': {
-                                'faible': "Reprise au moment habituel et au moins 6 heures après la fin de la procédure.",
-                                'élevé': {
-                                    'venous_thrombo %ref_doac': {
-                                        'Oui': "Anticoagulants à dose prophylactique au moins 6 heures après l'intervention. Anticoagulants à doses curatives dès que l'hémostase le permet.",
-                                        'Non': "Anticoagulants à doses curatives dès que l'hémostase le permet."
-                                    }
-                                }
+                    'bleeding_risk2 %ref_doac_after': {
+                        'faible': "Reprise au moment habituel et au moins 6 heures après la fin de la procédure.",
+                        'élevé': {
+                            'venous_thrombo %ref_doac_after': {
+                                'Oui': "Anticoagulants à dose prophylactique au moins 6 heures après. Anticoagulants à doses curatives dès que l'hémostase le permet.",
+                                'Non': "Anticoagulants à doses curatives dès que l'hémostase le permet."
                             }
                         }
                     }

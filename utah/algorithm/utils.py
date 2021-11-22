@@ -3,7 +3,7 @@ from editable.questions import QUESTIONS
 
 def add_pbar_nums(algo, i=0):
     new_algo={}
-    if isinstance(algo, str):
+    if not isinstance(algo, dict):
         return algo, i
     else:
         new_algo = {}

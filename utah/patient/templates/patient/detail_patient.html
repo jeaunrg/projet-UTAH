@@ -74,9 +74,10 @@
 
     {% if patient.traitements %}
       {% for idtrt, values in patient.traitements.items %}
-        <a class='btn' href="{% url 'patient:edittrt' patient.slug idtrt %}"> <strong>{{values.pathologie}} - </strong>{{values.traitement}}{% if values.conclusion %}<i> - {{values.conclusion}}</i>{% endif %} </a><br>
-
+        <a class='btn' href="{% url 'patient:edittrt' patient.slug idtrt %}"> <strong>{{values.pathologie}} - </strong>{{values.traitement}}</a>
+        {% for concl in values.conclusion %} <br><i> - {{concl}}</i> {% endfor %} <br>
       {% endfor %}
+
     {% else %}
       <p> Aucun traitement. </p>
     {% endif %}

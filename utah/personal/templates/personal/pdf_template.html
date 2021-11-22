@@ -1,6 +1,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-
+{% load bootstrap %}
 {% load static %}
 <style type="text/css">
   .logo {
@@ -8,29 +9,24 @@
     width: 200px;
     float: right;
   }
-  .bar-code {
-    margin-top: 30px;
-    margin-left: 30px;
-    float: left;
-  }
   .body {
     margin: 0px auto;
     padding-top: 150px;
     width: 75%;
   }
-  .title {
-    padding: 5px;
-    background: grey;
-    color: white
+  .h {
+    font-weight: bold;
+    width: 180px;
   }
+
   h1 {
     text-align: center;
   }
-  th {
-      float: left;
-  }
-  td {
-    white-space:pre
+
+  .table-borderless > tbody,
+  .table-borderless > tbody > tr,
+  .table-borderless > tbody > tr > td {
+      border: none;
   }
 
 </style>
@@ -48,48 +44,54 @@
   <br><br>
 
   <h2> Patient </h2><hr>
-  <table class="table" id="info">
+  <table class="table table-borderless" id="info">
     <tbody>
-      <tr><th>Nom :</th>                <td>{{patient.lastname}}</td></tr>
-      <tr><th>Prénom :</th>             <td>{{patient.firstname}}</td></tr>
-      <tr><th>Date de naissance :</th>  <td>{{patient.ddn | date:'d/m/Y'}}</td></tr>
-      <tr><th>Poids :</th>              <td>{{patient.weight}} kg</td></tr>
-      <tr><th>Taille :</th>             <td>{{patient.height}} cm</td></tr>
+      <tr><td class='h'>Nom :</td>                <td>{{patient.lastname}}</td></tr>
+      <tr><td class='h'>Prénom :</td>             <td>{{patient.firstname}}</td></tr>
+      <tr><td class='h'>Date de naissance :</td>  <td>{{patient.ddn | date:'d/m/Y'}}</td></tr>
+      <tr><td class='h'>Poids :</td>              <td>{{patient.weight}} kg</td></tr>
+      <tr><td class='h'>Taille :</td>             <td>{{patient.height}} cm</td></tr>
     </tbody>
   </table>
   <br><br>
 
   <h2> Intervention </h2><hr>
-  <table class="table" id="intervention">
+  <table class="table table-borderless" id="intervention">
     <tbody>
-      <tr><th>Nom du chirurgien :</th>    <td>{{patient.chirurgien}}</td></tr>
-      <tr><th>Type de chirurgie :</th>    <td>{{patient.chirurgie}}</td></tr>
-      <tr><th>Date de la chirurgie :</th> <td>{{patient.ddi | date:'d/m/Y'}}</td></tr>
+      <tr><td class='h'>Nom du chirurgien :</td>    <td>{{patient.chirurgien}}</td></tr>
+      <tr><td class='h'>Type de chirurgie :</td>    <td>{{patient.chirurgie}}</td></tr>
+      <tr><td class='h'>Date de la chirurgie :</td> <td>{{patient.ddi | date:'d/m/Y'}}</td></tr>
     </tbody>
   </table>
   <br><br>
 
   <h2> Consultation </h2><hr>
-  <table class="table" id="consultation">
+  <table class="table table-borderless" id="consultation">
     <tbody>
-      <tr><th>Médecin :</th>  <td>{{patient.author.alias}}</td></tr>
-      <tr><th>Date de la consultation :</th>           <td>{{patient.ddconsult | date:'d/m/Y'}}</td></tr>
+      <tr><td class='h'>Médecin :</td>                  <td>{{patient.author.alias}}</td></tr>
+      <tr><td class='h'>Date de la consultation :</td>  <td>{{patient.ddconsult | date:'d/m/Y'}}</td></tr>
     </tbody>
   </table>
   <br><br>
 
-  <h2> Modifications à faire (algorithme {{patient.algo}}) </h2><hr>
+  <h2> Modifications à faire (algorithme {{patient.algo}}) </h2><br>
 
-  <table class="table table-bordred table-striped " id="result">
+  <table class="table " id="result">
+    <thead>
+      <th>Traitements</th>
+      <th>Modalités d'interruption</th>
+    </thead>
+
     <tbody>
-      <tr>
-        <td><strong>Traitements</strong></td>
-        <td><strong>Modalités d'interruption</strong></td>
-      </tr>
+
       {% for v in patient.traitements.values %}
         <tr>
           <td>{{v.traitement}}</td>
-          <td>{{v.conclusion}}</td>
+          <td>
+            {% for concl in v.conclusion %}
+              <a>{{concl}}</a><br>
+            {% endfor %}
+          </td>
         </tr>
       {% endfor %}
     </tbody>

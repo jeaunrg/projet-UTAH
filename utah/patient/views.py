@@ -66,7 +66,8 @@ def add_traitement_view(request, slug):
                 idtrt += 1
             values = {k: v for k, v in request.POST.items() if k in form.fields}
             if values['traitement'] in TRAIT_CHOICES:
-                values['categorie'] = TRAIT_CHOICES.get(values['traitement']).split('-')[0]
+                values['flags'] = TRAIT_CHOICES.get(values['traitement'])
+                values['categorie'] = TRAIT_CHOICES.get(values['traitement']).split('-')[0]                     
             patient.traitements[idtrt] = values
             patient.save()
             return redirect("patient:detail", slug)

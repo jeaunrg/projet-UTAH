@@ -94,8 +94,8 @@ class Patient(models.Model):
         for i, data in self.traitements.items():
             # categorie
             b1, b2, b3 = True, True, True
-            if 'categorie' in kwargs:
-                if kwargs['categorie'] not in data['categorie']:
+            if 'flags' in kwargs:
+                if kwargs['flags'] not in data['flags']:
                     b1 = False
             # pathologie
             if 'pathologie' in kwargs:

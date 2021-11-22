@@ -20,9 +20,12 @@
       {% include 'patient/snippets/field2html.html' %}
     {% endfor %}
     {% if traitement.conclusion %}
-      <br><br><strong>Résultats: </strong> <p>{{traitement.conclusion}}</p>
-      {% endif %}
-    <br>
+      <br><br><strong>Résultats: </strong>
+        {% for concl in traitement.conclusion %}
+          <br><a> - {{concl}}</a>
+        {% endfor %}
+    {% endif %}
+    <br><br>
 
     <input type="hidden" name="submitType" id="submitType">
     <button type="submit" class="btn btn-success">Modifier</button>
