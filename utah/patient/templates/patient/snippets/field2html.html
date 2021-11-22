@@ -29,4 +29,9 @@
     <label for={{field.name}}>{{field.label}}</label>
   {% endif %}
 
+  <!-- raise errors -->
+  {% for error in field.errors %}
+    <p style="color: red"> {{ error }} </p>
+  {% endfor %}
+
 </div>

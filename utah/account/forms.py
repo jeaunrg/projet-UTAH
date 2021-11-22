@@ -5,7 +5,7 @@ from .models import Account
 
 class AccountAuthenticationForm(forms.ModelForm):
 
-	password = forms.CharField(label='Password', widget=forms.PasswordInput)
+	password = forms.CharField(label='Mot de passe', widget=forms.PasswordInput)
 
 	class Meta:
 		model = Account
@@ -15,8 +15,13 @@ class AccountAuthenticationForm(forms.ModelForm):
 		if self.is_valid():
 			username = self.cleaned_data['username']
 			password = self.cleaned_data['password']
+			try:
+				Account.objects.exclude(pk=self.instance.pk).get(username=username)
+			except Account.DoesNotExist:
+				raise forms.ValidationError("Nom d'utilisateur invalide")
+
 			if not authenticate(username=username, password=password):
-				raise forms.ValidationError("Invalid login")
+				raise forms.ValidationError("Mot de passe invalide")
 
 
 class AccountUpdateForm(forms.ModelForm):
