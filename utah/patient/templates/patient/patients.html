@@ -71,7 +71,6 @@
         <th>Nom</th>
         <th>Intervention</th>
         <th>Chirurgie</th>
-        <th>Pathologie</th>
         <th>Chirurgien</th>
         <th>Consultation</th>
       </thead>
@@ -83,15 +82,17 @@
             <td>{{file.lastname}}</td>
             <td>{{file.intervention}}</td>
             <td>{{file.chirurgie}}</td>
-            <td>{{file.pathologie}}</td>
             <td>{{file.chirurgien}}</td>
-            <td>{{file.consultant}}</td>
+            <td>{{file.author.alias}}</td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
    </div>
   {% include 'patient/snippets/patient_pagination.html' with patients=patients %}
+
+  {% else %}
+  <p>Aucun patient trouvé</p>
 
   {% endif %}
 

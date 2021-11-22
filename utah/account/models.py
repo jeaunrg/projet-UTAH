@@ -16,7 +16,6 @@ class MyAccountManager(BaseUserManager):
             username=username,
             email=email,
         )
-
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -44,6 +43,7 @@ def upload_location(instance, filename):
 class Account(AbstractBaseUser):
     username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
+    alias = models.CharField(max_length=200, default="Dr.")
     profile_picture = models.ImageField(upload_to=upload_location, blank=True, null=True)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)

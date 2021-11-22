@@ -15,10 +15,7 @@ def preop_patient_view(request):
     form = PreopPatientFileForm(request.POST or None)
     if form.is_valid():
         patient = form.save(commit=False)
-        uname = request.user.username
-        author = Account.objects.filter(username=uname).first()
-        patient.consultant = uname
-        patient.author = author
+        patient.author = Account.objects.filter(username=request.user.username).first()
         patient.save()
         return redirect("patient:detail", patient.slug)
 

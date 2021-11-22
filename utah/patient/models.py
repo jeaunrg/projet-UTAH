@@ -63,21 +63,6 @@ class Patient(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     slug = models.SlugField(blank=True, unique=True)
 
-    #-------------------- A supprimer -----------------#
-    pathologie = models.CharField("Pathologie justifiant le traitement", max_length=40, choices=to_choice(PATH_CHOICES), blank=True)
-    traitement1 = models.CharField("Premier traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
-    traitement2 = models.CharField("Deuxième traitement", max_length=40, choices=to_choice(TRAIT_CHOICES), blank=True)
-
-    # traitement 1
-    date_derniere_prise_th1 = models.DateField('Date de dernière prise théorique (premier traitement)', null=True, blank=True)
-    date_derniere_prise1 = models.DateField('Date de dernière prise pratique (premier traitement)', null=True, blank=True)
-    inobservance1 = models.CharField("Inobservance (premier traitement)", max_length=40, default="Pas d'inobservance",
-                                     choices=to_choice(["Pas d'inobservance", "Oubli", "Incompréhension", "Contre-ordre médical"]))
-    # traitement 2
-    date_derniere_prise_th2 = models.DateField('Date de dernière prise théorique (deuxième traitement)', null=True, blank=True)
-    date_derniere_prise2 = models.DateField('Date de dernière prise pratique (deuxième traitement)', null=True, blank=True)
-    inobservance2 = models.CharField("Inobservance (deuxième traitement)", max_length=40, default="Pas d'inobservance",
-                                     choices=to_choice(["Pas d'inobservance", "Oubli", "Incompréhension", "Contre-ordre médical"]))
 
 
     def __str__(self):

@@ -23,7 +23,7 @@ class AccountUpdateForm(forms.ModelForm):
 
 	class Meta:
 		model = Account
-		fields = ('username', 'email', 'profile_picture')
+		fields = ('username', 'email', 'alias', 'profile_picture')
 
 	def clean_username(self):
 		username = self.cleaned_data['username']
@@ -45,6 +45,8 @@ class AccountUpdateForm(forms.ModelForm):
 		account = self.instance
 		account.username = self.cleaned_data['username']
 		account.email = self.cleaned_data['email']
+		account.alias = self.cleaned_data['alias']
+
 
 		if self.cleaned_data['profile_picture']:
 			account.profile_picture = self.cleaned_data['profile_picture']

@@ -66,18 +66,6 @@
   .form-signin .form-floating:focus-within {
     z-index: 2;
   }
-
-  .form-signin input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  .form-signin input[type="text"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
   .h1  {
     text-align: center;
   }
@@ -104,13 +92,18 @@
   <br>
 
   <div class="form-floating">
-    <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required value={{account_form.initial.username}}>
+    <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required value="{{account_form.initial.username}}">
     <label for="inputUsername">Nom d'utilisateur</label>
   </div>
 
   <div class="form-floating">
-    <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required value={{account_form.initial.email}}>
+    <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required value="{{account_form.initial.email}}">
     <label for="inputEmail">Adresse mail</label>
+  </div>
+
+  <div class="form-floating">
+    <input type="alias" name="alias" id="inputAlias" class="form-control" placeholder="Alias" required value="{{account_form.initial.alias}}">
+    <label for="inputAlias">Alias</label>
   </div>
 
 
