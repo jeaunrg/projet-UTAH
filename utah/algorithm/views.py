@@ -26,14 +26,14 @@ def algo_view(request, slug, mode):
             elif k.startswith('CONCLUSIONS'):
                 conclusions[k[12:]] = v
         patient.algo_complete_results = results
-
+        # empty conclusions
+        patient.reset_cure_conclusions()
         for k, v in conclusions.items():
             if k in REFS:
                 traitement_ids = patient.get_traitement_ids(**REFS[k])
                 for i in traitement_ids:
-                    if 'conclusion' not in patient.traitements[i]:
-                        patient.traitements[i]['conclusion'] = []
                     patient.traitements[i]['conclusion'].append(v)
+
         patient.save()
         return redirect('patient:detail', slug)
 

@@ -23,7 +23,7 @@
 
 </style>
 
-<a href="{% url 'home' %}" style="border-radius: 0;" class="btn btn-dark"><</a>
+<script> document.getElementById('ppage').href = "{% url 'home' %}" </script>
 
 <form method="post" class="create-form">
   {% csrf_token %}

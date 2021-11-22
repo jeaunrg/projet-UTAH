@@ -8,10 +8,10 @@
 
 </style>
 
-<a href="{% url 'patient:detail' patient.slug %}" style="border-radius: 0;" class="btn btn-dark"><</a>
+<script> document.getElementById('ppage').href = "{% url 'patient:detail' patient.slug %}" </script>
 
 <div class="container px-4">
-  <h2 align="center"> Patient n°{{patient.incl_num}} </h2>
+  <h2 align="center"> PATIENT N°{{patient.incl_num}} </h2>
   <hr>
   <form method="post" class="create-form">
     {% csrf_token %}

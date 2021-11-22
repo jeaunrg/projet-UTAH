@@ -1,81 +1,63 @@
 {% load static %}
 
 <style type="text/css">
-	.b-example-divider {
-	  height: 3rem;
-	  background-color: rgba(0, 0, 0, .1);
-	  border: solid rgba(0, 0, 0, .15);
-	  border-width: 1px 0;
-	  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-	}
+  #hello {
+    width: 100%;
+    margin-right: 20px;
+  }
+  #hello-text {
+    font-size: 20px;
+    float: right;
+  }
 
-	.form-control-dark {
-	  color: #fff;
-	  background-color: var(--bs-dark);
-	  border-color: var(--bs-gray);
-	}
-	.form-control-dark:focus {
-	  color: #fff;
-	  background-color: var(--bs-dark);
-	  border-color: #fff;
-	  box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
-	}
+  #navigation {
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+  #dropdown {
 
-	.bi {
-	  vertical-align: -.125em;
-	  fill: currentColor;
-	}
-
-	.text-small {
-	  font-size: 85%;
-	}
-
-	.dropdown-toggle {
-	  outline: 0;
-	}
-	.h2 {
-		font-size: 95%;
-		color: rgba(255, 255, 255, 0.5);
-	}
-
+  }
+  header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+  }
 </style>
-<header class="p-3 bg-dark text-white">
-	<div class="container">
-		<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-			<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-				<li><a class="nav-link px-2 text-secondary" href="{% url 'home' %}">Accueil</a></li>
-				<li><a class="nav-link px-2 text-white" href="/admin/">Administration</a></li>
-				<li><a class="nav-link px-2 text-white" href="#">Contact</a></li>				
-			</ul>
-
-			<h2 class="h2 col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 text-center"> Bonjour {{ user.username }}</h2>
 
 
-			<div class="dropdown text-end">
-				<a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-					{% if user.profile_picture_is_valid %}
-					<img src="{{user.profile_picture.url}}" alt="mdo" width="32" height="32" class="rounded-circle">
-					{% else %}
-					<img src="{% static 'images/default_profile_picture.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
-			    {% endif %}
+<header class="bg-dark text-white">
+  <a id='ppage' class="nav-link px-2 text-white" href="#">
+    <img src="{% static 'images/previous_page.svg' %}" class="icon" width="40px" />
+  </a>
 
-				</a>
-				<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-					<li><a class="dropdown-item" href="{% url 'patient:patients' 'is_author' %}">Mes patients</a></li>
-					<li><a class="dropdown-item" href="{% url 'account' %}">Mon compte</a></li>
-					<li><a class="dropdown-item" href="{% url 'personal:data' %}">Récupérer les données</a></li>
-					<li><hr class="dropdown-divider"></li>
-					<li><a class="dropdown-item" href="{% url 'logout' %}">Se déconnecter</a></li>
-				</ul>
-			</div>
+	<div id="navigation">
+    <a class="nav-link px-2 text-secondary" href="{% url 'home' %}">Accueil</a>
+    <a class="nav-link px-2 text-white" href="/admin/">Administration</a>
+    <a class="nav-link px-2 text-white" href="#">Contact</a>
+  </div>
 
-		</div>
-	</div>
+  <div id='hello'>
+    <h2 id='hello-text'> {{ user.alias }}</h2>
+  </div>
+
+  <div id="dropdown">
+    <a href="#" class="link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+      {% if user.profile_picture_is_valid %}
+      <img src="{{user.profile_picture.url}}" alt="mdo" width="32" height="32" class="rounded-circle">
+      {% else %}
+      <img src="{% static 'images/default_profile_picture.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+      {% endif %}
+
+    </a>
+    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+      <li><a class="dropdown-item" href="{% url 'patient:patients' 'is_author' %}">Mes patients</a></li>
+      <li><a class="dropdown-item" href="{% url 'account' %}">Mon compte</a></li>
+      <li><a class="dropdown-item" href="{% url 'personal:data' %}">Récupérer les données</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="{% url 'logout' %}">Se déconnecter</a></li>
+    </ul>
+  </div>
+
 </header>
-
-
-<script type="text/javascript">
-	if ("{{query}}" != "") {
-		document.getElementById("id_q").value = "{{query}}";
-	}
-</script>

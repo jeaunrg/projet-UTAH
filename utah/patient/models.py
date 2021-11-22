@@ -119,3 +119,8 @@ class Patient(models.Model):
             if boolean:
                 return True
         return False
+
+    def reset_cure_conclusions(self):
+        for k in self.traitements.keys():
+            self.traitements[k]['conclusion'] = []
+        self.save()

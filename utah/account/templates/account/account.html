@@ -71,6 +71,7 @@
   }
 </style>
 
+<script> document.getElementById('ppage').href = "{% url 'home' %}" </script>
 
 <form class="form-signin" method="post" enctype="multipart/form-data">{% csrf_token %}
 

@@ -12,11 +12,11 @@
     .h3 {
       margin-top: 150px;
     }
-    .title {
+    /* .title {
       padding: 5px;
       background: rgb(180, 180, 180);
       color: white;
-    }
+    } */
     input {
       border-style: hidden;
     }
@@ -27,14 +27,13 @@
 </style>
 
 
-<a href="{% url 'patient:patients' 'all' %}" style="border-radius: 0;" class="btn btn-dark"><</a>
-<br><br>
+<script> document.getElementById('ppage').href = "{% url 'patient:patients' 'all' %}" </script>
+<br>
 
 
 <div class="container px-4">
-
   <div class="title">
-    <h2 align="center"> Patient n°{{patient.incl_num}} </h2>
+    <h2 align="center"> PATIENT N°{{patient.incl_num}} </h2>
   </div>
   <br>
   <div class="info container">
@@ -69,7 +68,7 @@
     <a href="{% url 'patient:addtrt' patient.slug %}" style="float: right; padding: 4px;" class="btn">
       <img src="{% static 'images/add_drug.svg' %}" class="icon2" width="25px" />
     </a>
-    <h4> Traitements suivis </h4>
+    <h4> Traitements </h4>
     <hr>
 
     {% if patient.traitements %}
@@ -81,7 +80,7 @@
     {% else %}
       <p> Aucun traitement. </p>
     {% endif %}
-    <br>
+    <br><br>
 
     <h4> Proposition de prise en charge </h4>
     <hr>

@@ -19,30 +19,17 @@
 	    padding: 15px;
   	}
 
-  /* .add-patient {
-    margin: 0 auto;
-    width: 100px;
-  } */
 </style>
 
-<a href="{% url 'home' %}" class="btn btn-dark" style="border-radius: 0;"><</a>
+<script> document.getElementById('ppage').href = "{% url 'home' %}" </script>
 
-<br><br>
-
-
+<br>
 <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 2fr;">
   <div class="d-flex align-items-left">
     <form class="w-100 me-3" method="get">
       <div class="form-floating">
         <input class="form-control"  name="q" type="search" id="id_q" placeholder="recherche">
         <label for="id_q">Rechercher des patients</label>
-        <!-- {% if n_patients == 0 %}
-        <p>Aucun patients trouvés</p>
-        {% elif n_patients == 1 %}
-        <p>1 patient trouvé</p>
-        {% else %}
-        <p>{{n_patients}} patients trouvés</p>
-        {% endif %} -->
       </div>
     </form>
     <div class=add-patient>

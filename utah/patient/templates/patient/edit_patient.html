@@ -19,12 +19,12 @@
     }
 </style>
 
-<a href="{% url 'patient:detail' patient.slug %}" style="border-radius: 0;" class="btn btn-dark "><</a>
+<script> document.getElementById('ppage').href = "{% url 'patient:detail' patient.slug %}" </script>
 
 <form method="post" class="create-form">
   {% csrf_token %}
     <br>
-    <h3> Patient n°{{patient.incl_num}}</h3><hr>
+    <h3> PATIENT N°{{patient.incl_num}}</h3><hr>
     {% for field in form %}
       {% include 'patient/snippets/field2html.html' %}
     {% endfor %}
