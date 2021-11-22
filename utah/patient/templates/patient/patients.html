@@ -67,7 +67,6 @@
     <table id="mytable" class="table table-bordred table-striped sortable">
       <thead>
         <th>N°Utah</th>
-        <th>N°Dossier</th>
         <th>Prénom</th>
         <th>Nom</th>
         <th>Intervention</th>
@@ -80,7 +79,6 @@
         {% for file in patients %}
           <tr data-href="{% url 'patient:detail' file.slug %}">
             <td>{{file.incl_num}}</td>
-            <td>{{file.hosp_num}}</td>
             <td>{{file.firstname}}</td>
             <td>{{file.lastname}}</td>
             <td>{{file.intervention}}</td>

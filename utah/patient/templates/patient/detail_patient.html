@@ -45,7 +45,6 @@
     <h4> Rappel des informations saisies </h4>
     <hr>
     <div style="padding-left: 10px;">
-      <strong>Numéro de dossier</strong><a> {{patient.hosp_num}} </a><br>
       <strong>Taille</strong> <a>{{patient.get_height}}. </a><br>
       <strong>Poids</strong> <a>{{patient.weight}} kg </a><br>
       <strong>Date de naissance </strong> <a>{{patient.ddn | date:'d/m/Y'}} {% if patient.ddi %}, soit {{patient.get_age_at_intervention}} ans le jour de l'intervention {% endif %} </a><br><br>

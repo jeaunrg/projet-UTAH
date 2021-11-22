@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from patient.models import Patient
-from .utils import generate_pdf, generate_bar_code
+from .utils import generate_pdf
 from editable.questions import QUESTIONS
 from editable.settings import EXCEL_FILENAME, EXCEL_ENCODING
 import os
@@ -23,7 +23,6 @@ def generate_pdf_view(request, slug, download='False'):
 
 	context = {}
 	context['SERVER_URL'] = SERVER_URL
-	context['barcode'] = generate_bar_code(patient.hosp_num)
 	context['patient'] = patient
 	return generate_pdf("personal/pdf_template.html", context, f'patient_{patient.incl_num}.pdf', download=='True')
 

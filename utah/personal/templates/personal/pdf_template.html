@@ -38,7 +38,6 @@
 
 <div class="header">
   <img class="logo" src="{{SERVER_URL}}static/images/logo_erasme.png" alt="logo erasme">
-  <p class="bar-code" > {{ barcode|safe }}</p>
 </div>
 
 <div class="body">
@@ -48,7 +47,7 @@
   </div>
   <br><br>
 
-  <h2> Patient N°{{patient.hosp_num}} </h2><hr>
+  <h2> Patient </h2><hr>
   <table class="table" id="info">
     <tbody>
       <tr><th>Nom :</th>                <td>{{patient.lastname}}</td></tr>

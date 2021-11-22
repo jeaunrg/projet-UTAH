@@ -18,9 +18,6 @@ def to_choice(data, add_empty=True):
 class Patient(models.Model):
     #-------------------- PREOP -----------------#
     # patient
-    hosp_num = models.CharField("n°dossier", max_length=12, default="", validators=[
-        RegexValidator(regex='^.{12}$', message='Length has to be 12'),
-        RegexValidator(regex='^[0-9]*$', message='Only digits accepted')])
     firstname = models.CharField('prénom', max_length=200, default="")
     lastname = models.CharField('nom', max_length=200, default="")
     height = models.IntegerField('taille')

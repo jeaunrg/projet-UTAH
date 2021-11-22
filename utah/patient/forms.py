@@ -36,7 +36,7 @@ class TraitementFileForm(forms.Form):
 class PreopPatientFileForm(CustomModelForm):
     class Meta:
         model = Patient
-        fields = ["hosp_num", "firstname", "lastname", "height", "weight", "ddn", "chirurgie", "ddi", "intervention", "chirurgien", "bleeding_risk"]
+        fields = ["firstname", "lastname", "height", "weight", "ddn", "chirurgie", "ddi", "intervention", "chirurgien", "bleeding_risk"]
 
 
 class PostopPatientFileForm(CustomModelForm):
@@ -58,7 +58,7 @@ class PostopPatientFileForm(CustomModelForm):
 class UpdatePatientFileForm(CustomModelForm):
     class Meta:
         model = Patient
-        fields = ["hosp_num", "firstname", "lastname", "height", "weight", "ddn", "consultant",
+        fields = ["firstname", "lastname", "height", "weight", "ddn", "consultant",
                   "ddi", "intervention", "chirurgien", "chirurgie", "bleeding_risk",
                   "schema_therap", "aptt", "pt", "inr", "hemoglobine", "plaquette", "dfg", "vol_sang", "coag"]
 

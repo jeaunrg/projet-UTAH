@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 import os
 import pdfkit
-import barcode
 import random
 from editable.settings import PDF_OPTIONS
 
@@ -18,7 +17,3 @@ def generate_pdf(template, context={}, save_filename="outut.pdf", download=False
     pdf.close()
     os.remove("tmp.pdf")
     return response
-
-def generate_bar_code(num):
-    svg = barcode.get('ean13', str(num))
-    return svg.render().decode("utf-8")

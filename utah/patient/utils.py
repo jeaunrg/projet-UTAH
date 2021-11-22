@@ -13,7 +13,6 @@ def get_patients_queryset(query=None, **kwargs):
     for q in queries:
         patients = Patient.objects.filter(
             Q(incl_num__icontains=q) |
-            Q(hosp_num__iexact=q) |
             Q(firstname__icontains=q) |
             Q(lastname__icontains=q) |
             Q(intervention__icontains=q) |
