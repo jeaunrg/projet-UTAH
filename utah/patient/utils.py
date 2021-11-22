@@ -17,8 +17,7 @@ def get_patients_queryset(query=None, **kwargs):
             Q(lastname__icontains=q) |
             Q(intervention__icontains=q) |
             Q(chirurgie__icontains=q) |
-            Q(chirurgien__icontains=q) |
-            Q(consultant__icontains=q)
+            Q(chirurgien__icontains=q)
         ).distinct()
 
         for patient in patients:

@@ -32,7 +32,6 @@ class Patient(models.Model):
     bleeding_risk = models.CharField("Risque hémorragique de la chirurgie", max_length=100, choices=to_choice(BLEEDRISK_CHOICES), blank=True)
 
     # consultation
-    consultant = models.CharField('Medecin qui fait la consultation', max_length=200, default="", blank=True)
     ddconsult = models.DateField("Date de la consultation", auto_now_add=True, blank=True)
 
     # traitement

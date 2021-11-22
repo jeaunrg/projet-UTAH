@@ -58,7 +58,7 @@ class PostopPatientFileForm(CustomModelForm):
 class UpdatePatientFileForm(CustomModelForm):
     class Meta:
         model = Patient
-        fields = ["firstname", "lastname", "height", "weight", "ddn", "consultant",
+        fields = ["firstname", "lastname", "height", "weight", "ddn",
                   "ddi", "intervention", "chirurgien", "chirurgie", "bleeding_risk",
                   "schema_therap", "aptt", "pt", "inr", "hemoglobine", "plaquette", "dfg", "vol_sang", "coag"]
 
