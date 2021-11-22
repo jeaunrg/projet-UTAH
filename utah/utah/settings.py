@@ -36,7 +36,6 @@ INSTALLED_APPS = [
 
     'bootstrapform',
     "django_tables2",
-    'django_bootstrap_icons',
 
     # django apps
     'django.contrib.admin',
