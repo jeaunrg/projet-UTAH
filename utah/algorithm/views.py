@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from patient.models import Patient
 from editable.questions import QUESTIONS
-from editable.algorithm import ALGO
 from editable.default import get_default_results
 from editable.data import REFS
+from editable.algorithm import ALGO
 from django.contrib.auth.decorators import login_required
+from .utils import get_algo
 import json
 
 
@@ -36,10 +37,9 @@ def algo_view(request, slug, mode):
 
     default_results = {}
 
-    context['questions'] = QUESTIONS
     context['refs'] = REFS
-    context['algo'] = json.dumps(ALGO)
-    context['quests'] = json.dumps(QUESTIONS)
+    context['algo'], context['pbar_max'] = get_algo()
+    context['questions'] = QUESTIONS
     if mode == 'from_scratch':
         context['results'] = {}
     else:

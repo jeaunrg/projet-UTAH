@@ -35,49 +35,49 @@ A ne pas oublier de virgules
 """
 
 ALGO = {
-    'algo #1': {
+    'algo': {
         'Français': {
-            'antiplatelets #2': {
+            'antiplatelets': {
                 'Oui': {
-                    'aspirin1 #3': {
+                    'aspirin1': {
                         'Oui': {
-                            'bleeding_risk %ref_aspirin1 #4': {
+                            'bleeding_risk %ref_aspirin1': {
                                 'faible': 'Arrêt ou non du traitement.',
                                 'intermédiaire': 'Arrêt du traitement.',
                                 'élevé': 'Arrêt du traitement.'
                             }
                         }
                     },
-                    'aspirin_mono #6': {
+                    'aspirin_mono': {
                         'Oui': {
-                            'bleeding_risk %ref_aspirin_mono #8': {
+                            'bleeding_risk %ref_aspirin_mono': {
                                 'faible': "Pas d'arrêt du traitement.",
                                 'intermédiaire': "Pas d'arrêt du traitement.",
                                 'élevé': "Arrêt du traitement."
                             }
                         }
                     },
-                    'clopi_mono #9':{
+                    'clopi_mono':{
                         'Oui': {
-                            'bleeding_risk %ref_clopi_mono #10': {
+                            'bleeding_risk %ref_clopi_mono': {
                                 'faible': "Pas d'arrêt du traitement.",
                                 'intermédiaire': "Arrêt du traitement. Bridge par l'aspirine.",
                                 'élevé': 'Arrêt du traitement.'
                             }
                         }
                     },
-                    'stent_bitherapy #11': {
+                    'stent_bitherapy': {
                         'Oui': {
-                            'stent_condition #12': {
+                            'stent_condition': {
                                 'Oui': {
-                                    'bleeding_risk %ref_stent_bitherapy #13': {
+                                    'bleeding_risk %ref_stent_bitherapy': {
                                         'faible': "Report de la procédure. Si impossible, poursuite de la bitherapie.",
                                         'intermédiaire': "Report de la procédure. Si impossible, arrêt de l'anti-P2Y12, pas d'arrêt de l'aspirine.",
                                         'élevé': "Report de la procédure. Si impossible, arrêt de la bitherapie."
                                     }
                                 },
                                 'Non': {
-                                    'bleeding_risk %ref_stent_bitherapy #14': {
+                                    'bleeding_risk %ref_stent_bitherapy': {
                                         'faible': "Pas d'arrêt de la bitherapie.",
                                         'intermédiaire': "Arrêt de l'anti-P2Y12. Pas d'arrêt de l'aspirine.",
                                         'élevé': "Arrêt de la bitherapie."
@@ -88,12 +88,12 @@ ALGO = {
                     }
                 }
             },
-            'vka #15': {
+            'vka': {
                 'Oui': {
-                    'thromboembolism_risk %ref_vka #16': {
+                    'thromboembolism_risk %ref_vka': {
                         'faible': "Pas d'arrêt du traitement.",
                         'élevé': {
-                            'bleeding_risk2 %ref_vka #17': {
+                            'bleeding_risk2 %ref_vka': {
                                 'faible': "Arrét du traitement à J-3.",
                                 'élevé': "Bridge à J-7."
                             }
@@ -101,23 +101,23 @@ ALGO = {
                     }
                 }
             },
-            'doac #18': {
+            'doac': {
                 'Oui': {
-                    'before #19': {
+                    'before': {
                         'Oui': {
-                            'bleeding_risk2 %ref_doac #20': {
+                            'bleeding_risk2 %ref_doac': {
                                 'faible': "Pas de prise la nuit avant ou le matin du geste invasive. Pas de bridge. Pas de dosage.",
                                 'élevé': {
-                                    'xaban #21': {
+                                    'xaban': {
                                         'Oui': {
-                                            'cockroft_1 %ref_xaban #22': {
+                                            'cockroft_1 %ref_xaban': {
                                                 'Oui': 'dernière prise à J-3. Pas de bridge. Pas de dosage.'
                                             }
                                         }
                                     },
-                                    'dabigatran #23': {
+                                    'dabigatran': {
                                         'Oui': {
-                                            'cockroft_2 %ref_dabigatran #24': {
+                                            'cockroft_2 %ref_dabigatran': {
                                                 '> 50 mL/min': 'dernière prise à J-4. Pas de bridge. Pas de dosage.',
                                                 '30-49 mL/min': 'dernière prise à J-5. Pas de bridge. Pas de dosage.'
                                             }
@@ -127,12 +127,12 @@ ALGO = {
                             }
                         }
                     },
-                    'after #25': {
+                    'after': {
                         'Oui': {
-                            'bleeding_risk2 %ref_doac #26': {
+                            'bleeding_risk2 %ref_doac': {
                                 'faible': "Reprise au moment habituel et au moins 6 heures après la fin de la procédure.",
                                 'élevé': {
-                                    'venous_thrombo %ref_doac #27': {
+                                    'venous_thrombo %ref_doac': {
                                         'Oui': "Anticoagulants à dose prophylactique au moins 6 heures après l'intervention. Anticoagulants à doses curatives dès que l'hémostase le permet.",
                                         'Non': "Anticoagulants à doses curatives dès que l'hémostase le permet."
                                     }

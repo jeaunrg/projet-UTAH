@@ -83,9 +83,12 @@
 <script type="text/javascript">
 
   const init_algo = {{algo|safe}};
-  const questions = {{quests|safe}};
+  const questions = {{questions|safe}};
   const references = {{refs|safe}};
   const default_results = {{results|safe}};
+  const pbar_max = {{pbar_max}};
+  console.log(pbar_max);
+  console.log(init_algo);
   var current_qid = null;
   var results = {}
   var conclusions = {};
@@ -189,13 +192,17 @@
 
     for (const [step, subalgo] of Object.entries(algo)) {
       // get progressbar value
-      var label = step.split(' #');
-      var progress_num = parseInt(label.pop()) - 1;
-      p_update((progress_num) / 28 * 100);
+      if (step.includes(' #')){
+        var label = step.split(' #');
+        var progress_num = parseInt(label.pop());
+        p_update((progress_num) / pbar_max * 100);
+        var question_id = label[0];
+      }
+      else {
+        var question_id = step;
+      }
 
       // get answer references
-      var question_id = label[0]
-      console.log(question_id);
       if (question_id.includes(' %')) {
         traitement_ref = question_id.split(' %')[1];
         question_id = question_id.split(' %')[0];
