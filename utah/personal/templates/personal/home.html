@@ -11,10 +11,9 @@
       text-align: center;
       left: 25%;
       right: 25%;
-      /* position: fixed; */
       }
 
-  .btn {
+  .main-btn {
     font-size: 100%;
     width: 50%;
     max-width: 300px;
@@ -23,12 +22,12 @@
 </style>
 
 <div id='centered-buttons'>
-  <a type="button" href="{% url 'patient:preop' %}" class="btn btn-outline-success">
+  <a type="button" href="{% url 'patient:preop' %}" class="btn btn-outline-success main-btn">
     <img src="{% static 'images/add_patient.svg' %}" class="icon1" width="80px"/>
     <p> Inclure un nouveau patient</p>
   </a>
   <br><br>
-  <a type="button" href="{% url 'patient:patients' 'all' %}" class="btn btn-outline-success">
+  <a type="button" href="{% url 'patient:patients' 'all' %}" class="btn btn-outline-success main-btn">
     <img src="{% static 'images/find_patient.svg' %}" class="icon1" width="80px" />
     <p> Retrouver un patient déjà inclus</p>
   </a>

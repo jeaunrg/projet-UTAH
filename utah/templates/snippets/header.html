@@ -1,47 +1,66 @@
 {% load static %}
-
 <style type="text/css">
-  #hello {
-    width: 100%;
-    margin-right: 20px;
-  }
-  #hello-text {
-    font-size: 20px;
-    float: right;
-  }
-
-  #navigation {
-    height: 100%;
-    width: 100%;
-    justify-content: center;
+  header {
+    height: 100px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+
   }
   #dropdown {
+    padding-left: 20px;
+  }
+
+  #header-links {
+    display: flex;
+  }
+  #menu {
+    padding-left: 10px;
 
   }
-  header {
-    padding: 20px;
-    display: flex;
-    align-items: center;
+
+  @media screen and (max-width: 600px) {
+    #header-links {
+      visibility: hidden;
+      display: none;
+    }
   }
+  @media screen and (min-width: 600px) {
+    #collapsable-header-links {
+      visibility: hidden;
+      display: none;
+    }
+  }
+
 </style>
 
-
-<header class="bg-dark text-white">
-  <a id='ppage' class="nav-link px-2 text-white" href="#">
+<header class="bg-dark">
+  <a id='ppage' class="text-white" href="#">
     <img src="{% static 'images/previous_page.svg' %}" class="icon" width="40px" />
   </a>
 
-	<div id="navigation">
-    <a class="nav-link px-2 text-secondary" href="{% url 'home' %}">Accueil</a>
-    <a class="nav-link px-2 text-white" href="/admin/">Administration</a>
-    <a class="nav-link px-2 text-white" href="#">Contact</a>
+  <div id="menu">
+    <div id="header-links">
+      {% include 'snippets/menu.html' %}
+    </div>
+
+    <div id="collapsable-header-links">
+      <button type="button" class="btn btn-outline-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Menu
+      </button>
+      <div class="dropdown-menu bg-dark">
+        {% include 'snippets/menu.html' %}
+      </div>
+    </div>
   </div>
 
-  <div id='hello'>
-    <h2 id='hello-text'> {{ user.alias }}</h2>
+  <div id="stretch" style="flex-grow: 2;">
   </div>
 
+  <div id="hello">
+    <h3 id='hello-text' class="text-secondary"> {{ user.alias }}</h3>
+  </div>
   <div id="dropdown">
     <a href="#" class="link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
       {% if user.profile_picture_is_valid %}
@@ -51,13 +70,10 @@
       {% endif %}
 
     </a>
-    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-      <li><a class="dropdown-item" href="{% url 'patient:patients' 'is_author' %}">Mes patients</a></li>
-      <li><a class="dropdown-item" href="{% url 'account' %}">Mon compte</a></li>
-      <li><a class="dropdown-item" href="{% url 'personal:data' %}">Récupérer les données</a></li>
-      <li><hr class="dropdown-divider"></li>
-      <li><a class="dropdown-item" href="{% url 'logout' %}">Se déconnecter</a></li>
+    <ul class="dropdown-menu text-small bg-dark" aria-labelledby="dropdownUser1">
+      {% include 'snippets/profile_menu.html' %}
     </ul>
+
   </div>
 
 </header>

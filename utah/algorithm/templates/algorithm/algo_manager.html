@@ -34,7 +34,7 @@
 </style>
 <html>
 
-  <a href="{% url 'patient:detail' patient.slug %}" style="border-radius: 0;" class="btn btn-dark"><</a>
+  <script> document.getElementById('ppage').href = "{% url 'patient:detail' patient.slug %}" </script>
 
   <button id="next-button" onclick="next()" class="btn btn-round">
     <img src="{% static 'images/next.svg' %}" class="icon1" width="80px"/>
@@ -44,6 +44,7 @@
     <img src="{% static 'images/previous.svg' %}" class="icon1" width="80px"/>
   </button>
 
+  <br>
   <h3> PATIENT N°{{patient.incl_num}}</h3>
 
   <div id="question-container">
