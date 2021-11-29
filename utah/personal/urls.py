@@ -9,5 +9,5 @@ app_name = 'personal'
 
 urlpatterns = [
     path('pdf/<slug>/<download>/', generate_pdf_view, name='pdf'),
-    path('data/', download_data_view, name='data'),
+    path('data/<filter>/<query>/', download_data_view, name='data'),
  ]

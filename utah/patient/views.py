@@ -134,7 +134,7 @@ def patients_view(request, filter):
     query, patients = get_patients_page(request, N_PATIENTS_PER_PAGE, filter)
     context['patients'] = patients
     context['n_patients'] = len(patients)
-    if query:
-        context['query'] = query
+    context['filter'] = filter
+    context['query'] = query
 
     return render(request, 'patient/patients.html', context)

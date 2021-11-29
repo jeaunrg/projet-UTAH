@@ -32,7 +32,16 @@
         <label for="id_q">Rechercher des patients</label>
       </div>
     </form>
-    <div class=add-patient>
+
+
+    {% if n_patients %}
+      <div class="get-patients">
+        <a class="btn" href="{% url 'personal:data' filter query %}">
+          <img src="{% static 'images/download.svg'%}" class="icon2" width="40px" />
+        </a>
+      </div>
+    {% endif %}
+    <div class="add-patient">
       <a href="{% url 'patient:preop' %}" class="btn">
         <img src="{% static 'images/add_patient.svg' %}" class="icon2" width="40px" />
       </a>
@@ -40,10 +49,6 @@
 
   </div>
   <br>
-
-
-
-
 
 
   {% if n_patients %}
@@ -87,7 +92,12 @@
 
 
 <script type="text/javascript">
-	document.getElementById("id_q").value = "{{query}}";
+  if ("{{query}}" == "#all#") {
+    document.getElementById("id_q").value = "";
+  }
+  else {
+    document.getElementById("id_q").value = "{{query}}";
+  }
   $('tr[data-href]').on("click", function() {
       document.location = $(this).data('href');
   });

@@ -9,6 +9,8 @@ import os
 from django.db import connection
 import pandas as pd
 from io import BytesIO as IO
+from patient.utils import get_patients_queryset
+
 
 @login_required(login_url='login')
 def home_screen_view(request, *args, **kwargs):
@@ -28,8 +30,14 @@ def generate_pdf_view(request, slug, download='False'):
 
 
 @login_required(login_url='login')
-def download_data_view(request):
-	query = str(Patient.objects.all().query)
+def download_data_view(request, filter, query):
+	kwargs = {}
+	if filter == "is_author":
+		kwargs["author"] = request.user
+
+	incl_nums = [patient.incl_num for patient in get_patients_queryset(query, **kwargs)]
+	queryset = Patient.objects.filter(incl_num__in=incl_nums)
+	query = str(queryset.query)
 	df = pd.read_sql_query(query, connection)
 	excel_file = IO()
 	xlwriter = pd.ExcelWriter(excel_file, engine='xlsxwriter')
