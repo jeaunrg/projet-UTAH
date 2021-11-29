@@ -84,6 +84,7 @@ def edit_traitement_view(request, slug, idtrt):
         if form.is_valid():
             if request.POST.get('submitType') == "reset" and 'conclusion' in patient.traitements[idtrt]:
                 del patient.traitements[idtrt]['conclusion']
+                patient.save()                
             else:
                 if request.POST.get('submitType') == "delete":
                     del patient.traitements[idtrt]
